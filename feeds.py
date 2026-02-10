@@ -54,7 +54,7 @@ FEEDS = [
     {"name": "Interconnects", "url": "https://interconnects.substack.com/feed", "category": "AI"},
     {"name": "Dwarkesh Patel", "url": "https://dwarkeshpatel.com/feed/", "category": "AI"},
     {"name": "Semi Analysis", "url": "https://semianalysis.com/feed/", "category": "Tech"},
-    {"name": "AI Supremacy", "url": "https://aisupremacy.substack.com/feed", "category": "AI"},
+    # Removed: AI Supremacy (paywalled)
     {"name": "Latent Space", "url": "https://latent.space/feed", "category": "AI"},
     {"name": "Nathan Lebenz", "url": "https://nathanlebenz.substack.com/feed", "category": "AI"},
     
@@ -140,6 +140,7 @@ BLOCKED_DOMAINS = [
     "washingtonpost.com", "politico.com", "thehill.com",
     "reuters.com", "apnews.com",
     "stratechery.com",
+    "aisupremacy.substack.com",  # Paywalled
 ]
 
 # Keywords that suggest low-quality or sponsored content
