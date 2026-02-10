@@ -2,8 +2,8 @@ name: Brain Candy Scheduled Post
 
 on:
   schedule:
-    # Run every hour (Python checks if within 9 AM - 6 PM Chicago)
-    - cron: '0 * * * *'
+    # Run every hour at minute 5 (Python checks if within 9 AM - 6 PM Chicago)
+    - cron: '5 * * * *'
   workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 jobs:
