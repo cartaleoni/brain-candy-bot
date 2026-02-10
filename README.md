@@ -1,105 +1,63 @@
-# Cortex Nutrition Bot - Setup Guide
+# Brain Candy Bot
 
-## What This Bot Does
-- Monitors RSS feeds from your favorite Substacks and blogs
-- Posts new articles to your Telegram channel automatically
-- Tracks what's been posted so you don't get duplicates
+Curated essays for critical thinkers. Posts to [@candyforthebrain](https://t.me/candyforthebrain) on Telegram.
 
-## Quick Setup (5 minutes)
+## What It Does
 
-### Step 1: Create Your Telegram Channel
+Brain Candy is an intelligent content curation bot that:
 
-1. Open Telegram
-2. Tap the pencil/compose icon
-3. Select "New Channel"
-4. Name it whatever you want (e.g., "Cortex Feed" or "My Signal")
-5. Make it Public and give it a username (e.g., @mycortexfeed)
-6. Add your bot (@cortexnutritionbot) as an administrator:
-   - Open the channel
-   - Tap the channel name at the top
-   - Tap "Administrators"
-   - Tap "Add Administrator"
-   - Search for @cortexnutritionbot and add it
-   - Give it permission to "Post Messages"
+- **Discovers** articles from 100+ RSS feeds and Hacker News
+- **Scores** content based on learned preferences from training data
+- **Curates** a diverse mix (max 3 articles per source)
+- **Posts** 2 articles per hour during 9 AM - 6 PM Chicago time
 
-### Step 2: Get Your Channel ID
+## How Scoring Works
 
-Your channel ID is just: @yourchannelusername
-(whatever username you picked in step 1)
+The bot learns what you like through a training phase:
 
-### Step 3: Run the Bot
+1. **Source Reputation**: Each source gets a trust score (0-1) based on past ratings
+2. **Title Patterns**: Penalizes roundups, trade alerts, news digests
+3. **Hacker News Boost**: High-scoring HN posts (100+ points) get bonus points
+4. **Preferred Domains**: Extra boost for essay-heavy sites (paulgraham.com, gwern.net, etc.)
 
-**Option A: Run on Replit (Recommended - runs 24/7)**
+Articles must score above 0.45 to be posted.
 
-1. Go to replit.com and sign in
-2. Click "Create Repl"
-3. Choose "Python"
-4. Name it "cortex-bot"
-5. Upload bot.py and requirements.txt
-6. In the "Secrets" tab (lock icon on left), add:
-   - Key: TELEGRAM_BOT_TOKEN  Value: 8268414332:AAFX1we6-qWu6sZ_jWX0J092uVQffR8WoyY
-   - Key: TELEGRAM_CHANNEL_ID  Value: @yourchannelusername
-7. Click "Run"
+## Content Sources
 
-**Option B: Run on Your Computer**
+### RSS Feeds (100+ sources)
+- **Essays**: Paul Graham, Vitalik Buterin, gwern, ribbonfarm
+- **AI/Tech**: One Useful Thing, The Gradient, Import AI, Zvi
+- **Finance/Crypto**: MacroAlf, Malt Liquidity, a16z crypto
+- **Culture**: Experimental History, Rob Henderson, The Intrinsic Perspective
 
-1. Install Python from python.org if you don't have it
-2. Open Terminal (Mac) or Command Prompt (Windows)
-3. Navigate to the bot folder
-4. Run these commands:
+### Hacker News
+Pulls top stories (100+ points) with preference for essay domains.
 
-```bash
-pip install -r requirements.txt
+### Canonical Essays
+87 timeless pieces that never go stale.
 
-export TELEGRAM_BOT_TOKEN="8268414332:AAFX1we6-qWu6sZ_jWX0J092uVQffR8WoyY"
-export TELEGRAM_CHANNEL_ID="@yourchannelusername"
+## Deployment
 
-python bot.py
-```
+Runs on GitHub Actions - posts automatically every hour, no server needed.
 
-## Adding/Removing Feeds
+### Environment Variables
+- `TELEGRAM_BOT_TOKEN`: Bot token from @BotFather
+- `TELEGRAM_CHANNEL_ID`: Channel username (e.g., @candyforthebrain)
 
-Edit the FEEDS list in bot.py. Each feed needs:
-- name: A label for the source
-- url: The RSS feed URL
+## Files
 
-Most Substacks use: https://AUTHORNAME.substack.com/feed
+- `bot.py` - Core logic (fetching, scoring, posting)
+- `feeds.py` - RSS feed sources and blocked domains
+- `canonical.py` - Curated evergreen essays
+- `training_log.json` - User ratings that inform scoring
+- `posted.json` - Tracks posted URLs (prevents duplicates)
+- `queue.json` - Upcoming articles ready to post
 
-## Running Automatically
+## Training Data
 
-The bot runs once and exits. To run it continuously:
+The bot was trained on 97 article ratings:
+- 64 marked as good (66%)
+- 33 marked as bad (34%)
 
-**On Replit:** Add this to keep it alive (create a file called `main.py`):
-
-```python
-import time
-from bot import run_bot
-
-while True:
-    run_bot()
-    time.sleep(1800)  # Wait 30 minutes
-```
-
-**On your Mac:** Use cron (ask me if you need help with this)
-
-## Current Feeds Included
-
-- Citrini
-- 0xKyle  
-- 0xSammy
-- Damped Spring
-- Fabricated Knowledge
-- Fidenza Macro
-- Malt Liquidity
-- Oldcoin Newcoin
-- Scimitar Capital
-- Scuttleblurb
-- Terminally Drifting
-- The Algorithmic Bridge
-- Not Boring
-- Stratechery
-- a16z Crypto
-- Vitalik Buterin
-- Import AI
-- The Gradient
-- AI Snake Oil
+High-trust sources: Paul Graham, Vitalik Buterin, One Useful Thing, Zvi
+Low-trust sources: News roundups, trade alerts, paywalled content
