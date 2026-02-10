@@ -649,10 +649,22 @@ def build_queue():
                         "source": canon.get("author", "Canonical"),
                     })
 
+    # Track source counts for diversity (max 3 per source in queue)
+    MAX_PER_SOURCE = 3
+    source_counts = {}
+    for item in queue:
+        src = item.get("source", "")
+        source_counts[src] = source_counts.get(src, 0) + 1
+
     # Score and filter new articles
     for article in articles:
         normalized = normalize_url(article["link"])
         if normalized in queue_urls:
+            continue
+
+        # Limit articles per source for diversity
+        source = article.get("source", "")
+        if source_counts.get(source, 0) >= MAX_PER_SOURCE:
             continue
 
         score = score_article(article, source_scores)
@@ -660,6 +672,7 @@ def build_queue():
             article["score"] = score
             queue.append(article)
             queue_urls.add(normalized)
+            source_counts[source] = source_counts.get(source, 0) + 1
             print(f"Queued (score {score:.2f}): {article['title'][:40]}...")
 
     # Sort queue by score
