@@ -1,0 +1,37 @@
+name: Brain Candy Scheduled Post
+
+on:
+  schedule:
+    # Run every hour (Python checks if within 9 AM - 6 PM Chicago)
+    - cron: '0 * * * *'
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: "@candyforthebrain"
+        run: python main.py --github-actions
+
+      - name: Save state (posted.json, queue.json)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posted.json queue.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Update bot state [skip ci]"
+          git push || true

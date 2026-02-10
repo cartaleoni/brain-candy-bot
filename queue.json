@@ -1,0 +1,302 @@
+[
+  {
+    "title": "The Shape of AI: Jaggedness, Bottlenecks and Salients",
+    "link": "https://www.oneusefulthing.org/p/the-shape-of-ai-jaggedness-bottlenecks",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "Three Years from GPT-3 to Gemini 3",
+    "link": "https://www.oneusefulthing.org/p/three-years-from-gpt-3-to-gemini",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "Giving your AI a Job Interview",
+    "link": "https://www.oneusefulthing.org/p/giving-your-ai-a-job-interview",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "An Opinionated Guide to Using AI Right Now",
+    "link": "https://www.oneusefulthing.org/p/an-opinionated-guide-to-using-ai",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "Real AI Agents and Real Work",
+    "link": "https://www.oneusefulthing.org/p/real-ai-agents-and-real-work",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "On Working with Wizards",
+    "link": "https://www.oneusefulthing.org/p/on-working-with-wizards",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "Mass Intelligence",
+    "link": "https://www.oneusefulthing.org/p/mass-intelligence",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "GPT-5: It Just Does Stuff",
+    "link": "https://www.oneusefulthing.org/p/gpt-5-it-just-does-stuff",
+    "source": "One Useful Thing",
+    "score": 1.0
+  },
+  {
+    "title": "The AI Coding Supremacy wars",
+    "link": "https://www.ai-supremacy.com/p/the-ai-coding-supremacy-wars-saaspocaplyse-vibe-working-era",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "Claude vs. OpenAI Rivalry, Google's Earnings Surprise, OpenAI Ads vs. Anthropic's Constitution",
+    "link": "https://www.ai-supremacy.com/p/claude-vs-openai-rivalry-2026-cowork-plugins-software-apocalypse",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "Japan's National Chip Startup Races to 2nm Mass Production",
+    "link": "https://www.ai-supremacy.com/p/japans-national-chip-startup-races-2nm-rapidus",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "What is OpenClaw? \ud83e\udd80",
+    "link": "https://www.ai-supremacy.com/p/what-is-openclaw-moltbot-2026",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "Why AI is going to Space \ud83d\ude80",
+    "link": "https://www.ai-supremacy.com/p/why-ai-is-going-to-space-spacex-ipo-xai-2026",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "The Internet is Turning Against OpenAI",
+    "link": "https://www.ai-supremacy.com/p/the-internet-is-turning-against-openai-2026",
+    "source": "AI Supremacy",
+    "score": 1.0
+  },
+  {
+    "title": "What You (Want to)* Want",
+    "link": "http://www.paulgraham.com/want.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Alien Truth",
+    "link": "http://www.paulgraham.com/alien.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "What I've Learned from Users",
+    "link": "http://www.paulgraham.com/users.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Heresy",
+    "link": "http://www.paulgraham.com/heresy.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Putting Ideas into Words",
+    "link": "http://www.paulgraham.com/words.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Is There Such a Thing as Good Taste?",
+    "link": "http://www.paulgraham.com/goodtaste.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Balance of power",
+    "link": "https://vitalik.eth.limo/general/2025/12/30/balance_of_power.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Let a thousand societies bloom",
+    "link": "https://vitalik.eth.limo/general/2025/12/17/societies.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Plinko PIR tutorial",
+    "link": "https://vitalik.eth.limo/general/2025/11/25/plinko.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Galaxy brain resistance",
+    "link": "https://vitalik.eth.limo/general/2025/11/07/galaxybrain.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "A GKR Tutorial",
+    "link": "https://vitalik.eth.limo/general/2025/10/19/gkr.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Memory access is O(N^[1/3])",
+    "link": "https://vitalik.eth.limo/general/2025/10/05/memory13.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "The importance of full-stack openness and verifiability",
+    "link": "https://vitalik.eth.limo/general/2025/09/24/openness_and_verifiability.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Low-risk defi can be for Ethereum what search was for Google",
+    "link": "https://vitalik.eth.limo/general/2025/09/21/low_risk_defi.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "On idea-driven ideas",
+    "link": "https://vitalik.eth.limo/general/2025/08/12/ideas.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "\"I support it only if it's open source\" should be a more common viewpoint",
+    "link": "https://vitalik.eth.limo/general/2025/08/12/onlyopensource.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "May The Odds Be Ever In Your Favor",
+    "link": "https://themacrocompass.substack.com/p/may-the-odds-be-ever-in-your-favor-576",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "The Best Assets You Don't (But Should) Own in 2026",
+    "link": "https://themacrocompass.substack.com/p/the-best-assets-you-dont-but-should",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Supreme Court vs Tariffs: A Guide",
+    "link": "https://themacrocompass.substack.com/p/supreme-court-vs-tariffs-a-guide",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Run It Cold Now, Run It Hot Later",
+    "link": "https://themacrocompass.substack.com/p/run-it-cold-now-run-it-hot-later",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "May The Odds Be Ever In Your Favor",
+    "link": "https://themacrocompass.substack.com/p/may-the-odds-be-ever-in-your-favor",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Plumbing Risks Ahead",
+    "link": "https://themacrocompass.substack.com/p/plumbing-risks-ahead",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Policymaking Protest Assets (PPAs)",
+    "link": "https://themacrocompass.substack.com/p/policymaking-protest-assets-ppas",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Null Komma Null",
+    "link": "https://themacrocompass.substack.com/p/null-komma-null",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "On The US Downgrade",
+    "link": "https://themacrocompass.substack.com/p/on-the-us-downgrade",
+    "source": "MacroAlf",
+    "score": 1.0
+  },
+  {
+    "title": "Coming soon",
+    "link": "https://reducibleerrors.substack.com/p/coming-soon",
+    "source": "Reducible Errors",
+    "score": 1.0
+  },
+  {
+    "title": "Stimulation Theory",
+    "link": "https://www.maltliquidity.com/p/stimulation-theory",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "The Land of Confusion",
+    "link": "https://www.maltliquidity.com/p/the-land-of-confusion",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "The Really Big One",
+    "link": "https://www.maltliquidity.com/p/the-really-big-one",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "Infinite Chess",
+    "link": "https://www.maltliquidity.com/p/infinite-chess",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "Champagne Diaries",
+    "link": "https://www.maltliquidity.com/p/champagne-diaries",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "Ven Reads 9/25",
+    "link": "https://www.maltliquidity.com/p/ven-reads-925",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "How I Short Stocks",
+    "link": "https://www.maltliquidity.com/p/how-i-short-stocks",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "Postscript",
+    "link": "https://www.maltliquidity.com/p/postscript",
+    "source": "Malt Liquidity",
+    "score": 1.0
+  },
+  {
+    "title": "You Spent Your Whole Life Getting Good at the Wrong Thing",
+    "link": "https://www.thealgorithmicbridge.com/p/you-spent-your-whole-life-getting",
+    "source": "The Algorithmic Bridge",
+    "score": 1.0
+  },
+  {
+    "title": "The Stock Market Has No Idea What\u2019s Coming",
+    "link": "https://www.thealgorithmicbridge.com/p/the-stock-market-has-no-idea-whats",
+    "source": "The Algorithmic Bridge",
+    "score": 1.0
+  }
+]

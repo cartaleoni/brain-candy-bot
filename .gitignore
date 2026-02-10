@@ -1,0 +1,13 @@
+# Pending review (only used in training mode)
+pending_review.json
+
+# Note: posted.json, queue.json, and training_log.json are tracked
+# because GitHub Actions needs them for state persistence
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# OS
+.DS_Store
