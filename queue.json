@@ -18,12 +18,6 @@
     "score": 1.0
   },
   {
-    "title": "\"I'm out, who's with me?\": 'Exit' as an organizing idea",
-    "link": "https://www.a16z.news/p/im-out-whos-with-me-exit-as-an-organizing",
-    "source": "a16z News",
-    "score": 1.0
-  },
-  {
     "title": "The Case for Scaling Venture",
     "link": "https://www.a16z.news/p/the-case-for-scaling-venture",
     "source": "a16z News",
@@ -351,6 +345,12 @@
     "title": "Tales from Toddlerhood",
     "link": "https://waitbutwhy.com/2025/10/toddler.html",
     "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "Ribbonfarm is Retiring",
+    "link": "https://www.ribbonfarm.com/2024/10/10/ribbonfarm-is-retiring/",
+    "source": "Ribbonfarm",
     "score": 0.5
   }
 ]
