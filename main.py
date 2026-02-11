@@ -38,10 +38,10 @@ def minutes_until_next_hour():
 
 
 def run_scheduled():
-    """Run in scheduled mode - post 2 articles at the top of each hour (9 AM - 6 PM Chicago)."""
+    """Run in scheduled mode - post 1 article at the top of each hour (9 AM - 6 PM Chicago)."""
     print("🍬 Brain Candy - SCHEDULED MODE")
     print("=" * 40)
-    print("Posting 2 articles per hour")
+    print("Posting 1 article per hour")
     print("Schedule: 9 AM - 6 PM Chicago time")
     print("=" * 40)
 
@@ -58,7 +58,7 @@ def run_scheduled():
         # Post at the top of each hour (minute 0) within posting window
         if current_minute == 0 and is_posting_hour() and current_hour != last_posted_hour:
             print(f"\n[{chicago_now.strftime('%Y-%m-%d %H:%M %Z')}] Posting time!")
-            post_from_queue(count=2)
+            post_from_queue(count=1)
             last_posted_hour = current_hour
 
             # Rebuild queue after posting
@@ -89,9 +89,9 @@ if GITHUB_ACTIONS_MODE:
     print(f"Current time: {chicago_now.strftime('%Y-%m-%d %H:%M %Z')}")
 
     if is_posting_hour():
-        print("Within posting window - posting 2 articles...")
+        print("Within posting window - posting 1 article...")
         build_queue()
-        post_from_queue(count=2)
+        post_from_queue(count=1)
         print("Done!")
     else:
         print(f"Outside posting hours (9 AM - 6 PM Chicago). Skipping.")
