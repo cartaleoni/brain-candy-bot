@@ -2,8 +2,11 @@ name: Brain Candy Scheduled Post
 
 on:
   schedule:
-    # Run every hour at minute 5 (Python checks if within 9 AM - 6 PM Chicago)
+    # Backup: GitHub's scheduler (unreliable)
     - cron: '5 * * * *'
+  repository_dispatch:
+    # Triggered by external cron service
+    types: [post]
   workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 jobs:
