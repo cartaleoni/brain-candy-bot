@@ -1,1 +1,350 @@
-[]
+[
+  {
+    "title": "Plinko PIR tutorial",
+    "link": "https://vitalik.eth.limo/general/2025/11/25/plinko.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "How to do the jhanas",
+    "link": "https://nadia.xyz/jhanas",
+    "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "What You (Want to)* Want",
+    "link": "http://www.paulgraham.com/want.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "What I've Learned from Users",
+    "link": "http://www.paulgraham.com/users.html",
+    "source": "Paul Graham Essays",
+    "score": 1.0
+  },
+  {
+    "title": "Alzheimer's: from causes and risk factors to models and interventions",
+    "link": "https://nintil.com/alzheimers-cause/",
+    "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Links (94)",
+    "link": "https://nintil.com/links-94/",
+    "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "A Message to Our Customers",
+    "link": "http://www.apple.com/customer-letter/",
+    "source": "HN (5771pt) via apple.com",
+    "hn_points": 5771,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "OpenAI's board has fired Sam Altman",
+    "link": "https://openai.com/blog/openai-announces-leadership-transition",
+    "source": "HN (5710pt) via openai.com",
+    "hn_points": 5710,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
+    "link": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
+    "source": "HN (4549pt) via openwall.com",
+    "hn_points": 4549,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "CrowdStrike Update: Windows Bluescreen and Boot Loops",
+    "link": "https://old.reddit.com/r/crowdstrike/comments/1e6vmkf/bsod_error_in_latest_crowdstrike_update/",
+    "source": "HN (4489pt) via old.reddit.com",
+    "hn_points": 4489,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Steve Jobs has passed away.",
+    "link": "http://www.apple.com/stevejobs/",
+    "source": "HN (4338pt) via apple.com",
+    "hn_points": 4338,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bram Moolenaar has died",
+    "link": "https://groups.google.com/g/vim_announce/c/tWahca9zkt4",
+    "source": "HN (4310pt) via groups.google.com",
+    "hn_points": 4310,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Mechanical Watch",
+    "link": "https://ciechanow.ski/mechanical-watch/",
+    "source": "HN (4298pt) via ciechanow.ski",
+    "hn_points": 4298,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "YouTube-dl has received a DMCA takedown from RIAA",
+    "link": "https://github.com/github/dmca/blob/master/2020/10/2020-10-23-RIAA.md",
+    "source": "HN (4240pt) via github.com",
+    "hn_points": 4240,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Reflecting on one very, very strange year at Uber",
+    "link": "https://www.susanjfowler.com/blog/2017/2/19/reflecting-on-one-very-strange-year-at-uber",
+    "source": "HN (4107pt) via susanjfowler.com",
+    "hn_points": 4107,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Google\u2019s copying of the Java SE API was fair use [pdf]",
+    "link": "https://www.supremecourt.gov/opinions/20pdf/18-956_d18f.pdf",
+    "source": "HN (4103pt) via supremecourt.gov",
+    "hn_points": 4103,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "GPT-4",
+    "link": "https://openai.com/research/gpt-4",
+    "source": "HN (4091pt) via openai.com",
+    "hn_points": 4091,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Replit used legal threats to kill my open-source project",
+    "link": "https://intuitiveexplanations.com/tech/replit/",
+    "source": "HN (4022pt) via intuitiveexplanations.com",
+    "hn_points": 4022,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "How I cut GTA Online loading times by 70%",
+    "link": "https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/",
+    "source": "HN (3883pt) via nee.lv",
+    "hn_points": 3883,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bye, Amazon",
+    "link": "https://www.tbray.org/ongoing/When/202x/2020/04/29/Leaving-Amazon",
+    "source": "HN (3816pt) via tbray.org",
+    "hn_points": 3816,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Kevin Mitnick has died",
+    "link": "https://www.dignitymemorial.com/obituaries/las-vegas-nv/kevin-mitnick-11371668",
+    "source": "HN (3699pt) via dignitymemorial.com",
+    "hn_points": 3699,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Sora: Creating video from text",
+    "link": "https://openai.com/sora",
+    "source": "HN (3647pt) via openai.com",
+    "hn_points": 3647,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Google Search Is Dying",
+    "link": "https://dkb.io/post/google-search-is-dying",
+    "source": "HN (3636pt) via dkb.io",
+    "hn_points": 3636,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Show HN: This up votes itself",
+    "link": "http://news.ycombinator.com/vote?for=3742902&dir=up&whence=%6e%65%77%65%73%74",
+    "source": "HN (3531pt) via news.ycombinator.com",
+    "hn_points": 3531,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "A search engine that favors text-heavy sites and punishes modern web design",
+    "link": "https://search.marginalia.nu/",
+    "source": "HN (3441pt) via search.marginalia.nu",
+    "hn_points": 3441,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Apollo will close down on June 30th",
+    "link": "https://old.reddit.com/r/apolloapp/comments/144f6xm/apollo_will_close_down_on_june_30th_reddits/",
+    "source": "HN (3421pt) via old.reddit.com",
+    "hn_points": 3421,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Slack has raised our charges by $195k per year",
+    "link": "https://mahadk.com/posts/slack",
+    "source": "HN (3406pt) via mahadk.com",
+    "hn_points": 3406,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "My First Impressions of Web3",
+    "link": "https://moxie.org/2022/01/07/web3-first-impressions.html",
+    "source": "HN (3393pt) via moxie.org",
+    "hn_points": 3393,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bing: \u201cI will not harm you unless you harm me first\u201d",
+    "link": "https://simonwillison.net/2023/Feb/15/bing/",
+    "source": "HN (3363pt) via simonwillison.net",
+    "hn_points": 3363,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "GitHub, fuck your name change",
+    "link": "https://mooseyanon.medium.com/github-f-ck-your-name-change-de599033bbbe",
+    "source": "HN (3353pt) via mooseyanon.medium.com",
+    "hn_points": 3353,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Show HN: Gemini Pro 3 imagines the HN front page 10 years from now",
+    "link": "https://dosaygo-studio.github.io/hn-front-page-2035/news",
+    "source": "HN (3346pt) via dosaygo-studio.github.io",
+    "hn_points": 3346,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Switch from Chrome to Firefox",
+    "link": "https://www.mozilla.org/en-US/firefox/switch/",
+    "source": "HN (3287pt) via mozilla.org",
+    "hn_points": 3287,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Cloudflare Reverse Proxies Are Dumping Uninitialized Memory",
+    "link": "https://bugs.chromium.org/p/project-zero/issues/detail?id=1139",
+    "source": "HN (3238pt) via bugs.chromium.org",
+    "hn_points": 3238,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Show HN: I made an open-source laptop from scratch",
+    "link": "https://www.byran.ee/posts/creation/",
+    "source": "HN (3237pt) via byran.ee",
+    "hn_points": 3237,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "\u201cClick to subscribe, call to cancel\u201d is illegal, FTC says",
+    "link": "https://www.niemanlab.org/2021/11/the-end-of-click-to-subscribe-call-to-cancel-one-of-the-news-industrys-favorite-retention-tactics-is-illegal-ftc-says/",
+    "source": "HN (3192pt) via niemanlab.org",
+    "hn_points": 3192,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "FDIC Takes over Silicon Valley Bank",
+    "link": "https://www.fdic.gov/news/press-releases/2023/pr23016.html",
+    "source": "HN (3172pt) via fdic.gov",
+    "hn_points": 3172,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Things that connect us to ourselves, and things that don't",
+    "link": "https://www.henrikkarlsson.xyz/p/things-that-connect-us",
+    "source": "Henrik Karlsson",
+    "score": 0.5
+  },
+  {
+    "title": "On political power",
+    "link": "https://www.henrikkarlsson.xyz/p/fracking-for-power",
+    "source": "Henrik Karlsson",
+    "score": 0.5
+  },
+  {
+    "title": "Money, Credit, Trust, and FTX",
+    "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
+    "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Hand-Crafted Artisanal Liquidity Provision",
+    "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
+    "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
+    "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
+    "source": "Semi Analysis",
+    "score": 0.5
+  },
+  {
+    "title": "Another Giant Leap: The Rubin CPX Specialized Accelerator & Rack",
+    "link": "https://semianalysis.com/2025/09/10/another-giant-leap-the-rubin-cpx-specialized-accelerator-rack/",
+    "source": "Semi Analysis",
+    "score": 0.5
+  },
+  {
+    "title": "Beyond AlphaFold",
+    "link": "https://ifp.org/nlm/",
+    "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "How to Create Real Permitting Certainty",
+    "link": "https://ifp.org/how-to-create-real-permitting-certainty/",
+    "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "The sights and sounds of Bhutan",
+    "link": "https://waitbutwhy.com/2025/11/bhutan.html",
+    "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "Tales from Toddlerhood",
+    "link": "https://waitbutwhy.com/2025/10/toddler.html",
+    "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "The Death of Software 2.0 (A Better Analogy!)",
+    "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "2026 AI & Semiconductor Outlook",
+    "link": "https://www.fabricatedknowledge.com/p/2026-ai-and-semiconductor-outlook",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  }
+]
