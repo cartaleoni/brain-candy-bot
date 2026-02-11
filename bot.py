@@ -94,6 +94,38 @@ PREMIUM_KEYWORDS = [
     "for paying subscribers", "member-only",
 ]
 
+# Temporarily paused sources (too much recently) - expires after date
+# Format: source name or domain -> expiration date (YYYY-MM-DD)
+PAUSED_SOURCES = {
+    "Paul Graham Essays": "2026-02-18",
+    "paulgraham.com": "2026-02-18",
+    "Vitalik Buterin": "2026-02-18",
+    "vitalik.eth.limo": "2026-02-18",
+    "Nadia Asparouhova": "2026-02-18",
+    "nadia.xyz": "2026-02-18",
+    "Nintil": "2026-02-18",
+    "nintil.com": "2026-02-18",
+}
+
+
+def is_source_paused(source: str, url: str = "") -> bool:
+    """Check if a source is temporarily paused."""
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    # Check source name
+    if source in PAUSED_SOURCES:
+        if PAUSED_SOURCES[source] >= today:
+            return True
+
+    # Check domain in URL
+    if url:
+        domain = urlparse(url).netloc.replace("www.", "").lower()
+        for paused_domain, expiry in PAUSED_SOURCES.items():
+            if paused_domain in domain and expiry >= today:
+                return True
+
+    return False
+
 
 def load_json(filepath, default):
     if filepath.exists():
@@ -699,6 +731,12 @@ def build_queue():
 
         # Limit articles per source for diversity
         source = article.get("source", "")
+        link = article.get("link", "")
+
+        # Skip paused sources
+        if is_source_paused(source, link):
+            continue
+
         if source_counts.get(source, 0) >= MAX_PER_SOURCE:
             continue
 
@@ -754,6 +792,13 @@ def post_from_queue(count: int = 2):
             continue
 
         source = article.get("source", "")
+        link = article.get("link", "")
+
+        # Skip if source is temporarily paused
+        if is_source_paused(source, link):
+            print(f"Skipping (paused until cooldown expires): {source}")
+            remaining_queue.append(article)
+            continue
 
         # Skip if this source already posted today
         if source in daily_sources:
