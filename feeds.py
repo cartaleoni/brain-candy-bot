@@ -41,7 +41,25 @@ FEEDS = [
     {"name": "Paradigm Research", "url": "https://research.paradigm.xyz/feed.xml", "category": "Crypto"},
     {"name": "Polynya", "url": "https://polynya.mirror.xyz/feed/atom", "category": "Crypto"},
     {"name": "Delphi Digital", "url": "https://members.delphidigital.io/feed", "category": "Crypto"},
-    
+
+    # ===========================================
+    # ANDY'S FAVORITES - User-submitted quality sources
+    # ===========================================
+    {"name": "Obviously", "url": "https://obviously.substack.com/feed", "category": "Crypto"},
+    {"name": "Medici Musings", "url": "https://medicimusings.substack.com/feed", "category": "Culture"},
+    {"name": "Apewood", "url": "https://apewoodx.substack.com/feed", "category": "Essays"},
+    {"name": "The Knower", "url": "https://theknower.substack.com/feed", "category": "Crypto"},
+    {"name": "0xSmac", "url": "https://0xsmac.substack.com/feed", "category": "Crypto"},
+    {"name": "MH Dempsey", "url": "https://mhdempsey.substack.com/feed", "category": "Venture"},
+    {"name": "Minutes", "url": "https://minutes.substack.com/feed", "category": "Essays"},
+    {"name": "Dragonfly Agony", "url": "https://dragonflyagony.substack.com/feed", "category": "Essays"},
+    {"name": "Visser Labs", "url": "https://visserlabs.substack.com/feed", "category": "Crypto"},
+    {"name": "Inchpin", "url": "https://inchpin.substack.com/feed", "category": "Essays"},
+    {"name": "Sid Bharth", "url": "https://sidbharth.substack.com/feed", "category": "Crypto"},
+    {"name": "Adem Luz", "url": "https://ademluzrienspects.substack.com/feed", "category": "Essays"},
+    {"name": "Mojo", "url": "https://mojo3324106.substack.com/feed", "category": "Markets"},
+    {"name": "a16z News", "url": "https://www.a16z.news/feed", "category": "Tech"},
+
     # ===========================================
     # AI / FRONTIER TECH - Key Voices
     # ===========================================
