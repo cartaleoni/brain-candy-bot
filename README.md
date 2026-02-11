@@ -8,8 +8,8 @@ Brain Candy is an intelligent content curation bot that:
 
 - **Discovers** articles from 100+ RSS feeds and Hacker News
 - **Scores** content based on learned preferences from training data
-- **Curates** a diverse mix (max 3 articles per source)
-- **Posts** 2 articles per hour during 9 AM - 6 PM Chicago time
+- **Curates** a diverse mix (max 1 article per source per day)
+- **Posts** 1 article per hour during 9 AM - 6 PM Chicago time (10 articles/day)
 
 ## How Scoring Works
 
@@ -47,17 +47,28 @@ Runs on GitHub Actions - posts automatically every hour, no server needed.
 ## Files
 
 - `bot.py` - Core logic (fetching, scoring, posting)
+- `main.py` - Entry point with scheduling modes
 - `feeds.py` - RSS feed sources and blocked domains
 - `canonical.py` - Curated evergreen essays
+- `discover.py` - Autonomous source discovery (weekly)
 - `training_log.json` - User ratings that inform scoring
 - `posted.json` - Tracks posted URLs (prevents duplicates)
 - `queue.json` - Upcoming articles ready to post
+- `daily_sources.json` - Tracks sources posted today (resets at midnight Chicago)
 
 ## Training Data
 
-The bot was trained on 97 article ratings:
-- 64 marked as good (66%)
-- 33 marked as bad (34%)
+The bot was trained on 119 article ratings:
+- 86 marked as good (72%)
+- 33 marked as bad (28%)
 
-High-trust sources: Paul Graham, Vitalik Buterin, One Useful Thing, Zvi
+High-trust sources: Paul Graham, Vitalik Buterin, One Useful Thing, Zvi, Arthur Hayes
 Low-trust sources: News roundups, trade alerts, paywalled content
+
+## Source Discovery
+
+The bot autonomously expands its reach weekly:
+- Scrapes Substack recommendations from existing feeds
+- Mines Hacker News for quality domains (150+ points)
+- Auto-adds top 5 sources that pass quality filters
+- Runs silently every Sunday at 10 AM Chicago time
