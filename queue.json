@@ -1,11 +1,5 @@
 [
   {
-    "title": "What You (Want to)* Want",
-    "link": "http://www.paulgraham.com/want.html",
-    "source": "Paul Graham Essays",
-    "score": 1.0
-  },
-  {
     "title": "What I've Learned from Users",
     "link": "http://www.paulgraham.com/users.html",
     "source": "Paul Graham Essays",
@@ -44,6 +38,18 @@
   {
     "title": "Galaxy brain resistance",
     "link": "https://vitalik.eth.limo/general/2025/11/07/galaxybrain.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Explaining tech\u2019s notion of talent scarcity",
+    "link": "https://nadia.xyz/top-talent",
+    "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "A GKR Tutorial",
+    "link": "https://vitalik.eth.limo/general/2025/10/19/gkr.html",
     "source": "Vitalik Buterin",
     "score": 1.0
   },
