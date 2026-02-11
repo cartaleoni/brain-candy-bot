@@ -1,17 +1,5 @@
 [
   {
-    "title": "Plinko PIR tutorial",
-    "link": "https://vitalik.eth.limo/general/2025/11/25/plinko.html",
-    "source": "Vitalik Buterin",
-    "score": 1.0
-  },
-  {
-    "title": "How to do the jhanas",
-    "link": "https://nadia.xyz/jhanas",
-    "source": "Nadia Asparouhova",
-    "score": 1.0
-  },
-  {
     "title": "What You (Want to)* Want",
     "link": "http://www.paulgraham.com/want.html",
     "source": "Paul Graham Essays",
@@ -33,6 +21,30 @@
     "title": "Links (94)",
     "link": "https://nintil.com/links-94/",
     "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "\"I'm out, who's with me?\": 'Exit' as an organizing idea",
+    "link": "https://www.a16z.news/p/im-out-whos-with-me-exit-as-an-organizing",
+    "source": "a16z News",
+    "score": 1.0
+  },
+  {
+    "title": "The Case for Scaling Venture",
+    "link": "https://www.a16z.news/p/the-case-for-scaling-venture",
+    "source": "a16z News",
+    "score": 1.0
+  },
+  {
+    "title": "Working notes for Summer of Protocols",
+    "link": "https://nadia.xyz/summer-of-protocols-working-notes",
+    "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "Galaxy brain resistance",
+    "link": "https://vitalik.eth.limo/general/2025/11/07/galaxybrain.html",
+    "source": "Vitalik Buterin",
     "score": 1.0
   },
   {
@@ -333,18 +345,6 @@
     "title": "Tales from Toddlerhood",
     "link": "https://waitbutwhy.com/2025/10/toddler.html",
     "source": "Wait But Why",
-    "score": 0.5
-  },
-  {
-    "title": "The Death of Software 2.0 (A Better Analogy!)",
-    "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
-    "source": "Fabricated Knowledge",
-    "score": 0.5
-  },
-  {
-    "title": "2026 AI & Semiconductor Outlook",
-    "link": "https://www.fabricatedknowledge.com/p/2026-ai-and-semiconductor-outlook",
-    "source": "Fabricated Knowledge",
     "score": 0.5
   }
 ]
