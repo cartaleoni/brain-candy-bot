@@ -149,19 +149,34 @@ FEEDS = [
     {"name": "Gwern", "url": "https://gwern.net/feed", "category": "Rationality"},
 ]
 
-# Domains to skip (paywalled or news sites)
+# Domains to skip (paywalled, news sites, corporate sites)
 BLOCKED_DOMAINS = [
+    # News sites
     "nytimes.com", "wsj.com", "ft.com", "economist.com",
     "cnn.com", "foxnews.com", "msnbc.com", "bbc.com", "bbc.co.uk",
     "theinformation.com", "businessinsider.com",
     "pride.com", "huffpost.com", "buzzfeed.com",
-    "tech.lgbt", "mastodon.social", "twitter.com", "x.com",
     "forbes.com", "fortune.com", "bloomberg.com",
-    "theverge.com", "techcrunch.com", "wired.com",
+    "theverge.com", "techcrunch.com", "wired.com", "arstechnica.com",
     "washingtonpost.com", "politico.com", "thehill.com",
-    "reuters.com", "apnews.com",
+    "reuters.com", "apnews.com", "vice.com", "vox.com",
+
+    # Social media
+    "tech.lgbt", "mastodon.social", "twitter.com", "x.com",
+    "reddit.com", "youtube.com", "linkedin.com", "facebook.com",
+
+    # Corporate sites (not independent thinkers)
+    "apple.com", "google.com", "microsoft.com", "amazon.com", "meta.com",
+    "openai.com", "anthropic.com", "nvidia.com", "intel.com", "amd.com",
+    "stripe.com", "shopify.com", "salesforce.com", "oracle.com",
+    "github.com", "gitlab.com", "stackoverflow.com",
+
+    # Reference/academic (not essays)
+    "arxiv.org", "wikipedia.org", "archive.org",
+
+    # Paywalled
     "stratechery.com",
-    "aisupremacy.substack.com",  # Paywalled
+    "aisupremacy.substack.com",
 ]
 
 # Keywords that suggest low-quality or sponsored content
