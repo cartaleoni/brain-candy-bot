@@ -1,0 +1,36 @@
+name: Brain Candy Weekly Discovery
+
+on:
+  schedule:
+    # Run every Sunday at 10 AM Chicago time (4 PM UTC)
+    - cron: '0 16 * * 0'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run discovery
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python discover.py --weekly
+
+      - name: Commit new sources
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feeds.py discovered_sources.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Weekly discovery: add new sources [skip ci]"
+          git push || true

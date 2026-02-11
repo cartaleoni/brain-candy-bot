@@ -1,0 +1,899 @@
+{
+  "sources": [
+    {
+      "name": "Adam Taggart's Thoughtful Money\u00ae",
+      "url": "https://adamtaggart.substack.com/feed",
+      "domain": "adamtaggart.substack.com",
+      "discovered_from": "https://themacrocompass.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:30.540661"
+    },
+    {
+      "name": "Friday SpeedrunBy Brent",
+      "url": "https://fridayspeedrun.substack.com/feed",
+      "domain": "fridayspeedrun.substack.com",
+      "discovered_from": "https://themacrocompass.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:30.540674"
+    },
+    {
+      "name": "Privacy",
+      "url": "https://substack.com/feed",
+      "domain": "substack.com",
+      "discovered_from": "https://themacrocompass.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:30.540676"
+    },
+    {
+      "name": "Braddelong",
+      "url": "https://braddelong.substack.com/feed",
+      "domain": "braddelong.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154235"
+    },
+    {
+      "name": "Manufacturingatmit",
+      "url": "https://manufacturingatmit.substack.com/feed",
+      "domain": "manufacturingatmit.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154248"
+    },
+    {
+      "name": "What's New Under the SunBy Matt Clancy",
+      "url": "https://mattsclancy.substack.com/feed",
+      "domain": "mattsclancy.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154250"
+    },
+    {
+      "name": "John Aziz's Blog",
+      "url": "https://johnaziz.substack.com/feed",
+      "domain": "johnaziz.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154252"
+    },
+    {
+      "name": "Andy Masley",
+      "url": "https://andymasley.substack.com/feed",
+      "domain": "andymasley.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154253"
+    },
+    {
+      "name": "By the NumbersBy Hannah Ritchie",
+      "url": "https://hannahritchie.substack.com/feed",
+      "domain": "hannahritchie.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154255"
+    },
+    {
+      "name": "Phillips\u2019s NewsletterBy Phillips P. OBrien",
+      "url": "https://phillipspobrien.substack.com/feed",
+      "domain": "phillipspobrien.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154256"
+    },
+    {
+      "name": "Erdmann Housing TrackerBy Kevin Erdmann",
+      "url": "https://kevinerdmann.substack.com/feed",
+      "domain": "kevinerdmann.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154259"
+    },
+    {
+      "name": "Calculatedrisk",
+      "url": "https://calculatedrisk.substack.com/feed",
+      "domain": "calculatedrisk.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154260"
+    },
+    {
+      "name": "Jeff-alyticsBy Jeff Asher",
+      "url": "https://jasher.substack.com/feed",
+      "domain": "jasher.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154262"
+    },
+    {
+      "name": "Progress and PovertyBy Progress & Poverty",
+      "url": "https://progressandpoverty.substack.com/feed",
+      "domain": "progressandpoverty.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154263"
+    },
+    {
+      "name": "The Discourse LoungeBy Darrell Owens",
+      "url": "https://darrellowens.substack.com/feed",
+      "domain": "darrellowens.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154264"
+    },
+    {
+      "name": "Erik TorenbergBy a16z",
+      "url": "https://eriktorenberg.substack.com/feed",
+      "domain": "eriktorenberg.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154265"
+    },
+    {
+      "name": "Ampleroad",
+      "url": "https://ampleroad.substack.com/feed",
+      "domain": "ampleroad.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154266"
+    },
+    {
+      "name": "ConcurrentBy Afra",
+      "url": "https://afraw.substack.com/feed",
+      "domain": "afraw.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154268"
+    },
+    {
+      "name": "ArpitrageBy Arpit Gupta",
+      "url": "https://arpitrage.substack.com/feed",
+      "domain": "arpitrage.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154271"
+    },
+    {
+      "name": "Breaking the NewsBy James Fallows",
+      "url": "https://fallows.substack.com/feed",
+      "domain": "fallows.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154273"
+    },
+    {
+      "name": "Japan OptimistBy Jesper Koll",
+      "url": "https://japanoptimist.substack.com/feed",
+      "domain": "japanoptimist.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154274"
+    },
+    {
+      "name": "Ground TruthsBy Eric Topol",
+      "url": "https://erictopol.substack.com/feed",
+      "domain": "erictopol.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154275"
+    },
+    {
+      "name": "A Causal AffairBy Paul Goldsmith-Pinkham",
+      "url": "https://paulgp.substack.com/feed",
+      "domain": "paulgp.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154276"
+    },
+    {
+      "name": "kisskisstineBy Christine Villanueva",
+      "url": "https://kisskisstine.substack.com/feed",
+      "domain": "kisskisstine.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154278"
+    },
+    {
+      "name": "Paul Krugman",
+      "url": "https://paulkrugman.substack.com/feed",
+      "domain": "paulkrugman.substack.com",
+      "discovered_from": "https://noahpinion.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.154279"
+    },
+    {
+      "name": "Canis AgrippaeBy Canarius Agrippa",
+      "url": "https://canisagrippae.substack.com/feed",
+      "domain": "canisagrippae.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603644"
+    },
+    {
+      "name": "As Our DaysBy WSCFriedman",
+      "url": "https://asourdays.substack.com/feed",
+      "domain": "asourdays.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603654"
+    },
+    {
+      "name": "The Everest EraBy Edward Nevraumont",
+      "url": "https://everestera.substack.com/feed",
+      "domain": "everestera.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603655"
+    },
+    {
+      "name": "Mistakes Were MadeBy Ari Shtein",
+      "url": "https://mistakesweremade.substack.com/feed",
+      "domain": "mistakesweremade.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603656"
+    },
+    {
+      "name": "Five Twelve ThirteenBy Dylan Kane",
+      "url": "https://fivetwelvethirteen.substack.com/feed",
+      "domain": "fivetwelvethirteen.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603657"
+    },
+    {
+      "name": "King of DaydreamsBy Alex King",
+      "url": "https://kingofdaydreams.substack.com/feed",
+      "domain": "kingofdaydreams.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603658"
+    },
+    {
+      "name": "Rainbows EverywhereBy David Speiser",
+      "url": "https://rainbowseverywhere.substack.com/feed",
+      "domain": "rainbowseverywhere.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603660"
+    },
+    {
+      "name": "The Viewer From NowhereBy Chris",
+      "url": "https://tereglith.substack.com/feed",
+      "domain": "tereglith.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603661"
+    },
+    {
+      "name": "Theories of IntelligenceBy vasto",
+      "url": "https://theoriesofintelligence.substack.com/feed",
+      "domain": "theoriesofintelligence.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603662"
+    },
+    {
+      "name": "Journal Club with MykaBy Myka Estes",
+      "url": "https://journalclubwithmyka.substack.com/feed",
+      "domain": "journalclubwithmyka.substack.com",
+      "discovered_from": "https://astralcodexten.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:31.603663"
+    },
+    {
+      "name": "Both Are TrueBy Alex Dobrenko",
+      "url": "https://botharetrue.substack.com/feed",
+      "domain": "botharetrue.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411906"
+    },
+    {
+      "name": "CounterfeitBeesBy Violet Henriques",
+      "url": "https://counterfeitbees.substack.com/feed",
+      "domain": "counterfeitbees.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411919"
+    },
+    {
+      "name": "Rabbit Cavern",
+      "url": "https://rabbitcavern.substack.com/feed",
+      "domain": "rabbitcavern.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411923"
+    },
+    {
+      "name": "DendriteBy Chenchen Li",
+      "url": "https://ccli.substack.com/feed",
+      "domain": "ccli.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411924"
+    },
+    {
+      "name": "PastPresentFutureBy Dan Gardner",
+      "url": "https://dgardner.substack.com/feed",
+      "domain": "dgardner.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411926"
+    },
+    {
+      "name": "Coffee with ClioBy Rebecca Darley",
+      "url": "https://coffeewithclio.substack.com/feed",
+      "domain": "coffeewithclio.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411928"
+    },
+    {
+      "name": "DYNOMIGHT INTERNET NEWSLETTERBy dynomight",
+      "url": "https://dynomight.substack.com/feed",
+      "domain": "dynomight.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411929"
+    },
+    {
+      "name": "Some Unpleasant ArithmeticBy Maia Mindel",
+      "url": "https://someunpleasant.substack.com/feed",
+      "domain": "someunpleasant.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411931"
+    },
+    {
+      "name": "Josie Peters",
+      "url": "https://josieapeters.substack.com/feed",
+      "domain": "josieapeters.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411932"
+    },
+    {
+      "name": "Erika\u2019s NewsletterBy Erika Alden DeBenedictis",
+      "url": "https://erikaaldendeb.substack.com/feed",
+      "domain": "erikaaldendeb.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411934"
+    },
+    {
+      "name": "The Righteous MugwortBy Ruth Daniel",
+      "url": "https://ruthdaniel.substack.com/feed",
+      "domain": "ruthdaniel.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411937"
+    },
+    {
+      "name": "cherry-flavored",
+      "url": "https://cherryflavored111.substack.com/feed",
+      "domain": "cherryflavored111.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411938"
+    },
+    {
+      "name": "BiomusingsBy Grillby!",
+      "url": "https://grillbert.substack.com/feed",
+      "domain": "grillbert.substack.com",
+      "discovered_from": "https://experimentalhistory.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.411940"
+    },
+    {
+      "name": "City Journal SubstackBy Manhattan Institute",
+      "url": "https://cityjournal.substack.com/feed",
+      "domain": "cityjournal.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829955"
+    },
+    {
+      "name": "In My TribeBy Arnold Kling",
+      "url": "https://arnoldkling.substack.com/feed",
+      "domain": "arnoldkling.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829968"
+    },
+    {
+      "name": "The Alchemist from Rory Sutherland",
+      "url": "https://rorysutherland.substack.com/feed",
+      "domain": "rorysutherland.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829970"
+    },
+    {
+      "name": "Stoic Street SmartsBy Ed Latimore",
+      "url": "https://edlatimore.substack.com/feed",
+      "domain": "edlatimore.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829972"
+    },
+    {
+      "name": "And You'll Be Okay Forever | Essays by Will Storr",
+      "url": "https://willstorr.substack.com/feed",
+      "domain": "willstorr.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829973"
+    },
+    {
+      "name": "Lean Out with Tara Henley",
+      "url": "https://tarahenley.substack.com/feed",
+      "domain": "tarahenley.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829975"
+    },
+    {
+      "name": "Homo ImaginariBy James F. Richardson",
+      "url": "https://jamesrichardson.substack.com/feed",
+      "domain": "jamesrichardson.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829976"
+    },
+    {
+      "name": "Peter Boghossian",
+      "url": "https://boghossian.substack.com/feed",
+      "domain": "boghossian.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829978"
+    },
+    {
+      "name": "Meaning LabBy Cody Kommers (Meaning Lab)",
+      "url": "https://codykommers.substack.com/feed",
+      "domain": "codykommers.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829979"
+    },
+    {
+      "name": "Angela Nagle's Newsletter",
+      "url": "https://angelanagle.substack.com/feed",
+      "domain": "angelanagle.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829980"
+    },
+    {
+      "name": "The UpheavalBy N.S. Lyons (The Upheaval)",
+      "url": "https://theupheaval.substack.com/feed",
+      "domain": "theupheaval.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829981"
+    },
+    {
+      "name": "Reallytanman",
+      "url": "https://reallytanman.substack.com/feed",
+      "domain": "reallytanman.substack.com",
+      "discovered_from": "https://robkhenderson.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:32.829983"
+    },
+    {
+      "name": "What We\u2019re Really Up ToBy Courtney Smith",
+      "url": "https://courtneycsmith.substack.com/feed",
+      "domain": "courtneycsmith.substack.com",
+      "discovered_from": "https://sashachapin.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:33.305860"
+    },
+    {
+      "name": "Hormeze",
+      "url": "https://hormeze.substack.com/feed",
+      "domain": "hormeze.substack.com",
+      "discovered_from": "https://sashachapin.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:33.305872"
+    },
+    {
+      "name": "The Mystic's AlmanacBy Vivid Void",
+      "url": "https://vividvoid.substack.com/feed",
+      "domain": "vividvoid.substack.com",
+      "discovered_from": "https://sashachapin.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:33.305874"
+    },
+    {
+      "name": "Less FoolishBy Peter Limberger",
+      "url": "https://lessfoolish.substack.com/feed",
+      "domain": "lessfoolish.substack.com",
+      "discovered_from": "https://welf.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:34.206330"
+    },
+    {
+      "name": "IFP",
+      "url": "https://instituteforprogress.substack.com/feed",
+      "domain": "instituteforprogress.substack.com",
+      "discovered_from": "https://constructionphysics.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:35.310215"
+    },
+    {
+      "name": "Austin Vernon's Substack",
+      "url": "https://austinvernon.substack.com/feed",
+      "domain": "austinvernon.substack.com",
+      "discovered_from": "https://constructionphysics.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:35.310226"
+    },
+    {
+      "name": "The Daily Degen",
+      "url": "https://thedailydegen.substack.com/feed",
+      "domain": "thedailydegen.substack.com",
+      "discovered_from": "https://0xkyle.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:36.306267"
+    },
+    {
+      "name": "Alpha Mail",
+      "url": "https://getalphamail.substack.com/feed",
+      "domain": "getalphamail.substack.com",
+      "discovered_from": "https://0xkyle.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:36.306301"
+    },
+    {
+      "name": "Fintech Blueprint \ud83e\udd16\ud83c\udfe6\ud83e\uddedBy Lex Sokolin",
+      "url": "https://lex.substack.com/feed",
+      "domain": "lex.substack.com",
+      "discovered_from": "https://dirtroads.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:36.583577"
+    },
+    {
+      "name": "Not Investing AdviceBy alz",
+      "url": "https://anthonyleezhang.substack.com/feed",
+      "domain": "anthonyleezhang.substack.com",
+      "discovered_from": "https://dirtroads.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:36.583590"
+    },
+    {
+      "name": "@mhonkasalo",
+      "url": "https://mhonkasalo.substack.com/feed",
+      "domain": "mhonkasalo.substack.com",
+      "discovered_from": "https://dirtroads.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:36.583592"
+    },
+    {
+      "name": "gundwyn",
+      "url": "https://gundwyn.substack.com/feed",
+      "domain": "gundwyn.substack.com",
+      "discovered_from": "https://simonsarris.substack.com/feed",
+      "source_type": "substack_recommendation",
+      "discovered_at": "2026-02-11T11:55:37.129208"
+    },
+    {
+      "name": "Ciechanow",
+      "domain": "ciechanow.ski",
+      "url": "https://ciechanow.ski/atom.xml",
+      "hn_count": 9,
+      "hn_avg_points": 2906.9,
+      "sample_titles": [
+        "Mechanical Watch",
+        "Moon",
+        "Sound"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:40.017161"
+    },
+    {
+      "name": "Openai",
+      "domain": "openai.com",
+      "url": null,
+      "hn_count": 5,
+      "hn_avg_points": 3742.0,
+      "sample_titles": [
+        "OpenAI's board has fired Sam Altman",
+        "GPT-4",
+        "Sora: Creating video from text"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:40.446865"
+    },
+    {
+      "name": "Bbc",
+      "domain": "bbc.com",
+      "url": null,
+      "hn_count": 4,
+      "hn_avg_points": 3467.2,
+      "sample_titles": [
+        "Stephen Hawking has died",
+        "Zelensky leaves White House after angry meeting",
+        "Queen Elizabeth II has died"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:42.337538"
+    },
+    {
+      "name": "Apple",
+      "domain": "apple.com",
+      "url": "https://apple.com/rss",
+      "hn_count": 4,
+      "hn_avg_points": 3706.2,
+      "sample_titles": [
+        "A Message to Our Customers",
+        "Steve Jobs has passed away.",
+        "Apple Vision Pro: Apple\u2019s first spatial computer"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:43.087678"
+    },
+    {
+      "name": "Reuters",
+      "domain": "reuters.com",
+      "url": null,
+      "hn_count": 4,
+      "hn_avg_points": 2352.2,
+      "sample_titles": [
+        "Twitter set to accept Musk's $43B offer \u2013 sources",
+        "Self-driving Uber car kills Arizona woman crossing street",
+        "Russian forces invade Ukraine after Putin orders attack"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:45.080674"
+    },
+    {
+      "name": "Github",
+      "domain": "github.blog",
+      "url": "https://github.blog/feed",
+      "hn_count": 3,
+      "hn_avg_points": 2722.0,
+      "sample_titles": [
+        "No Cookie for You",
+        "YouTube-dl's repository has been restored",
+        "GitHub is now free for teams"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:45.191287"
+    },
+    {
+      "name": "Old",
+      "domain": "old.reddit.com",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 3955.0,
+      "sample_titles": [
+        "CrowdStrike Update: Windows Bluescreen and Boot Loops",
+        "Apollo will close down on June 30th"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:46.008046"
+    },
+    {
+      "name": "Simonwillison",
+      "domain": "simonwillison.net",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2739.0,
+      "sample_titles": [
+        "Bing: \u201cI will not harm you unless you harm me first\u201d",
+        "How to succeed in MrBeast production (Leaked PDF)"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:46.907636"
+    },
+    {
+      "name": "Bbc",
+      "domain": "bbc.co.uk",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2747.0,
+      "sample_titles": [
+        "UK votes to leave EU",
+        "Julian Assange arrested in London"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:49.682247"
+    },
+    {
+      "name": "Neal",
+      "domain": "neal.fun",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2850.5,
+      "sample_titles": [
+        "Stimulation Clicker",
+        "Size of Life"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:50.015411"
+    },
+    {
+      "name": "9To5Google",
+      "domain": "9to5google.com",
+      "url": "https://9to5google.com/feed",
+      "hn_count": 2,
+      "hn_avg_points": 2571.5,
+      "sample_titles": [
+        "Google will allow only apps from verified developers to be installed on Android",
+        "Google to restrict modern ad blocking Chrome extensions to enterprise users"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:50.200997"
+    },
+    {
+      "name": "Lore",
+      "domain": "lore.kernel.org",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2805.0,
+      "sample_titles": [
+        "\u201cThey introduce kernel bugs on purpose\u201d",
+        "Linus Torvalds apologizes for his behavior, takes time off"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:51.440741"
+    },
+    {
+      "name": "Spacex",
+      "domain": "spacex.com",
+      "url": "https://spacex.com/feed",
+      "hn_count": 2,
+      "hn_avg_points": 2394.5,
+      "sample_titles": [
+        "Hyperloop",
+        "Making Humans a Multiplanetary Species [video]"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:51.622213"
+    },
+    {
+      "name": "Raspberrypi",
+      "domain": "raspberrypi.org",
+      "url": "https://raspberrypi.org/feed",
+      "hn_count": 2,
+      "hn_avg_points": 2549.0,
+      "sample_titles": [
+        "Raspberry Pi 400 Desktop PC",
+        "Raspberry Pi 4"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:52.911688"
+    },
+    {
+      "name": "Arstechnica",
+      "domain": "arstechnica.com",
+      "url": "https://arstechnica.com/feed",
+      "hn_count": 2,
+      "hn_avg_points": 2393.0,
+      "sample_titles": [
+        "Bose has released API docs and opened the API for its EoL SoundTouch speakers",
+        "WhatsApp gives users an ultimatum: Share data with Facebook or stop using app"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:55:53.569836"
+    },
+    {
+      "name": "Anthropic",
+      "domain": "anthropic.com",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2236.0,
+      "sample_titles": [
+        "Claude Opus 4.6",
+        "Claude 3.7 Sonnet and Claude Code"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:56:05.956539"
+    },
+    {
+      "name": "Nature",
+      "domain": "nature.com",
+      "url": null,
+      "hn_count": 2,
+      "hn_avg_points": 2200.5,
+      "sample_titles": [
+        "Seven earth-sized planets discovered circling a star 39 light years from Earth",
+        "LK-99 isn\u2019t a superconductor"
+      ],
+      "source_type": "hn_mining",
+      "discovered_at": "2026-02-11T11:56:10.126451"
+    }
+  ],
+  "seen_domains": [
+    "ciechanow.ski",
+    "codykommers.substack.com",
+    "mattsclancy.substack.com",
+    "journalclubwithmyka.substack.com",
+    "instituteforprogress.substack.com",
+    "cityjournal.substack.com",
+    "hormeze.substack.com",
+    "raspberrypi.org",
+    "spacex.com",
+    "andymasley.substack.com",
+    "botharetrue.substack.com",
+    "paulkrugman.substack.com",
+    "rabbitcavern.substack.com",
+    "someunpleasant.substack.com",
+    "old.reddit.com",
+    "tereglith.substack.com",
+    "grillbert.substack.com",
+    "josieapeters.substack.com",
+    "willstorr.substack.com",
+    "canisagrippae.substack.com",
+    "anthropic.com",
+    "gundwyn.substack.com",
+    "simonwillison.net",
+    "nature.com",
+    "darrellowens.substack.com",
+    "ccli.substack.com",
+    "arpitrage.substack.com",
+    "adamtaggart.substack.com",
+    "apple.com",
+    "afraw.substack.com",
+    "tarahenley.substack.com",
+    "fridayspeedrun.substack.com",
+    "austinvernon.substack.com",
+    "angelanagle.substack.com",
+    "calculatedrisk.substack.com",
+    "paulgp.substack.com",
+    "kisskisstine.substack.com",
+    "rorysutherland.substack.com",
+    "theupheaval.substack.com",
+    "dynomight.substack.com",
+    "dgardner.substack.com",
+    "progressandpoverty.substack.com",
+    "coffeewithclio.substack.com",
+    "theoriesofintelligence.substack.com",
+    "vividvoid.substack.com",
+    "hannahritchie.substack.com",
+    "kingofdaydreams.substack.com",
+    "arnoldkling.substack.com",
+    "edlatimore.substack.com",
+    "manufacturingatmit.substack.com",
+    "lore.kernel.org",
+    "erictopol.substack.com",
+    "boghossian.substack.com",
+    "asourdays.substack.com",
+    "fivetwelvethirteen.substack.com",
+    "erikaaldendeb.substack.com",
+    "getalphamail.substack.com",
+    "japanoptimist.substack.com",
+    "kevinerdmann.substack.com",
+    "thedailydegen.substack.com",
+    "jamesrichardson.substack.com",
+    "cherryflavored111.substack.com",
+    "arstechnica.com",
+    "neal.fun",
+    "github.blog",
+    "lex.substack.com",
+    "9to5google.com",
+    "courtneycsmith.substack.com",
+    "jasher.substack.com",
+    "reallytanman.substack.com",
+    "bbc.com",
+    "johnaziz.substack.com",
+    "everestera.substack.com",
+    "rainbowseverywhere.substack.com",
+    "bbc.co.uk",
+    "ruthdaniel.substack.com",
+    "phillipspobrien.substack.com",
+    "lessfoolish.substack.com",
+    "mistakesweremade.substack.com",
+    "fallows.substack.com",
+    "mhonkasalo.substack.com",
+    "braddelong.substack.com",
+    "eriktorenberg.substack.com",
+    "ampleroad.substack.com",
+    "substack.com",
+    "anthonyleezhang.substack.com",
+    "counterfeitbees.substack.com",
+    "openai.com",
+    "reuters.com"
+  ],
+  "last_updated": "2026-02-11T11:56:10.126542"
+}
