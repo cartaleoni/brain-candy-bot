@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "OpenAI's board has fired Sam Altman",
-    "link": "https://openai.com/blog/openai-announces-leadership-transition",
-    "source": "HN (5710pt) via openai.com",
-    "hn_points": 5710,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
     "link": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
     "source": "HN (4549pt) via openwall.com",
@@ -286,6 +278,78 @@
     "score": 0.8
   },
   {
+    "title": "Moon",
+    "link": "https://ciechanow.ski/moon/",
+    "source": "HN (3128pt) via ciechanow.ski",
+    "hn_points": 3128,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Tim Cook Speaks Up",
+    "link": "http://www.businessweek.com/articles/2014-10-30/tim-cook-im-proud-to-be-gay",
+    "source": "HN (3086pt) via businessweek.com",
+    "hn_points": 3086,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Stimulation Clicker",
+    "link": "https://neal.fun/stimulation-clicker/",
+    "source": "HN (3082pt) via neal.fun",
+    "hn_points": 3082,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Sound",
+    "link": "https://ciechanow.ski/sound/",
+    "source": "HN (3053pt) via ciechanow.ski",
+    "hn_points": 3053,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Announcing the first SHA-1 collision",
+    "link": "https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html",
+    "source": "HN (3030pt) via security.googleblog.com",
+    "hn_points": 3030,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "\u201cThey introduce kernel bugs on purpose\u201d",
+    "link": "https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/",
+    "source": "HN (3025pt) via lore.kernel.org",
+    "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "AnandTech Farewell",
+    "link": "https://www.anandtech.com/show/21542/end-of-the-road-an-anandtech-farewell",
+    "source": "HN (3025pt) via anandtech.com",
+    "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "I Sell Onions on the Internet",
+    "link": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
+    "source": "HN (3015pt) via deepsouthventures.com",
+    "hn_points": 3015,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bicycle",
+    "link": "https://ciechanow.ski/bicycle/",
+    "source": "HN (3014pt) via ciechanow.ski",
+    "hn_points": 3014,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
     "title": "Things that connect us to ourselves, and things that don't",
     "link": "https://www.henrikkarlsson.xyz/p/things-that-connect-us",
     "source": "Henrik Karlsson",
@@ -301,54 +365,6 @@
     "title": "Money, Credit, Trust, and FTX",
     "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
     "source": "The Diff",
-    "score": 0.5
-  },
-  {
-    "title": "Hand-Crafted Artisanal Liquidity Provision",
-    "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
-    "source": "The Diff",
-    "score": 0.5
-  },
-  {
-    "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
-    "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
-    "source": "Semi Analysis",
-    "score": 0.5
-  },
-  {
-    "title": "Another Giant Leap: The Rubin CPX Specialized Accelerator & Rack",
-    "link": "https://semianalysis.com/2025/09/10/another-giant-leap-the-rubin-cpx-specialized-accelerator-rack/",
-    "source": "Semi Analysis",
-    "score": 0.5
-  },
-  {
-    "title": "Beyond AlphaFold",
-    "link": "https://ifp.org/nlm/",
-    "source": "Institute for Progress",
-    "score": 0.5
-  },
-  {
-    "title": "How to Create Real Permitting Certainty",
-    "link": "https://ifp.org/how-to-create-real-permitting-certainty/",
-    "source": "Institute for Progress",
-    "score": 0.5
-  },
-  {
-    "title": "The sights and sounds of Bhutan",
-    "link": "https://waitbutwhy.com/2025/11/bhutan.html",
-    "source": "Wait But Why",
-    "score": 0.5
-  },
-  {
-    "title": "Tales from Toddlerhood",
-    "link": "https://waitbutwhy.com/2025/10/toddler.html",
-    "source": "Wait But Why",
-    "score": 0.5
-  },
-  {
-    "title": "Ribbonfarm is Retiring",
-    "link": "https://www.ribbonfarm.com/2024/10/10/ribbonfarm-is-retiring/",
-    "source": "Ribbonfarm",
     "score": 0.5
   }
 ]
