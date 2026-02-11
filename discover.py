@@ -27,13 +27,36 @@ FEEDS_FILE = DATA_DIR / "feeds.py"
 # Hacker News API
 HN_API_URL = "https://hn.algolia.com/api/v1/search"
 
-# Domains to ignore (news sites, social media, etc.)
+# Domains to ignore (news sites, social media, corporate sites, etc.)
 IGNORE_DOMAINS = {
-    "twitter.com", "x.com", "github.com", "youtube.com", "reddit.com",
+    # Social media
+    "twitter.com", "x.com", "youtube.com", "reddit.com", "old.reddit.com",
+    "medium.com", "linkedin.com", "facebook.com", "instagram.com", "tiktok.com",
+    "threads.net", "mastodon.social", "bsky.app",
+
+    # Code/developer sites
+    "github.com", "github.blog", "gitlab.com", "stackoverflow.com",
+    "docs.google.com", "drive.google.com", "notion.so", "figma.com",
+
+    # News sites
     "nytimes.com", "wsj.com", "bloomberg.com", "ft.com", "economist.com",
-    "medium.com", "linkedin.com", "facebook.com", "instagram.com",
-    "arxiv.org", "wikipedia.org", "docs.google.com", "drive.google.com",
-    "news.ycombinator.com", "techmeme.com", "techcrunch.com", "theverge.com",
+    "bbc.com", "bbc.co.uk", "cnn.com", "reuters.com", "apnews.com",
+    "theguardian.com", "washingtonpost.com", "news.ycombinator.com",
+    "techmeme.com", "techcrunch.com", "theverge.com", "wired.com",
+    "arstechnica.com", "engadget.com", "vice.com", "vox.com",
+
+    # Corporate sites (not blogs)
+    "apple.com", "google.com", "microsoft.com", "amazon.com", "meta.com",
+    "openai.com", "anthropic.com", "nvidia.com", "intel.com", "amd.com",
+    "stripe.com", "shopify.com", "salesforce.com", "oracle.com",
+
+    # Academic/reference
+    "arxiv.org", "wikipedia.org", "wikimedia.org", "archive.org",
+    "scholar.google.com", "semanticscholar.org", "researchgate.net",
+
+    # Other non-blog sites
+    "imgur.com", "gfycat.com", "giphy.com", "pastebin.com",
+    "dropbox.com", "wetransfer.com", "mega.nz",
 }
 
 
