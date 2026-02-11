@@ -68,6 +68,9 @@ FEEDS = [
     {"name": "The Diff", "url": "https://thediff.co/feed", "category": "Business"},
     {"name": "Stratechery", "url": "https://stratechery.com/feed/", "category": "Tech"},
     {"name": "Paul Graham Essays", "url": "http://www.aaronsw.com/2002/feeds/pgessays.rss", "category": "Startups"},
+    {"name": "Bits About Money", "url": "https://bitsaboutmoney.com/feed/", "category": "Finance"},  # Patrick McKenzie (patio11)
+    {"name": "Morgan Housel", "url": "https://collabfund.com/blog/feed/", "category": "Finance"},
+    {"name": "Wait But Why", "url": "https://waitbutwhy.com/feed", "category": "Essays"},  # Tim Urban
     {"name": "cdixon", "url": "https://cdixon.org/feed", "category": "Venture"},
     
     # ===========================================

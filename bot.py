@@ -649,8 +649,8 @@ def build_queue():
                         "source": canon.get("author", "Canonical"),
                     })
 
-    # Track source counts for diversity (max 3 per source in queue)
-    MAX_PER_SOURCE = 3
+    # Track source counts for diversity (max 2 per source in queue)
+    MAX_PER_SOURCE = 2
     source_counts = {}
     for item in queue:
         src = item.get("source", "")
