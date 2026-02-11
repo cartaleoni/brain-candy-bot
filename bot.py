@@ -7,6 +7,7 @@ import random
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+from zoneinfo import ZoneInfo
 
 from feeds import FEEDS, BLOCKED_DOMAINS, BLOCKED_KEYWORDS
 from canonical import CANONICAL_READINGS
@@ -71,6 +72,7 @@ POSTED_FILE = DATA_DIR / "posted.json"
 TRAINING_LOG_FILE = DATA_DIR / "training_log.json"
 QUEUE_FILE = DATA_DIR / "queue.json"
 PENDING_REVIEW_FILE = DATA_DIR / "pending_review.json"
+DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted today
 
 # URLs Andy already shared (don't send these for review)
 ALREADY_SEEN_URLS = [
@@ -103,6 +105,39 @@ def load_json(filepath, default):
 def save_json(filepath, data):
     with open(filepath, "w") as f:
         json.dump(data, f, indent=2)
+
+
+def get_today_date() -> str:
+    """Get today's date in Chicago timezone as YYYY-MM-DD string."""
+    chicago_tz = ZoneInfo("America/Chicago")
+    return datetime.now(chicago_tz).strftime("%Y-%m-%d")
+
+
+def load_daily_sources() -> set:
+    """Load sources that have already been posted today. Resets at midnight Chicago time."""
+    data = load_json(DAILY_SOURCES_FILE, {"date": None, "sources": []})
+    today = get_today_date()
+
+    # If it's a new day, reset the tracking
+    if data.get("date") != today:
+        return set()
+
+    return set(data.get("sources", []))
+
+
+def save_daily_source(source: str):
+    """Add a source to today's posted sources."""
+    data = load_json(DAILY_SOURCES_FILE, {"date": None, "sources": []})
+    today = get_today_date()
+
+    # Reset if new day
+    if data.get("date") != today:
+        data = {"date": today, "sources": []}
+
+    if source not in data["sources"]:
+        data["sources"].append(source)
+
+    save_json(DAILY_SOURCES_FILE, data)
 
 
 def is_blocked(url: str, title: str = "") -> bool:
@@ -687,7 +722,10 @@ def build_queue():
 
 
 def post_from_queue(count: int = 2):
-    """Post articles from the queue (for scheduled posting)."""
+    """Post articles from the queue (for scheduled posting).
+
+    Enforces one article per source per day to ensure variety.
+    """
     print(f"[{datetime.now()}] Posting {count} articles from queue...")
 
     queue = load_json(QUEUE_FILE, [])
@@ -703,7 +741,11 @@ def post_from_queue(count: int = 2):
 
     posted_count = 0
     posted_urls = load_json(POSTED_FILE, [])
-    posted_sources = set()
+
+    # Load sources already posted TODAY (resets at midnight Chicago time)
+    daily_sources = load_daily_sources()
+    print(f"Sources already posted today: {len(daily_sources)}")
+
     remaining_queue = []
 
     for article in queue:
@@ -712,14 +754,18 @@ def post_from_queue(count: int = 2):
             continue
 
         source = article.get("source", "")
-        if source in posted_sources:
+
+        # Skip if this source already posted today
+        if source in daily_sources:
+            print(f"Skipping (already posted today): {source}")
             remaining_queue.append(article)
             continue
 
         if post_to_channel(article):
             print(f"Posted: {article['title'][:50]}...")
             posted_count += 1
-            posted_sources.add(source)
+            daily_sources.add(source)
+            save_daily_source(source)  # Persist immediately
             posted_urls.append(normalize_url(article["link"]))
             time.sleep(2)
         else:

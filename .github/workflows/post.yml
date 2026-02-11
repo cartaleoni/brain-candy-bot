@@ -37,19 +37,19 @@ jobs:
           TELEGRAM_CHANNEL_ID: "@candyforthebrain"
         run: python main.py --github-actions
 
-      - name: Save state (posted.json, queue.json)
+      - name: Save state (posted.json, queue.json, daily_sources.json)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Ensure files exist
-          touch posted.json queue.json
+          touch posted.json queue.json daily_sources.json
 
           # Pull latest to avoid conflicts
           git pull --rebase || true
 
           # Add and commit
-          git add posted.json queue.json
+          git add posted.json queue.json daily_sources.json
 
           # Only commit if there are changes
           if ! git diff --staged --quiet; then
