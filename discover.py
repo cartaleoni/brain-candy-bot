@@ -457,42 +457,25 @@ def auto_add_top_sources(n: int = 5) -> list:
 
 def run_weekly_discovery():
     """
-    Run weekly discovery and send report to Telegram.
-    Also auto-adds top 3 high-quality sources.
+    Run weekly discovery silently.
+    Auto-adds top 5 high-quality sources without sending any messages.
+    Fully autonomous - expands reach without user intervention.
     """
-    print(f"[{datetime.now()}] Running weekly discovery...")
+    print(f"[{datetime.now()}] Running silent weekly discovery...")
 
     # Run discovery
     new_sources = discover_new_sources()
+    print(f"Found {len(new_sources)} new potential sources")
 
-    # Auto-add top 3 sources
-    added = auto_add_top_sources(n=3)
-
-    # Format report for Telegram
-    report = "🔍 <b>Weekly Source Discovery Report</b>\n\n"
-    report += f"Found {len(new_sources)} new potential sources.\n\n"
+    # Auto-add top 5 sources (silently)
+    added = auto_add_top_sources(n=5)
 
     if added:
-        report += "<b>Auto-added to feeds:</b>\n"
+        print(f"Auto-added {len(added)} new sources:")
         for source in added:
-            report += f"• {source['name']} ({source['domain']})\n"
-        report += "\n"
-
-    # Show top discoveries for manual review
-    top = get_top_discoveries(5)
-    if top:
-        report += "<b>Top discoveries to review:</b>\n"
-        for source in top[:5]:
-            name = source.get("name", "Unknown")
-            domain = source.get("domain", "")
-            report += f"• {name} - {domain}\n"
-
-    # Send to Telegram
-    if TELEGRAM_BOT_TOKEN:
-        send_telegram_message(report)
-        print("Sent discovery report to Telegram")
+            print(f"  + {source['name']} ({source['domain']})")
     else:
-        print(report)
+        print("No new sources met quality threshold")
 
     return {"new_sources": len(new_sources), "added": added}
 
