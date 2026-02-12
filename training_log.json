@@ -831,5 +831,26 @@
     "source": "Obviously",
     "rating": "good",
     "sent_at": "2026-02-11T14:17:38.233087"
+  },
+  {
+    "title": "CrowdStrike Update: Windows Bluescreen and Boot Loops",
+    "url": "https://old.reddit.com/r/crowdstrike/comments/1e6vmkf/bsod_error_in_latest_crowdstrike_update/",
+    "source": "HN (4489pt) via old.reddit.com",
+    "sent_at": "2026-02-12T10:24:44.627953",
+    "rating": "bad"
+  },
+  {
+    "title": "OpenAI board has fired Sam Altman",
+    "url": "https://openai.com/blog/openai-announces-leadership-transition",
+    "source": "HN via openai.com",
+    "sent_at": "2026-02-12T10:24:44.627966",
+    "rating": "bad"
+  },
+  {
+    "title": "A Message to Our Customers",
+    "url": "http://www.apple.com/customer-letter/",
+    "source": "HN (5771pt) via apple.com",
+    "sent_at": "2026-02-12T10:24:44.627967",
+    "rating": "bad"
   }
 ]

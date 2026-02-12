@@ -11,7 +11,7 @@ import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from bot import run_training, run_production, build_queue, post_from_queue
+from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode
 
 # Timezone
 CHICAGO_TZ = ZoneInfo("America/Chicago")
@@ -83,15 +83,14 @@ GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv or "-g" in sys.argv
 
 if GITHUB_ACTIONS_MODE:
     # Single-run mode for GitHub Actions (no loop)
-    print("Brain Candy - GITHUB ACTIONS MODE")
+    print("Brain Candy - GITHUB ACTIONS MODE (Review Mode)")
     print("=" * 40)
     chicago_now = get_chicago_time()
     print(f"Current time: {chicago_now.strftime('%Y-%m-%d %H:%M %Z')}")
 
     if is_posting_hour():
-        print("Within posting window - posting 1 article...")
-        build_queue()
-        post_from_queue(count=1)
+        print("Within posting window - running review mode...")
+        run_review_mode()
         print("Done!")
     else:
         print(f"Outside posting hours (9 AM - 6 PM Chicago). Skipping.")

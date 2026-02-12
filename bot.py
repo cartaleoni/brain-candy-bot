@@ -73,6 +73,7 @@ TRAINING_LOG_FILE = DATA_DIR / "training_log.json"
 QUEUE_FILE = DATA_DIR / "queue.json"
 PENDING_REVIEW_FILE = DATA_DIR / "pending_review.json"
 DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted today
+APPROVED_FILE = DATA_DIR / "approved.json"  # Articles approved by Andy, ready to post
 
 # URLs Andy already shared (don't send these for review)
 ALREADY_SEEN_URLS = [
@@ -824,6 +825,208 @@ def post_from_queue(count: int = 2):
 
     print(f"Posted {posted_count} articles. Queue remaining: {len(remaining_queue)}")
     return posted_count
+
+
+# === REVIEW MODE (Human-in-the-loop) ===
+
+def send_for_channel_review(article: dict, num: int = 1) -> bool:
+    """Send an article to Andy for review before posting to channel."""
+    title = article["title"]
+    link = article["link"]
+    source = article["source"]
+    score = article.get("score", 0)
+
+    message = f"""🔍 <b>Review #{num}</b>
+
+<b>{title}</b>
+
+{link}
+
+<i>— {source}</i>
+<i>Score: {score:.2f}</i>
+
+Reply: <b>1</b>=✅ Post to channel  <b>0</b>=❌ Skip"""
+
+    return send_message(ANDY_CHAT_ID, message)
+
+
+def process_review_responses():
+    """Process Andy's responses to review requests."""
+    pending = load_json(PENDING_REVIEW_FILE, [])
+    approved = load_json(APPROVED_FILE, [])
+    training_log = load_json(TRAINING_LOG_FILE, [])
+
+    if not pending:
+        return 0
+
+    updates = get_updates()
+    processed = 0
+
+    for update in updates:
+        message = update.get("message", {})
+        chat_id = str(message.get("chat", {}).get("id", ""))
+        text = message.get("text", "").strip().lower()
+
+        if chat_id != ANDY_CHAT_ID:
+            continue
+
+        # Parse ratings (1s and 0s)
+        ratings = []
+        clean_text = text.replace(",", "").replace(" ", "").replace("y", "1").replace("n", "0")
+
+        for char in clean_text:
+            if char == "1":
+                ratings.append("good")
+            elif char == "0":
+                ratings.append("bad")
+
+        # Apply ratings
+        if ratings:
+            for i, rating in enumerate(ratings):
+                if i < len(pending):
+                    article = pending[i]
+                    article["rating"] = rating
+                    training_log.append(article)
+
+                    if rating == "good":
+                        # Add to approved queue for posting
+                        approved.append({
+                            "title": article["title"],
+                            "link": article["url"],
+                            "source": article["source"],
+                            "score": article.get("score", 0),
+                            "approved_at": datetime.now().isoformat(),
+                        })
+                        print(f"APPROVED: {article['title'][:40]}...")
+                    else:
+                        print(f"REJECTED: {article['title'][:40]}...")
+
+                    processed += 1
+
+            # Remove processed from pending
+            pending = pending[len(ratings):]
+
+    # Save state
+    save_json(PENDING_REVIEW_FILE, pending)
+    save_json(APPROVED_FILE, approved)
+    save_json(TRAINING_LOG_FILE, training_log)
+
+    # Clear processed updates
+    if updates:
+        last_update_id = updates[-1]["update_id"]
+        get_updates(offset=last_update_id + 1)
+
+    return processed
+
+
+def post_approved_to_channel(count: int = 1):
+    """Post approved articles to the channel."""
+    approved = load_json(APPROVED_FILE, [])
+    posted_urls = load_json(POSTED_FILE, [])
+    daily_sources = load_daily_sources()
+
+    if not approved:
+        print("No approved articles to post")
+        return 0
+
+    posted_count = 0
+    remaining = []
+
+    for article in approved:
+        if posted_count >= count:
+            remaining.append(article)
+            continue
+
+        source = article.get("source", "")
+        link = article.get("link", "")
+
+        # Check daily source limit
+        if source in daily_sources:
+            print(f"Skipping (already posted today): {source}")
+            remaining.append(article)
+            continue
+
+        # Check if paused
+        if is_source_paused(source, link):
+            print(f"Skipping (paused): {source}")
+            remaining.append(article)
+            continue
+
+        if post_to_channel(article):
+            print(f"Posted to channel: {article['title'][:50]}...")
+            posted_count += 1
+            daily_sources.add(source)
+            save_daily_source(source)
+            posted_urls.append(normalize_url(link))
+            time.sleep(2)
+        else:
+            print(f"Failed to post: {article['title'][:40]}...")
+            remaining.append(article)
+
+    # Save state
+    if posted_count > 0:
+        save_json(POSTED_FILE, posted_urls)
+    save_json(APPROVED_FILE, remaining)
+
+    print(f"Posted {posted_count} approved articles to channel")
+    return posted_count
+
+
+def run_review_mode():
+    """
+    Review mode workflow:
+    1. Process any responses from Andy
+    2. Post approved articles to channel
+    3. Send new candidates for review
+    """
+    print(f"[{datetime.now()}] Review mode running...")
+
+    # Step 1: Process Andy's responses
+    processed = process_review_responses()
+    if processed > 0:
+        print(f"Processed {processed} review responses")
+
+    # Step 2: Post approved articles to channel
+    posted = post_approved_to_channel(count=1)
+
+    # Step 3: Send new candidates for review (if not too many pending)
+    pending = load_json(PENDING_REVIEW_FILE, [])
+
+    if len(pending) < 3:
+        # Build queue and get top candidates
+        build_queue()
+        queue = load_json(QUEUE_FILE, [])
+
+        # Get candidates not already pending
+        pending_urls = {normalize_url(p.get("url", "")) for p in pending}
+        candidates = [a for a in queue if normalize_url(a["link"]) not in pending_urls]
+
+        # Send top candidates for review
+        to_review = min(3 - len(pending), len(candidates))
+
+        for i in range(to_review):
+            article = candidates[i]
+            review_num = len(pending) + 1
+
+            if send_for_channel_review(article, review_num):
+                pending.append({
+                    "title": article["title"],
+                    "url": article["link"],
+                    "source": article["source"],
+                    "score": article.get("score", 0),
+                    "sent_at": datetime.now().isoformat(),
+                })
+                print(f"Sent for review #{review_num}: {article['title'][:40]}...")
+                time.sleep(1)
+
+        save_json(PENDING_REVIEW_FILE, pending)
+
+    else:
+        print(f"Waiting for review on {len(pending)} pending articles...")
+
+    # Stats
+    approved = load_json(APPROVED_FILE, [])
+    print(f"Status: {len(pending)} pending review, {len(approved)} approved awaiting post")
 
 
 if __name__ == "__main__":
