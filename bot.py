@@ -1154,50 +1154,44 @@ def run_review_mode():
     build_queue()
     posted = post_from_queue(count=1)
 
-    # Step 3: Send discovered sources for review (if not too many pending)
+    # Step 3: Send ONE discovered source for review (only if nothing pending)
     pending = load_json(PENDING_REVIEW_FILE, [])
 
-    if len(pending) < 3:
+    # Only send a new article if there's nothing waiting for review
+    if len(pending) == 0:
         # Fetch articles from DISCOVERED sources only
         discovered_articles = fetch_from_discovered_sources()
 
         # Get URLs to skip
-        pending_urls = {normalize_url(p.get("url", "")) for p in pending}
         posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
         training_log = load_json(TRAINING_LOG_FILE, [])
         reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
-        skip_urls = pending_urls | posted_urls | reviewed_urls
+        skip_urls = posted_urls | reviewed_urls
 
         # Filter to truly new articles from discovered sources
         candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
 
         if candidates:
-            # Send top candidates for review
-            to_review = min(3 - len(pending), len(candidates))
+            # Send just ONE article for review
+            article = candidates[0]
 
-            for i in range(to_review):
-                article = candidates[i]
-                review_num = len(pending) + 1
-
-                if send_for_channel_review(article, review_num):
-                    pending.append({
-                        "title": article["title"],
-                        "url": article["link"],
-                        "source": article["source"],
-                        "domain": article.get("domain", ""),
-                        "feed_url": article.get("feed_url", ""),
-                        "score": 0,
-                        "sent_at": datetime.now().isoformat(),
-                    })
-                    print(f"Sent for review #{review_num}: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
-                    time.sleep(1)
-
-            save_json(PENDING_REVIEW_FILE, pending)
+            if send_for_channel_review(article, 1):
+                pending.append({
+                    "title": article["title"],
+                    "url": article["link"],
+                    "source": article["source"],
+                    "domain": article.get("domain", ""),
+                    "feed_url": article.get("feed_url", ""),
+                    "score": 0,
+                    "sent_at": datetime.now().isoformat(),
+                })
+                save_json(PENDING_REVIEW_FILE, pending)
+                print(f"Sent for review: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
         else:
             print("No new discovered sources to review")
 
     else:
-        print(f"Waiting for review on {len(pending)} pending articles...")
+        print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
 
     # Stats
     print(f"Status: {len(pending)} pending review")
