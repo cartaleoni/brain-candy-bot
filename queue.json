@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Google\u2019s copying of the Java SE API was fair use [pdf]",
-    "link": "https://www.supremecourt.gov/opinions/20pdf/18-956_d18f.pdf",
-    "source": "HN (4103pt) via supremecourt.gov",
-    "hn_points": 4103,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Replit used legal threats to kill my open-source project",
     "link": "https://intuitiveexplanations.com/tech/replit/",
     "source": "HN (4022pt) via intuitiveexplanations.com",
@@ -345,6 +337,12 @@
     "title": "Crypto's broken moral compass",
     "link": "https://paragraph.com/@polynya/crypto-s-broken-moral-compass",
     "source": "Polynya",
+    "score": 0.5
+  },
+  {
+    "title": "Beyond AlphaFold",
+    "link": "https://ifp.org/nlm/",
+    "source": "Institute for Progress",
     "score": 0.5
   }
 ]
