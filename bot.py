@@ -166,6 +166,53 @@ def add_rejected_source(source: str, url: str = ""):
     save_json(REJECTED_SOURCES_FILE, rejected)
 
 
+def add_source_to_feeds(name: str, url: str, domain: str = ""):
+    """Add an approved source to feeds.py."""
+    feeds_file = DATA_DIR / "feeds.py"
+
+    try:
+        with open(feeds_file, "r") as f:
+            content = f.read()
+
+        # Check if already exists
+        if url in content or (domain and domain in content):
+            print(f"Source already in feeds.py: {name}")
+            return False
+
+        # Find the FEEDS list end (before BLOCKED_DOMAINS)
+        insert_marker = "# Domains to skip"
+        insert_pos = content.find(insert_marker)
+        if insert_pos == -1:
+            insert_marker = "BLOCKED_DOMAINS"
+            insert_pos = content.find(insert_marker)
+
+        if insert_pos == -1:
+            print("Could not find insert position in feeds.py")
+            return False
+
+        # Go back to find the last feed entry
+        last_bracket = content.rfind("},", 0, insert_pos)
+        if last_bracket == -1:
+            print("Could not find last feed entry")
+            return False
+
+        # Create new entry
+        new_entry = f'\n    {{"name": "{name}", "url": "{url}", "category": "Discovered"}},  # Auto-approved'
+
+        # Insert
+        new_content = content[:last_bracket + 2] + new_entry + content[last_bracket + 2:]
+
+        with open(feeds_file, "w") as f:
+            f.write(new_content)
+
+        print(f"Added to feeds.py: {name} ({domain})")
+        return True
+
+    except Exception as e:
+        print(f"Error adding source to feeds.py: {e}")
+        return False
+
+
 def load_json(filepath, default):
     if filepath.exists():
         with open(filepath, "r") as f:
@@ -930,19 +977,29 @@ def process_review_responses():
                     training_log.append(article)
 
                     if rating == "good":
-                        # Add to approved queue for posting
-                        approved.append({
+                        # Post the article to channel
+                        post_to_channel({
                             "title": article["title"],
                             "link": article["url"],
                             "source": article["source"],
-                            "score": article.get("score", 0),
-                            "approved_at": datetime.now().isoformat(),
                         })
-                        print(f"APPROVED: {article['title'][:40]}...")
+                        posted_urls = load_json(POSTED_FILE, [])
+                        posted_urls.append(normalize_url(article["url"]))
+                        save_json(POSTED_FILE, posted_urls)
+
+                        # Add source to feeds.py if it's a discovered source
+                        if article.get("feed_url"):
+                            add_source_to_feeds(
+                                name=article["source"],
+                                url=article["feed_url"],
+                                domain=article.get("domain", "")
+                            )
+
+                        print(f"APPROVED & POSTED: {article['title'][:40]}...")
                     else:
                         # Reject article AND block the source
                         add_rejected_source(article["source"], article.get("url", ""))
-                        print(f"REJECTED: {article['title'][:40]}...")
+                        print(f"REJECTED (source blocked): {article['title'][:40]}...")
 
                     processed += 1
 
@@ -1021,72 +1078,129 @@ def post_approved_to_channel(count: int = 1):
     return posted_count
 
 
+def fetch_from_discovered_sources():
+    """Fetch articles from discovered sources (not yet in feeds.py)."""
+    discovered_file = DATA_DIR / "discovered_sources.json"
+    discovered = load_json(discovered_file, {"sources": []})
+
+    # Get domains already in feeds.py
+    existing_domains = set()
+    for feed in FEEDS:
+        domain = urlparse(feed["url"]).netloc.replace("www.", "").lower()
+        existing_domains.add(domain)
+
+    # Get rejected domains
+    rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
+    rejected_domains = set(rejected.get("domains", []))
+
+    articles = []
+    for source in discovered.get("sources", []):
+        domain = source.get("domain", "")
+        feed_url = source.get("url")
+
+        # Skip if already in feeds.py or rejected
+        if domain in existing_domains or domain in rejected_domains:
+            continue
+
+        # Skip if no valid feed URL
+        if not feed_url or feed_url == "null":
+            continue
+
+        # Skip corporate/news domains
+        if any(blocked in domain for blocked in BLOCKED_DOMAINS):
+            continue
+
+        # Try to fetch the feed
+        try:
+            feed = feedparser.parse(feed_url)
+            for entry in feed.entries[:3]:  # Just top 3 per source
+                title = entry.get("title", "Untitled")
+                link = entry.get("link", "")
+
+                if not link or is_blocked(link, title):
+                    continue
+
+                articles.append({
+                    "title": title,
+                    "link": link,
+                    "source": source.get("name", domain),
+                    "domain": domain,
+                    "feed_url": feed_url,
+                    "is_discovered": True,
+                })
+        except Exception as e:
+            print(f"Error fetching {domain}: {e}")
+
+        time.sleep(0.3)
+
+    return articles
+
+
 def run_review_mode():
     """
     Review mode workflow:
-    1. Process any responses from Andy
-    2. Post approved articles to channel
-    3. Send new candidates for review
+    1. Process any responses from Andy (approve/reject discovered sources)
+    2. Post from regular queue (existing feeds - no review needed)
+    3. Send NEW discovered sources for review
     """
     print(f"[{datetime.now()}] Review mode running...")
 
-    # Step 1: Process Andy's responses
+    # Step 1: Process Andy's responses to discovered source reviews
     processed = process_review_responses()
     if processed > 0:
         print(f"Processed {processed} review responses")
 
-    # Step 2: Post approved articles to channel
-    posted = post_approved_to_channel(count=1)
+    # Step 2: Post from regular queue (existing feeds - these are pre-approved)
+    build_queue()
+    posted = post_from_queue(count=1)
 
-    # Step 3: Send new candidates for review (if not too many pending)
+    # Step 3: Send discovered sources for review (if not too many pending)
     pending = load_json(PENDING_REVIEW_FILE, [])
 
     if len(pending) < 3:
-        # Build queue and get top candidates
-        build_queue()
-        queue = load_json(QUEUE_FILE, [])
+        # Fetch articles from DISCOVERED sources only
+        discovered_articles = fetch_from_discovered_sources()
 
-        # Get URLs we should NOT send for review:
-        # 1. Already pending review
+        # Get URLs to skip
         pending_urls = {normalize_url(p.get("url", "")) for p in pending}
-        # 2. Already posted to channel
         posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
-        # 3. Already reviewed (in training log)
         training_log = load_json(TRAINING_LOG_FILE, [])
         reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
-
-        # Combine all URLs to skip
         skip_urls = pending_urls | posted_urls | reviewed_urls
 
-        # Filter to only truly new candidates
-        candidates = [a for a in queue if normalize_url(a["link"]) not in skip_urls]
+        # Filter to truly new articles from discovered sources
+        candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
 
-        # Send top candidates for review
-        to_review = min(3 - len(pending), len(candidates))
+        if candidates:
+            # Send top candidates for review
+            to_review = min(3 - len(pending), len(candidates))
 
-        for i in range(to_review):
-            article = candidates[i]
-            review_num = len(pending) + 1
+            for i in range(to_review):
+                article = candidates[i]
+                review_num = len(pending) + 1
 
-            if send_for_channel_review(article, review_num):
-                pending.append({
-                    "title": article["title"],
-                    "url": article["link"],
-                    "source": article["source"],
-                    "score": article.get("score", 0),
-                    "sent_at": datetime.now().isoformat(),
-                })
-                print(f"Sent for review #{review_num}: {article['title'][:40]}...")
-                time.sleep(1)
+                if send_for_channel_review(article, review_num):
+                    pending.append({
+                        "title": article["title"],
+                        "url": article["link"],
+                        "source": article["source"],
+                        "domain": article.get("domain", ""),
+                        "feed_url": article.get("feed_url", ""),
+                        "score": 0,
+                        "sent_at": datetime.now().isoformat(),
+                    })
+                    print(f"Sent for review #{review_num}: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
+                    time.sleep(1)
 
-        save_json(PENDING_REVIEW_FILE, pending)
+            save_json(PENDING_REVIEW_FILE, pending)
+        else:
+            print("No new discovered sources to review")
 
     else:
         print(f"Waiting for review on {len(pending)} pending articles...")
 
     # Stats
-    approved = load_json(APPROVED_FILE, [])
-    print(f"Status: {len(pending)} pending review, {len(approved)} approved awaiting post")
+    print(f"Status: {len(pending)} pending review")
 
 
 if __name__ == "__main__":

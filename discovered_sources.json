@@ -17,14 +17,6 @@
       "discovered_at": "2026-02-11T11:55:30.540674"
     },
     {
-      "name": "Privacy",
-      "url": "https://substack.com/feed",
-      "domain": "substack.com",
-      "discovered_from": "https://themacrocompass.substack.com/feed",
-      "source_type": "substack_recommendation",
-      "discovered_at": "2026-02-11T11:55:30.540676"
-    },
-    {
       "name": "Braddelong",
       "url": "https://braddelong.substack.com/feed",
       "domain": "braddelong.substack.com",
@@ -591,89 +583,6 @@
       "discovered_at": "2026-02-11T11:55:40.017161"
     },
     {
-      "name": "Openai",
-      "domain": "openai.com",
-      "url": null,
-      "hn_count": 5,
-      "hn_avg_points": 3742.0,
-      "sample_titles": [
-        "OpenAI's board has fired Sam Altman",
-        "GPT-4",
-        "Sora: Creating video from text"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:40.446865"
-    },
-    {
-      "name": "Bbc",
-      "domain": "bbc.com",
-      "url": null,
-      "hn_count": 4,
-      "hn_avg_points": 3467.2,
-      "sample_titles": [
-        "Stephen Hawking has died",
-        "Zelensky leaves White House after angry meeting",
-        "Queen Elizabeth II has died"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:42.337538"
-    },
-    {
-      "name": "Apple",
-      "domain": "apple.com",
-      "url": "https://apple.com/rss",
-      "hn_count": 4,
-      "hn_avg_points": 3706.2,
-      "sample_titles": [
-        "A Message to Our Customers",
-        "Steve Jobs has passed away.",
-        "Apple Vision Pro: Apple\u2019s first spatial computer"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:43.087678"
-    },
-    {
-      "name": "Reuters",
-      "domain": "reuters.com",
-      "url": null,
-      "hn_count": 4,
-      "hn_avg_points": 2352.2,
-      "sample_titles": [
-        "Twitter set to accept Musk's $43B offer \u2013 sources",
-        "Self-driving Uber car kills Arizona woman crossing street",
-        "Russian forces invade Ukraine after Putin orders attack"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:45.080674"
-    },
-    {
-      "name": "Github",
-      "domain": "github.blog",
-      "url": "https://github.blog/feed",
-      "hn_count": 3,
-      "hn_avg_points": 2722.0,
-      "sample_titles": [
-        "No Cookie for You",
-        "YouTube-dl's repository has been restored",
-        "GitHub is now free for teams"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:45.191287"
-    },
-    {
-      "name": "Old",
-      "domain": "old.reddit.com",
-      "url": null,
-      "hn_count": 2,
-      "hn_avg_points": 3955.0,
-      "sample_titles": [
-        "CrowdStrike Update: Windows Bluescreen and Boot Loops",
-        "Apollo will close down on June 30th"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:46.008046"
-    },
-    {
       "name": "Simonwillison",
       "domain": "simonwillison.net",
       "url": null,
@@ -685,19 +594,6 @@
       ],
       "source_type": "hn_mining",
       "discovered_at": "2026-02-11T11:55:46.907636"
-    },
-    {
-      "name": "Bbc",
-      "domain": "bbc.co.uk",
-      "url": null,
-      "hn_count": 2,
-      "hn_avg_points": 2747.0,
-      "sample_titles": [
-        "UK votes to leave EU",
-        "Julian Assange arrested in London"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:49.682247"
     },
     {
       "name": "Neal",
@@ -713,19 +609,6 @@
       "discovered_at": "2026-02-11T11:55:50.015411"
     },
     {
-      "name": "9To5Google",
-      "domain": "9to5google.com",
-      "url": "https://9to5google.com/feed",
-      "hn_count": 2,
-      "hn_avg_points": 2571.5,
-      "sample_titles": [
-        "Google will allow only apps from verified developers to be installed on Android",
-        "Google to restrict modern ad blocking Chrome extensions to enterprise users"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:50.200997"
-    },
-    {
       "name": "Lore",
       "domain": "lore.kernel.org",
       "url": null,
@@ -739,19 +622,6 @@
       "discovered_at": "2026-02-11T11:55:51.440741"
     },
     {
-      "name": "Spacex",
-      "domain": "spacex.com",
-      "url": "https://spacex.com/feed",
-      "hn_count": 2,
-      "hn_avg_points": 2394.5,
-      "sample_titles": [
-        "Hyperloop",
-        "Making Humans a Multiplanetary Species [video]"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:51.622213"
-    },
-    {
       "name": "Raspberrypi",
       "domain": "raspberrypi.org",
       "url": "https://raspberrypi.org/feed",
@@ -763,45 +633,6 @@
       ],
       "source_type": "hn_mining",
       "discovered_at": "2026-02-11T11:55:52.911688"
-    },
-    {
-      "name": "Arstechnica",
-      "domain": "arstechnica.com",
-      "url": "https://arstechnica.com/feed",
-      "hn_count": 2,
-      "hn_avg_points": 2393.0,
-      "sample_titles": [
-        "Bose has released API docs and opened the API for its EoL SoundTouch speakers",
-        "WhatsApp gives users an ultimatum: Share data with Facebook or stop using app"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:55:53.569836"
-    },
-    {
-      "name": "Anthropic",
-      "domain": "anthropic.com",
-      "url": null,
-      "hn_count": 2,
-      "hn_avg_points": 2236.0,
-      "sample_titles": [
-        "Claude Opus 4.6",
-        "Claude 3.7 Sonnet and Claude Code"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:56:05.956539"
-    },
-    {
-      "name": "Nature",
-      "domain": "nature.com",
-      "url": null,
-      "hn_count": 2,
-      "hn_avg_points": 2200.5,
-      "sample_titles": [
-        "Seven earth-sized planets discovered circling a star 39 light years from Earth",
-        "LK-99 isn\u2019t a superconductor"
-      ],
-      "source_type": "hn_mining",
-      "discovered_at": "2026-02-11T11:56:10.126451"
     }
   ],
   "seen_domains": [
@@ -813,27 +644,22 @@
     "cityjournal.substack.com",
     "hormeze.substack.com",
     "raspberrypi.org",
-    "spacex.com",
     "andymasley.substack.com",
     "botharetrue.substack.com",
     "paulkrugman.substack.com",
     "rabbitcavern.substack.com",
     "someunpleasant.substack.com",
-    "old.reddit.com",
     "tereglith.substack.com",
     "grillbert.substack.com",
     "josieapeters.substack.com",
     "willstorr.substack.com",
     "canisagrippae.substack.com",
-    "anthropic.com",
     "gundwyn.substack.com",
     "simonwillison.net",
-    "nature.com",
     "darrellowens.substack.com",
     "ccli.substack.com",
     "arpitrage.substack.com",
     "adamtaggart.substack.com",
-    "apple.com",
     "afraw.substack.com",
     "tarahenley.substack.com",
     "fridayspeedrun.substack.com",
@@ -867,19 +693,14 @@
     "thedailydegen.substack.com",
     "jamesrichardson.substack.com",
     "cherryflavored111.substack.com",
-    "arstechnica.com",
     "neal.fun",
-    "github.blog",
     "lex.substack.com",
-    "9to5google.com",
     "courtneycsmith.substack.com",
     "jasher.substack.com",
     "reallytanman.substack.com",
-    "bbc.com",
     "johnaziz.substack.com",
     "everestera.substack.com",
     "rainbowseverywhere.substack.com",
-    "bbc.co.uk",
     "ruthdaniel.substack.com",
     "phillipspobrien.substack.com",
     "lessfoolish.substack.com",
@@ -889,11 +710,8 @@
     "braddelong.substack.com",
     "eriktorenberg.substack.com",
     "ampleroad.substack.com",
-    "substack.com",
     "anthonyleezhang.substack.com",
-    "counterfeitbees.substack.com",
-    "openai.com",
-    "reuters.com"
+    "counterfeitbees.substack.com"
   ],
   "last_updated": "2026-02-11T11:56:10.126542"
 }
