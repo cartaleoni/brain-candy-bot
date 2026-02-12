@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "YouTube-dl has received a DMCA takedown from RIAA",
-    "link": "https://github.com/github/dmca/blob/master/2020/10/2020-10-23-RIAA.md",
-    "source": "HN (4240pt) via github.com",
-    "hn_points": 4240,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Reflecting on one very, very strange year at Uber",
     "link": "https://www.susanjfowler.com/blog/2017/2/19/reflecting-on-one-very-strange-year-at-uber",
     "source": "HN (4107pt) via susanjfowler.com",
@@ -349,6 +341,12 @@
     "title": "Of heavens, nations faltering",
     "link": "https://autotranslucence.wordpress.com/2024/07/30/of-heavens-nations-faltering/",
     "source": "Autotranslucence",
+    "score": 0.5
+  },
+  {
+    "title": "The sights and sounds of Bhutan",
+    "link": "https://waitbutwhy.com/2025/11/bhutan.html",
+    "source": "Wait But Why",
     "score": 0.5
   }
 ]
