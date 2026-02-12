@@ -1,8 +1,6 @@
-# Pending review (only used in training mode)
-pending_review.json
-
-# Note: posted.json, queue.json, and training_log.json are tracked
-# because GitHub Actions needs them for state persistence
+# Note: State files are tracked for GitHub Actions persistence:
+# posted.json, queue.json, training_log.json, pending_review.json,
+# approved.json, rejected_sources.json, daily_sources.json
 
 # Python
 __pycache__/

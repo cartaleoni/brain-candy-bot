@@ -45,11 +45,16 @@ jobs:
           # Ensure files exist
           touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
 
-          # Pull latest to avoid conflicts
-          git pull --rebase || true
+          # Add all state files first (before pull)
+          git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
 
-          # Add and commit all state files
-          git add posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json
+          # Stash any changes, pull, then pop
+          git stash || true
+          git pull --rebase || true
+          git stash pop || true
+
+          # Re-add state files after pull
+          git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
 
           # Only commit if there are changes
           if ! git diff --staged --quiet; then
