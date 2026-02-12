@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Reflecting on one very, very strange year at Uber",
-    "link": "https://www.susanjfowler.com/blog/2017/2/19/reflecting-on-one-very-strange-year-at-uber",
-    "source": "HN (4107pt) via susanjfowler.com",
-    "hn_points": 4107,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Google\u2019s copying of the Java SE API was fair use [pdf]",
     "link": "https://www.supremecourt.gov/opinions/20pdf/18-956_d18f.pdf",
     "source": "HN (4103pt) via supremecourt.gov",
@@ -347,6 +339,12 @@
     "title": "The sights and sounds of Bhutan",
     "link": "https://waitbutwhy.com/2025/11/bhutan.html",
     "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "Crypto's broken moral compass",
+    "link": "https://paragraph.com/@polynya/crypto-s-broken-moral-compass",
+    "source": "Polynya",
     "score": 0.5
   }
 ]
