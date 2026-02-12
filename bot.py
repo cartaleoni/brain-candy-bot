@@ -74,6 +74,7 @@ QUEUE_FILE = DATA_DIR / "queue.json"
 PENDING_REVIEW_FILE = DATA_DIR / "pending_review.json"
 DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted today
 APPROVED_FILE = DATA_DIR / "approved.json"  # Articles approved by Andy, ready to post
+REJECTED_SOURCES_FILE = DATA_DIR / "rejected_sources.json"  # Sources Andy has rejected
 
 # URLs Andy already shared (don't send these for review)
 ALREADY_SEEN_URLS = [
@@ -126,6 +127,43 @@ def is_source_paused(source: str, url: str = "") -> bool:
                 return True
 
     return False
+
+
+def is_source_rejected(source: str, url: str = "") -> bool:
+    """Check if a source has been rejected by Andy."""
+    rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
+
+    # Check source name
+    if source in rejected.get("sources", []):
+        return True
+
+    # Check domain
+    if url:
+        domain = urlparse(url).netloc.replace("www.", "").lower()
+        for rejected_domain in rejected.get("domains", []):
+            if rejected_domain in domain:
+                return True
+
+    return False
+
+
+def add_rejected_source(source: str, url: str = ""):
+    """Add a source to the rejected list."""
+    rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
+
+    # Add source name
+    if source and source not in rejected["sources"]:
+        rejected["sources"].append(source)
+        print(f"Blocked source: {source}")
+
+    # Add domain
+    if url:
+        domain = urlparse(url).netloc.replace("www.", "").lower()
+        if domain and domain not in rejected["domains"]:
+            rejected["domains"].append(domain)
+            print(f"Blocked domain: {domain}")
+
+    save_json(REJECTED_SOURCES_FILE, rejected)
 
 
 def load_json(filepath, default):
@@ -738,6 +776,10 @@ def build_queue():
         if is_source_paused(source, link):
             continue
 
+        # Skip rejected sources
+        if is_source_rejected(source, link):
+            continue
+
         if source_counts.get(source, 0) >= MAX_PER_SOURCE:
             continue
 
@@ -899,6 +941,8 @@ def process_review_responses():
                         })
                         print(f"APPROVED: {article['title'][:40]}...")
                     else:
+                        # Reject article AND block the source
+                        add_rejected_source(article["source"], article.get("url", ""))
                         print(f"REJECTED: {article['title'][:40]}...")
 
                     processed += 1
@@ -949,6 +993,12 @@ def post_approved_to_channel(count: int = 1):
         # Check if paused
         if is_source_paused(source, link):
             print(f"Skipping (paused): {source}")
+            remaining.append(article)
+            continue
+
+        # Check if rejected
+        if is_source_rejected(source, link):
+            print(f"Skipping (rejected source): {source}")
             remaining.append(article)
             continue
 

@@ -43,13 +43,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Ensure files exist
-          touch posted.json queue.json daily_sources.json pending_review.json approved.json
+          touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
 
           # Pull latest to avoid conflicts
           git pull --rebase || true
 
           # Add and commit all state files
-          git add posted.json queue.json daily_sources.json pending_review.json approved.json training_log.json
+          git add posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json
 
           # Only commit if there are changes
           if ! git diff --staged --quiet; then
