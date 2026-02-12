@@ -54,22 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Steve Jobs has passed away.",
-    "link": "http://www.apple.com/stevejobs/",
-    "source": "HN (4338pt) via apple.com",
-    "hn_points": 4338,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "Bram Moolenaar has died",
-    "link": "https://groups.google.com/g/vim_announce/c/tWahca9zkt4",
-    "source": "HN (4310pt) via groups.google.com",
-    "hn_points": 4310,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Mechanical Watch",
     "link": "https://ciechanow.ski/mechanical-watch/",
     "source": "HN (4298pt) via ciechanow.ski",
@@ -98,14 +82,6 @@
     "link": "https://www.supremecourt.gov/opinions/20pdf/18-956_d18f.pdf",
     "source": "HN (4103pt) via supremecourt.gov",
     "hn_points": 4103,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "GPT-4",
-    "link": "https://openai.com/research/gpt-4",
-    "source": "HN (4091pt) via openai.com",
-    "hn_points": 4091,
     "hn_preferred": false,
     "score": 0.8
   },
@@ -142,14 +118,6 @@
     "score": 0.8
   },
   {
-    "title": "Sora: Creating video from text",
-    "link": "https://openai.com/sora",
-    "source": "HN (3647pt) via openai.com",
-    "hn_points": 3647,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Google Search Is Dying",
     "link": "https://dkb.io/post/google-search-is-dying",
     "source": "HN (3636pt) via dkb.io",
@@ -170,14 +138,6 @@
     "link": "https://search.marginalia.nu/",
     "source": "HN (3441pt) via search.marginalia.nu",
     "hn_points": 3441,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "Apollo will close down on June 30th",
-    "link": "https://old.reddit.com/r/apolloapp/comments/144f6xm/apollo_will_close_down_on_june_30th_reddits/",
-    "source": "HN (3421pt) via old.reddit.com",
-    "hn_points": 3421,
     "hn_preferred": false,
     "score": 0.8
   },
