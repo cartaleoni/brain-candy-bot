@@ -174,6 +174,10 @@ BLOCKED_DOMAINS = [
     # Reference/academic (not essays)
     "arxiv.org", "wikipedia.org", "archive.org",
 
+    # Government/legal docs (no one reads these)
+    "supremecourt.gov", "congress.gov", "whitehouse.gov", "senate.gov",
+    "house.gov", "uscourts.gov", "govinfo.gov", "gao.gov",
+
     # Paywalled
     "stratechery.com",
     "aisupremacy.substack.com",

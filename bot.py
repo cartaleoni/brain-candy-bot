@@ -266,22 +266,22 @@ def is_blocked(url: str, title: str = "") -> bool:
     # Check if already seen
     if any(normalize_url(seen_url) == normalized for seen_url in ALREADY_SEEN_URLS):
         return True
-    
+
     # Check blocked domains
     for domain in BLOCKED_DOMAINS:
         if domain in url_lower:
             return True
-    
+
     # Check blocked keywords
     for keyword in BLOCKED_KEYWORDS:
         if keyword in title_lower:
             return True
-    
+
     # Check premium/paywall keywords
     for keyword in PREMIUM_KEYWORDS:
         if keyword in title_lower:
             return True
-    
+
     return False
 
 
