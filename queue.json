@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
-    "link": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
-    "source": "HN (4549pt) via openwall.com",
-    "hn_points": 4549,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "CrowdStrike Update: Windows Bluescreen and Boot Loops",
     "link": "https://old.reddit.com/r/crowdstrike/comments/1e6vmkf/bsod_error_in_latest_crowdstrike_update/",
     "source": "HN (4489pt) via old.reddit.com",
@@ -365,6 +357,12 @@
     "title": "Money, Credit, Trust, and FTX",
     "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
     "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Property values should be normalized by acre",
+    "link": "https://devon.postach.io/post/property-values-should-be-normalized-by-acre",
+    "source": "Devon Zuegel",
     "score": 0.5
   }
 ]
