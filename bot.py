@@ -727,33 +727,32 @@ def build_queue():
     queue = load_json(QUEUE_FILE, [])
     queue_urls = {normalize_url(item["link"]) for item in queue}
 
+    # Load URLs to skip (already posted or reviewed)
+    posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
+    training_log = load_json(TRAINING_LOG_FILE, [])
+    reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
+    skip_urls = queue_urls | posted_urls | reviewed_urls
+
     # Collect new articles from RSS feeds
     articles = collect_articles_without_saving()
 
     # Also fetch from Hacker News
     hn_articles = fetch_hacker_news()
-    seen_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
     for hn_article in hn_articles:
         normalized = normalize_url(hn_article["link"])
-        if normalized not in seen_urls and normalized not in queue_urls:
+        if normalized not in skip_urls:
             articles.append(hn_article)
 
     # Add canonical essays if needed
     if len(articles) < 20:
-        seen_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
-        training_log = load_json(TRAINING_LOG_FILE, [])
-        reviewed_urls = {normalize_url(item["url"]) for item in training_log}
-        good_urls = {normalize_url(item["url"]) for item in training_log if item.get("rating") == "good"}
-
         for canon in CANONICAL_READINGS:
             canon_normalized = normalize_url(canon["url"])
-            if canon_normalized not in seen_urls and canon_normalized not in reviewed_urls and canon_normalized not in queue_urls:
-                if canon_normalized in good_urls or canon_normalized not in reviewed_urls:
-                    articles.append({
-                        "title": canon["title"],
-                        "link": canon["url"],
-                        "source": canon.get("author", "Canonical"),
-                    })
+            if canon_normalized not in skip_urls:
+                articles.append({
+                    "title": canon["title"],
+                    "link": canon["url"],
+                    "source": canon.get("author", "Canonical"),
+                })
 
     # Track source counts for diversity (max 2 per source in queue)
     MAX_PER_SOURCE = 2
@@ -765,7 +764,7 @@ def build_queue():
     # Score and filter new articles
     for article in articles:
         normalized = normalize_url(article["link"])
-        if normalized in queue_urls:
+        if normalized in skip_urls:
             continue
 
         # Limit articles per source for diversity
@@ -787,7 +786,7 @@ def build_queue():
         if score >= MIN_SCORE_THRESHOLD:
             article["score"] = score
             queue.append(article)
-            queue_urls.add(normalized)
+            skip_urls.add(normalized)
             source_counts[source] = source_counts.get(source, 0) + 1
             print(f"Queued (score {score:.2f}): {article['title'][:40]}...")
 
@@ -1047,9 +1046,20 @@ def run_review_mode():
         build_queue()
         queue = load_json(QUEUE_FILE, [])
 
-        # Get candidates not already pending
+        # Get URLs we should NOT send for review:
+        # 1. Already pending review
         pending_urls = {normalize_url(p.get("url", "")) for p in pending}
-        candidates = [a for a in queue if normalize_url(a["link"]) not in pending_urls]
+        # 2. Already posted to channel
+        posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
+        # 3. Already reviewed (in training log)
+        training_log = load_json(TRAINING_LOG_FILE, [])
+        reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
+
+        # Combine all URLs to skip
+        skip_urls = pending_urls | posted_urls | reviewed_urls
+
+        # Filter to only truly new candidates
+        candidates = [a for a in queue if normalize_url(a["link"]) not in skip_urls]
 
         # Send top candidates for review
         to_review = min(3 - len(pending), len(candidates))
