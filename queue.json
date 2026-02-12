@@ -18,12 +18,6 @@
     "score": 1.0
   },
   {
-    "title": "The Case for Scaling Venture",
-    "link": "https://www.a16z.news/p/the-case-for-scaling-venture",
-    "source": "a16z News",
-    "score": 1.0
-  },
-  {
     "title": "Working notes for Summer of Protocols",
     "link": "https://nadia.xyz/summer-of-protocols-working-notes",
     "source": "Nadia Asparouhova",
@@ -363,6 +357,12 @@
     "title": "Property values should be normalized by acre",
     "link": "https://devon.postach.io/post/property-values-should-be-normalized-by-acre",
     "source": "Devon Zuegel",
+    "score": 0.5
+  },
+  {
+    "title": "Announcing Progress in Medicine, a high school summer career exploration program",
+    "link": "https://rootsofprogress.org/announcing-progress-in-medicine-a-high-school-summer-career-exploration-program/",
+    "source": "Roots of Progress",
     "score": 0.5
   }
 ]
