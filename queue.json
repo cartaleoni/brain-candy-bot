@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Replit used legal threats to kill my open-source project",
-    "link": "https://intuitiveexplanations.com/tech/replit/",
-    "source": "HN (4022pt) via intuitiveexplanations.com",
-    "hn_points": 4022,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "How I cut GTA Online loading times by 70%",
     "link": "https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/",
     "source": "HN (3883pt) via nee.lv",
@@ -343,6 +335,12 @@
     "title": "Beyond AlphaFold",
     "link": "https://ifp.org/nlm/",
     "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Impact, agency, and taste",
+    "link": "https://www.benkuhn.net/impact/",
+    "source": "Ben Kuhn",
     "score": 0.5
   }
 ]
