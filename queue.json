@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Mechanical Watch",
-    "link": "https://ciechanow.ski/mechanical-watch/",
-    "source": "HN (4298pt) via ciechanow.ski",
-    "hn_points": 4298,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "YouTube-dl has received a DMCA takedown from RIAA",
     "link": "https://github.com/github/dmca/blob/master/2020/10/2020-10-23-RIAA.md",
     "source": "HN (4240pt) via github.com",
@@ -321,6 +313,42 @@
     "title": "Announcing Progress in Medicine, a high school summer career exploration program",
     "link": "https://rootsofprogress.org/announcing-progress-in-medicine-a-high-school-summer-career-exploration-program/",
     "source": "Roots of Progress",
+    "score": 0.5
+  },
+  {
+    "title": "The Death of Software 2.0 (A Better Analogy!)",
+    "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "2026 AI & Semiconductor Outlook",
+    "link": "https://www.fabricatedknowledge.com/p/2026-ai-and-semiconductor-outlook",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "Hand-Crafted Artisanal Liquidity Provision",
+    "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
+    "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Ribbonfarm is Retiring",
+    "link": "https://www.ribbonfarm.com/2024/10/10/ribbonfarm-is-retiring/",
+    "source": "Ribbonfarm",
+    "score": 0.5
+  },
+  {
+    "title": "Truth-Seeking Modes",
+    "link": "https://www.ribbonfarm.com/2024/08/17/truth-seeking-modes/",
+    "source": "Ribbonfarm",
+    "score": 0.5
+  },
+  {
+    "title": "Of heavens, nations faltering",
+    "link": "https://autotranslucence.wordpress.com/2024/07/30/of-heavens-nations-faltering/",
+    "source": "Autotranslucence",
     "score": 0.5
   }
 ]
