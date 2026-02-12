@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Bye, Amazon",
-    "link": "https://www.tbray.org/ongoing/When/202x/2020/04/29/Leaving-Amazon",
-    "source": "HN (3816pt) via tbray.org",
-    "hn_points": 3816,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Kevin Mitnick has died",
     "link": "https://www.dignitymemorial.com/obituaries/las-vegas-nv/kevin-mitnick-11371668",
     "source": "HN (3699pt) via dignitymemorial.com",
@@ -339,6 +331,12 @@
     "title": "2025 letter",
     "link": "https://danwang.co/2025-letter/",
     "source": "Dan Wang",
+    "score": 0.5
+  },
+  {
+    "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
+    "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
+    "source": "Semi Analysis",
     "score": 0.5
   }
 ]
