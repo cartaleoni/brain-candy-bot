@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Kevin Mitnick has died",
-    "link": "https://www.dignitymemorial.com/obituaries/las-vegas-nv/kevin-mitnick-11371668",
-    "source": "HN (3699pt) via dignitymemorial.com",
-    "hn_points": 3699,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Google Search Is Dying",
     "link": "https://dkb.io/post/google-search-is-dying",
     "source": "HN (3636pt) via dkb.io",
@@ -337,6 +329,12 @@
     "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
     "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
     "source": "Semi Analysis",
+    "score": 0.5
+  },
+  {
+    "title": "Weekly Dose of Optimism #179",
+    "link": "https://www.notboring.co/p/weekly-dose-of-optimism-179",
+    "source": "Not Boring",
     "score": 0.5
   }
 ]
