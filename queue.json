@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Slack has raised our charges by $195k per year",
-    "link": "https://mahadk.com/posts/slack",
-    "source": "HN (3406pt) via mahadk.com",
-    "hn_points": 3406,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "My First Impressions of Web3",
     "link": "https://moxie.org/2022/01/07/web3-first-impressions.html",
     "source": "HN (3393pt) via moxie.org",
@@ -329,6 +321,12 @@
     "title": "scuttleblurb business update (2025)",
     "link": "https://www.scuttleblurb.com/update-25/",
     "source": "Scuttleblurb",
+    "score": 0.5
+  },
+  {
+    "title": "#31: From Skin Trader to NFT Expert \u2013 with Anish Agnihotri and Hasu",
+    "link": "https://uncommoncore.co/31-from-skin-trader-to-nft-expert-with-anish-agnihotri-and-hasu/",
+    "source": "Hasu",
     "score": 0.5
   }
 ]
