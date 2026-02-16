@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "GitHub, fuck your name change",
-    "link": "https://mooseyanon.medium.com/github-f-ck-your-name-change-de599033bbbe",
-    "source": "HN (3353pt) via mooseyanon.medium.com",
-    "hn_points": 3353,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Show HN: Gemini Pro 3 imagines the HN front page 10 years from now",
     "link": "https://dosaygo-studio.github.io/hn-front-page-2035/news",
     "source": "HN (3346pt) via dosaygo-studio.github.io",
@@ -322,6 +314,12 @@
   {
     "title": "Outbreak",
     "link": "https://meltingasphalt.com/outbreak/",
+    "source": "Melting Asphalt",
+    "score": 0.5
+  },
+  {
+    "title": "Going Critical",
+    "link": "https://meltingasphalt.com/going-critical/",
     "source": "Melting Asphalt",
     "score": 0.5
   }
