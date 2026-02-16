@@ -16,8 +16,8 @@ from bot import run_training, run_production, build_queue, post_from_queue, run_
 # Timezone
 CHICAGO_TZ = ZoneInfo("America/Chicago")
 
-# Schedule: post at top of each hour from 9 AM to 6 PM Chicago time
-POSTING_HOURS = list(range(9, 19))  # 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+# Schedule: post every other hour from 9 AM to 6 PM Chicago time
+POSTING_HOURS = [9, 11, 13, 15, 17]  # Every 2 hours (5 posts/day)
 
 
 def get_chicago_time():
