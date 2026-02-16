@@ -1,9 +1,6 @@
 name: Brain Candy Scheduled Post
 
 on:
-  schedule:
-    # Backup: GitHub's scheduler (unreliable)
-    - cron: '5 * * * *'
   repository_dispatch:
     # Triggered by external cron service
     types: [post]
