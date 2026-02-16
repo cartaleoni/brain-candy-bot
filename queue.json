@@ -84,12 +84,6 @@
     "score": 1.0
   },
   {
-    "title": "We're in the Upside Down",
-    "link": "https://apewoodx.substack.com/p/were-in-the-upside-down",
-    "source": "Apewood",
-    "score": 1.0
-  },
-  {
     "title": "Three Years from GPT-3 to Gemini 3",
     "link": "https://www.oneusefulthing.org/p/three-years-from-gpt-3-to-gemini",
     "source": "One Useful Thing",
@@ -292,5 +286,13 @@
     "link": "https://mojo3324106.substack.com/p/chamath-bubbe-im-your-white-knight",
     "source": "Mojo",
     "score": 1.0
+  },
+  {
+    "title": "Show HN: Gemini Pro 3 imagines the HN front page 10 years from now",
+    "link": "https://dosaygo-studio.github.io/hn-front-page-2035/news",
+    "source": "HN (3346pt) via dosaygo-studio.github.io",
+    "hn_points": 3346,
+    "hn_preferred": false,
+    "score": 0.8
   }
 ]
