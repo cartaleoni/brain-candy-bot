@@ -886,6 +886,12 @@ def post_from_queue(count: int = 2):
 
         source = article.get("source", "")
         link = article.get("link", "")
+        normalized_link = normalize_url(link)
+
+        # Skip if already posted (prevent duplicates)
+        if normalized_link in {normalize_url(u) for u in posted_urls}:
+            print(f"Skipping (already posted): {article['title'][:40]}...")
+            continue  # Don't add back to queue - it's already posted
 
         # Skip if source is temporarily paused
         if is_source_paused(source, link):
