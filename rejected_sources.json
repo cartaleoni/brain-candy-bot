@@ -1,1 +1,8 @@
-{"sources": [], "domains": []}
+{
+  "sources": [
+    "Raspberrypi"
+  ],
+  "domains": [
+    "raspberrypi.org"
+  ]
+}

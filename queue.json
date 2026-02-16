@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "A search engine that favors text-heavy sites and punishes modern web design",
-    "link": "https://search.marginalia.nu/",
-    "source": "HN (3441pt) via search.marginalia.nu",
-    "hn_points": 3441,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Slack has raised our charges by $195k per year",
     "link": "https://mahadk.com/posts/slack",
     "source": "HN (3406pt) via mahadk.com",
@@ -331,6 +323,12 @@
     "title": "Breakneck: China\u2019s Quest to Engineer the Future",
     "link": "https://danwang.co/breakneck/",
     "source": "Dan Wang",
+    "score": 0.5
+  },
+  {
+    "title": "scuttleblurb business update (2025)",
+    "link": "https://www.scuttleblurb.com/update-25/",
+    "source": "Scuttleblurb",
     "score": 0.5
   }
 ]
