@@ -981,17 +981,17 @@ def process_review_responses():
                     training_log.append(article)
 
                     if rating == "good":
-                        # Post the article to channel
-                        post_to_channel({
+                        # Add article to queue (will be posted in normal rotation)
+                        queue = load_json(QUEUE_FILE, [])
+                        queue.insert(0, {  # Add to front of queue (high priority)
                             "title": article["title"],
                             "link": article["url"],
                             "source": article["source"],
+                            "score": 1.0,  # High score for approved content
                         })
-                        posted_urls = load_json(POSTED_FILE, [])
-                        posted_urls.append(normalize_url(article["url"]))
-                        save_json(POSTED_FILE, posted_urls)
+                        save_json(QUEUE_FILE, queue)
 
-                        # Add source to feeds.py if it's a discovered source
+                        # Add source to feeds.py (now a trusted source)
                         if article.get("feed_url"):
                             add_source_to_feeds(
                                 name=article["source"],
@@ -999,7 +999,7 @@ def process_review_responses():
                                 domain=article.get("domain", "")
                             )
 
-                        print(f"APPROVED & POSTED: {article['title'][:40]}...")
+                        print(f"APPROVED: {article['title'][:40]}... (added to queue, source added to feeds)")
                     else:
                         # Reject article AND block the source
                         add_rejected_source(article["source"], article.get("url", ""))
