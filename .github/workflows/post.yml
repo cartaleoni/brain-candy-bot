@@ -45,21 +45,17 @@ jobs:
           # Ensure files exist
           touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
 
-          # Add all state files first (before pull)
+          # Add all state files
           git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
 
-          # Stash any changes, pull, then pop
-          git stash || true
-          git pull --rebase || true
-          git stash pop || true
-
-          # Re-add state files after pull
-          git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
-
-          # Only commit if there are changes
+          # Only commit and push if there are changes
           if ! git diff --staged --quiet; then
             git commit -m "Update bot state [skip ci]"
-            git push
+
+            # Pull with rebase, auto-resolve conflicts by keeping our changes
+            git pull --rebase -X theirs || git rebase --abort || true
+
+            git push || git push --force-with-lease
           else
             echo "No state changes to commit"
           fi
