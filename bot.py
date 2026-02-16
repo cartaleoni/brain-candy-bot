@@ -263,6 +263,10 @@ def is_blocked(url: str, title: str = "") -> bool:
     title_lower = title.lower()
     normalized = normalize_url(url)
 
+    # Block action URLs (votes, logins, etc.)
+    if "/vote?" in url_lower or "/login" in url_lower or "/submit" in url_lower:
+        return True
+
     # Check if already seen
     if any(normalize_url(seen_url) == normalized for seen_url in ALREADY_SEEN_URLS):
         return True

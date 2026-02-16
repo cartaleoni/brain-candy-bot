@@ -165,6 +165,7 @@ BLOCKED_DOMAINS = [
     # Social media
     "tech.lgbt", "mastodon.social", "twitter.com", "x.com",
     "reddit.com", "old.reddit.com", "youtube.com", "linkedin.com", "facebook.com",
+    "news.ycombinator.com",  # HN vote/comment links
 
     # Corporate sites (not independent thinkers)
     "apple.com", "google.com", "microsoft.com", "amazon.com", "meta.com",
