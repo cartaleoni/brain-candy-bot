@@ -1,11 +1,11 @@
 [
   {
-    "title": "Airfoil",
-    "url": "https://ciechanow.ski/airfoil/",
-    "source": "Ciechanow",
-    "domain": "ciechanow.ski",
-    "feed_url": "https://ciechanow.ski/atom.xml",
+    "title": "Embodied machine learning: From research ideas to classroom activities",
+    "url": "https://www.raspberrypi.org/blog/embodied-machine-learning-from-research-ideas-to-classroom-activities/",
+    "source": "Raspberrypi",
+    "domain": "raspberrypi.org",
+    "feed_url": "https://raspberrypi.org/feed",
     "score": 0,
-    "sent_at": "2026-02-16T16:49:10.864663"
+    "sent_at": "2026-02-16T17:01:54.136753"
   }
 ]
