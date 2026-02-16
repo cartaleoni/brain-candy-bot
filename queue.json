@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "Show HN: This up votes itself",
-    "link": "http://news.ycombinator.com/vote?for=3742902&dir=up&whence=%6e%65%77%65%73%74",
-    "source": "HN (3531pt) via news.ycombinator.com",
-    "hn_points": 3531,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "A search engine that favors text-heavy sites and punishes modern web design",
     "link": "https://search.marginalia.nu/",
     "source": "HN (3441pt) via search.marginalia.nu",
@@ -333,6 +325,12 @@
     "title": "How to Create Real Permitting Certainty",
     "link": "https://ifp.org/how-to-create-real-permitting-certainty/",
     "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Breakneck: China\u2019s Quest to Engineer the Future",
+    "link": "https://danwang.co/breakneck/",
+    "source": "Dan Wang",
     "score": 0.5
   }
 ]

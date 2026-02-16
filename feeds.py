@@ -147,6 +147,7 @@ FEEDS = [
     {"name": "Ben Kuhn", "url": "https://benkuhn.net/index.xml", "category": "Tech"},
     {"name": "Alexey Guzey", "url": "https://guzey.com/feed/", "category": "Ideas"},
     {"name": "Gwern", "url": "https://gwern.net/feed", "category": "Rationality"},
+    {"name": "Ciechanow", "url": "https://ciechanow.ski/atom.xml", "category": "Discovered"},  # Auto-approved
 ]
 
 # Domains to skip (paywalled, news sites, corporate sites)
