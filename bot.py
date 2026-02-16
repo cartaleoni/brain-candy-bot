@@ -983,12 +983,18 @@ def process_review_responses():
                     if rating == "good":
                         # Add article to queue (will be posted in normal rotation)
                         queue = load_json(QUEUE_FILE, [])
-                        queue.insert(0, {  # Add to front of queue (high priority)
+                        new_article = {
                             "title": article["title"],
                             "link": article["url"],
                             "source": article["source"],
-                            "score": 1.0,  # High score for approved content
-                        })
+                            "score": 0.7,
+                        }
+                        # Insert at random position (not front, not last)
+                        if len(queue) > 2:
+                            insert_pos = random.randint(1, len(queue) - 1)
+                            queue.insert(insert_pos, new_article)
+                        else:
+                            queue.append(new_article)
                         save_json(QUEUE_FILE, queue)
 
                         # Add source to feeds.py (now a trusted source)
