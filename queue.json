@@ -54,14 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "My First Impressions of Web3",
-    "link": "https://moxie.org/2022/01/07/web3-first-impressions.html",
-    "source": "HN (3393pt) via moxie.org",
-    "hn_points": 3393,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Bing: \u201cI will not harm you unless you harm me first\u201d",
     "link": "https://simonwillison.net/2023/Feb/15/bing/",
     "source": "HN (3363pt) via simonwillison.net",
@@ -327,6 +319,12 @@
     "title": "#31: From Skin Trader to NFT Expert \u2013 with Anish Agnihotri and Hasu",
     "link": "https://uncommoncore.co/31-from-skin-trader-to-nft-expert-with-anish-agnihotri-and-hasu/",
     "source": "Hasu",
+    "score": 0.5
+  },
+  {
+    "title": "Another Giant Leap: The Rubin CPX Specialized Accelerator & Rack",
+    "link": "https://semianalysis.com/2025/09/10/another-giant-leap-the-rubin-cpx-specialized-accelerator-rack/",
+    "source": "Semi Analysis",
     "score": 0.5
   }
 ]
