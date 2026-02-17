@@ -60,12 +60,6 @@
     "score": 1.0
   },
   {
-    "title": "But the Cage is All I Know...",
-    "link": "https://apewoodx.substack.com/p/but-the-cage-is-all-i-know",
-    "source": "Apewood",
-    "score": 1.0
-  },
-  {
     "title": "Three Years from GPT-3 to Gemini 3",
     "link": "https://www.oneusefulthing.org/p/three-years-from-gpt-3-to-gemini",
     "source": "One Useful Thing",
@@ -296,6 +290,14 @@
     "link": "https://bugs.chromium.org/p/project-zero/issues/detail?id=1139",
     "source": "HN (3238pt) via bugs.chromium.org",
     "hn_points": 3238,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Show HN: I made an open-source laptop from scratch",
+    "link": "https://www.byran.ee/posts/creation/",
+    "source": "HN (3237pt) via byran.ee",
+    "hn_points": 3237,
     "hn_preferred": false,
     "score": 0.8
   }
