@@ -54,12 +54,6 @@
     "score": 1.0
   },
   {
-    "title": "The AI Arms Race is On",
-    "link": "https://welf.substack.com/p/10-reasons-for-an-existential-crisis",
-    "source": "Welf",
-    "score": 1.0
-  },
-  {
     "title": "Alignment at Large",
     "link": "https://welf.substack.com/p/alignment-at-large",
     "source": "Welf",
@@ -294,6 +288,14 @@
     "link": "https://www.mozilla.org/en-US/firefox/switch/",
     "source": "HN (3287pt) via mozilla.org",
     "hn_points": 3287,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Cloudflare Reverse Proxies Are Dumping Uninitialized Memory",
+    "link": "https://bugs.chromium.org/p/project-zero/issues/detail?id=1139",
+    "source": "HN (3238pt) via bugs.chromium.org",
+    "hn_points": 3238,
     "hn_preferred": false,
     "score": 0.8
   }
