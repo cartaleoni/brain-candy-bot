@@ -1,11 +1,5 @@
 [
   {
-    "title": "What I've Learned from Users",
-    "link": "http://www.paulgraham.com/users.html",
-    "source": "Paul Graham Essays",
-    "score": 1.0
-  },
-  {
     "title": "Alzheimer's: from causes and risk factors to models and interventions",
     "link": "https://nintil.com/alzheimers-cause/",
     "source": "Nintil",
@@ -267,6 +261,12 @@
     "title": "A Primer on Factory Economics for Startups",
     "link": "https://www.a16z.news/p/a-primer-on-factory-economics-for",
     "source": "a16z News",
+    "score": 1.0
+  },
+  {
+    "title": "Is There Such a Thing as Good Taste?",
+    "link": "http://www.paulgraham.com/goodtaste.html",
+    "source": "Paul Graham Essays",
     "score": 1.0
   },
   {
