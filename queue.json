@@ -1,11 +1,5 @@
 [
   {
-    "title": "Charts of the Week: Customer Service Reckoning",
-    "link": "https://www.a16z.news/p/charts-of-the-week-customer-service",
-    "source": "a16z News",
-    "score": 1.0
-  },
-  {
     "title": "Frowny Cloud",
     "link": "https://cryptohayes.substack.com/p/frowny-cloud",
     "source": "Arthur Hayes",
@@ -261,6 +255,12 @@
     "title": "Early stage funding markets for science - an analysis",
     "link": "https://nadia.xyz/early-stage-science",
     "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "The importance of full-stack openness and verifiability",
+    "link": "https://vitalik.eth.limo/general/2025/09/24/openness_and_verifiability.html",
+    "source": "Vitalik Buterin",
     "score": 1.0
   },
   {
