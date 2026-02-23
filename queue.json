@@ -1,11 +1,5 @@
 [
   {
-    "title": "Frowny Cloud",
-    "link": "https://cryptohayes.substack.com/p/frowny-cloud",
-    "source": "Arthur Hayes",
-    "score": 1.0
-  },
-  {
     "title": "Alignment at Large",
     "link": "https://welf.substack.com/p/alignment-at-large",
     "source": "Welf",
@@ -261,6 +255,12 @@
     "title": "The importance of full-stack openness and verifiability",
     "link": "https://vitalik.eth.limo/general/2025/09/24/openness_and_verifiability.html",
     "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "I Built TetrisBench, Where LLMs Compete at Playing Tetris",
+    "link": "https://www.a16z.news/p/i-built-tetrisbench-where-llms-compete",
+    "source": "a16z News",
     "score": 1.0
   },
   {
