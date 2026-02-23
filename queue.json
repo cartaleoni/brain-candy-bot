@@ -1,11 +1,5 @@
 [
   {
-    "title": "Explaining tech\u2019s notion of talent scarcity",
-    "link": "https://nadia.xyz/top-talent",
-    "source": "Nadia Asparouhova",
-    "score": 1.0
-  },
-  {
     "title": "A GKR Tutorial",
     "link": "https://vitalik.eth.limo/general/2025/10/19/gkr.html",
     "source": "Vitalik Buterin",
@@ -261,6 +255,12 @@
     "title": "Memory access is O(N^[1/3])",
     "link": "https://vitalik.eth.limo/general/2025/10/05/memory13.html",
     "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Links (93)",
+    "link": "https://nintil.com/links-93/",
+    "source": "Nintil",
     "score": 1.0
   },
   {
