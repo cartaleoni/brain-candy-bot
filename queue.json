@@ -6,12 +6,6 @@
     "score": 1.0
   },
   {
-    "title": "May The Odds Be Ever In Your Favor",
-    "link": "https://themacrocompass.substack.com/p/may-the-odds-be-ever-in-your-favor-576",
-    "source": "MacroAlf",
-    "score": 1.0
-  },
-  {
     "title": "The Best Assets You Don't (But Should) Own in 2026",
     "link": "https://themacrocompass.substack.com/p/the-best-assets-you-dont-but-should",
     "source": "MacroAlf",
@@ -304,6 +298,14 @@
     "link": "http://www.businessweek.com/articles/2014-10-30/tim-cook-im-proud-to-be-gay",
     "source": "HN (3086pt) via businessweek.com",
     "hn_points": 3086,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Stimulation Clicker",
+    "link": "https://neal.fun/stimulation-clicker/",
+    "source": "HN (3082pt) via neal.fun",
+    "hn_points": 3082,
     "hn_preferred": false,
     "score": 0.8
   }
