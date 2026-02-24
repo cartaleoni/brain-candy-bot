@@ -12,12 +12,6 @@
     "score": 1.0
   },
   {
-    "title": "Stimulation Theory",
-    "link": "https://www.maltliquidity.com/p/stimulation-theory",
-    "source": "Malt Liquidity",
-    "score": 1.0
-  },
-  {
     "title": "The Land of Confusion",
     "link": "https://www.maltliquidity.com/p/the-land-of-confusion",
     "source": "Malt Liquidity",
@@ -306,6 +300,14 @@
     "link": "https://neal.fun/stimulation-clicker/",
     "source": "HN (3082pt) via neal.fun",
     "hn_points": 3082,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Sound",
+    "link": "https://ciechanow.ski/sound/",
+    "source": "HN (3053pt) via ciechanow.ski",
+    "hn_points": 3053,
     "hn_preferred": false,
     "score": 0.8
   }
