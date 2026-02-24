@@ -1,11 +1,5 @@
 [
   {
-    "title": "Alignment at Large",
-    "link": "https://welf.substack.com/p/alignment-at-large",
-    "source": "Welf",
-    "score": 1.0
-  },
-  {
     "title": "Three Years from GPT-3 to Gemini 3",
     "link": "https://www.oneusefulthing.org/p/three-years-from-gpt-3-to-gemini",
     "source": "One Useful Thing",
@@ -300,6 +294,14 @@
     "link": "https://www.niemanlab.org/2021/11/the-end-of-click-to-subscribe-call-to-cancel-one-of-the-news-industrys-favorite-retention-tactics-is-illegal-ftc-says/",
     "source": "HN (3192pt) via niemanlab.org",
     "hn_points": 3192,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "FDIC Takes over Silicon Valley Bank",
+    "link": "https://www.fdic.gov/news/press-releases/2023/pr23016.html",
+    "source": "HN (3172pt) via fdic.gov",
+    "hn_points": 3172,
     "hn_preferred": false,
     "score": 0.8
   }
