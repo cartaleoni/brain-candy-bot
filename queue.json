@@ -1,11 +1,5 @@
 [
   {
-    "title": "Three Years from GPT-3 to Gemini 3",
-    "link": "https://www.oneusefulthing.org/p/three-years-from-gpt-3-to-gemini",
-    "source": "One Useful Thing",
-    "score": 1.0
-  },
-  {
     "title": "Giving your AI a Job Interview",
     "link": "https://www.oneusefulthing.org/p/giving-your-ai-a-job-interview",
     "source": "One Useful Thing",
@@ -302,6 +296,14 @@
     "link": "https://www.fdic.gov/news/press-releases/2023/pr23016.html",
     "source": "HN (3172pt) via fdic.gov",
     "hn_points": 3172,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Tim Cook Speaks Up",
+    "link": "http://www.businessweek.com/articles/2014-10-30/tim-cook-im-proud-to-be-gay",
+    "source": "HN (3086pt) via businessweek.com",
+    "hn_points": 3086,
     "hn_preferred": false,
     "score": 0.8
   }
