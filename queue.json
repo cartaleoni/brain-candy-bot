@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Best Assets You Don't (But Should) Own in 2026",
-    "link": "https://themacrocompass.substack.com/p/the-best-assets-you-dont-but-should",
-    "source": "MacroAlf",
-    "score": 1.0
-  },
-  {
     "title": "The Land of Confusion",
     "link": "https://www.maltliquidity.com/p/the-land-of-confusion",
     "source": "Malt Liquidity",
@@ -311,6 +305,14 @@
     "title": "\u201cThey introduce kernel bugs on purpose\u201d",
     "link": "https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/",
     "source": "HN (3025pt) via lore.kernel.org",
+    "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "AnandTech Farewell",
+    "link": "https://www.anandtech.com/show/21542/end-of-the-road-an-anandtech-farewell",
+    "source": "HN (3025pt) via anandtech.com",
     "hn_points": 3025,
     "hn_preferred": false,
     "score": 0.8
