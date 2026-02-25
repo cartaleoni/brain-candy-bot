@@ -1,11 +1,5 @@
 [
   {
-    "title": "why i am betting on the future",
-    "link": "https://sidbharth.substack.com/p/why-i-am-betting-on-the-future",
-    "source": "Sid Bharth",
-    "score": 1.0
-  },
-  {
     "title": "Splitting Fives: The House Edge On Wonder",
     "link": "https://0xsmac.substack.com/p/splitting-fives-the-house-edge-on",
     "source": "0xSmac",
@@ -316,6 +310,14 @@
     "link": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
     "source": "HN (3015pt) via deepsouthventures.com",
     "hn_points": 3015,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bicycle",
+    "link": "https://ciechanow.ski/bicycle/",
+    "source": "HN (3014pt) via ciechanow.ski",
+    "hn_points": 3014,
     "hn_preferred": false,
     "score": 0.8
   }
