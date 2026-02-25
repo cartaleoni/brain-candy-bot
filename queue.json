@@ -1,11 +1,5 @@
 [
   {
-    "title": "Splitting Fives: The House Edge On Wonder",
-    "link": "https://0xsmac.substack.com/p/splitting-fives-the-house-edge-on",
-    "source": "0xSmac",
-    "score": 1.0
-  },
-  {
     "title": "D\u00e9j\u00e0 Vu All Over Again",
     "link": "https://0xsmac.substack.com/p/deja-vu-all-over-again",
     "source": "0xSmac",
@@ -320,5 +314,11 @@
     "hn_points": 3014,
     "hn_preferred": false,
     "score": 0.8
+  },
+  {
+    "title": "Money, Credit, Trust, and FTX",
+    "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
+    "source": "The Diff",
+    "score": 0.5
   }
 ]
