@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Land of Confusion",
-    "link": "https://www.maltliquidity.com/p/the-land-of-confusion",
-    "source": "Malt Liquidity",
-    "score": 1.0
-  },
-  {
     "title": "why i am betting on the future",
     "link": "https://sidbharth.substack.com/p/why-i-am-betting-on-the-future",
     "source": "Sid Bharth",
@@ -314,6 +308,14 @@
     "link": "https://www.anandtech.com/show/21542/end-of-the-road-an-anandtech-farewell",
     "source": "HN (3025pt) via anandtech.com",
     "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "I Sell Onions on the Internet",
+    "link": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
+    "source": "HN (3015pt) via deepsouthventures.com",
+    "hn_points": 3015,
     "hn_preferred": false,
     "score": 0.8
   }
