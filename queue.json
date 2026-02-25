@@ -1,11 +1,5 @@
 [
   {
-    "title": "Giving your AI a Job Interview",
-    "link": "https://www.oneusefulthing.org/p/giving-your-ai-a-job-interview",
-    "source": "One Useful Thing",
-    "score": 1.0
-  },
-  {
     "title": "The Best Assets You Don't (But Should) Own in 2026",
     "link": "https://themacrocompass.substack.com/p/the-best-assets-you-dont-but-should",
     "source": "MacroAlf",
@@ -310,6 +304,14 @@
     "link": "https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html",
     "source": "HN (3030pt) via security.googleblog.com",
     "hn_points": 3030,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "\u201cThey introduce kernel bugs on purpose\u201d",
+    "link": "https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/",
+    "source": "HN (3025pt) via lore.kernel.org",
+    "hn_points": 3025,
     "hn_preferred": false,
     "score": 0.8
   }
