@@ -6,12 +6,6 @@
     "score": 1.0
   },
   {
-    "title": "Medici Musings #16",
-    "link": "https://medicimusings.substack.com/p/medici-musings-16",
-    "source": "Medici Musings",
-    "score": 1.0
-  },
-  {
     "title": "Medici Musings #15",
     "link": "https://medicimusings.substack.com/p/medici-musings-15",
     "source": "Medici Musings",
@@ -319,6 +313,12 @@
     "title": "Breaking the NEPA Litigation Doom Loop",
     "link": "https://ifp.org/breaking-the-nepa-litigation-doom-loop/",
     "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Property values should be normalized by acre",
+    "link": "https://devon.postach.io/post/property-values-should-be-normalized-by-acre",
+    "source": "Devon Zuegel",
     "score": 0.5
   }
 ]
