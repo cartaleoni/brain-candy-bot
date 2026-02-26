@@ -1,11 +1,5 @@
 [
   {
-    "title": "D\u00e9j\u00e0 Vu All Over Again",
-    "link": "https://0xsmac.substack.com/p/deja-vu-all-over-again",
-    "source": "0xSmac",
-    "score": 1.0
-  },
-  {
     "title": "Inkhaven Recommendations",
     "link": "https://inchpin.substack.com/p/inkhaven-recommendations",
     "source": "Inchpin",
@@ -319,6 +313,12 @@
     "title": "Money, Credit, Trust, and FTX",
     "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
     "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Weekly Dose of Optimism #181",
+    "link": "https://www.notboring.co/p/weekly-dose-of-optimism-181",
+    "source": "Not Boring",
     "score": 0.5
   }
 ]
