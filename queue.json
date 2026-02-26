@@ -6,12 +6,6 @@
     "score": 1.0
   },
   {
-    "title": "Coming soon",
-    "link": "https://reducibleerrors.substack.com/p/coming-soon",
-    "source": "Reducible Errors",
-    "score": 1.0
-  },
-  {
     "title": "Medici Musings #16",
     "link": "https://medicimusings.substack.com/p/medici-musings-16",
     "source": "Medici Musings",
@@ -319,6 +313,12 @@
     "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
     "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
     "source": "Semi Analysis",
+    "score": 0.5
+  },
+  {
+    "title": "Breaking the NEPA Litigation Doom Loop",
+    "link": "https://ifp.org/breaking-the-nepa-litigation-doom-loop/",
+    "source": "Institute for Progress",
     "score": 0.5
   }
 ]
