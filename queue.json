@@ -1,11 +1,5 @@
 [
   {
-    "title": "Inkhaven Recommendations",
-    "link": "https://inchpin.substack.com/p/inkhaven-recommendations",
-    "source": "Inchpin",
-    "score": 1.0
-  },
-  {
     "title": "The Inchpin is probably shutting down. Please subscribe to my main blog",
     "link": "https://inchpin.substack.com/p/the-inchpin-is-probably-shutting",
     "source": "Inchpin",
@@ -319,6 +313,12 @@
     "title": "Weekly Dose of Optimism #181",
     "link": "https://www.notboring.co/p/weekly-dose-of-optimism-181",
     "source": "Not Boring",
+    "score": 0.5
+  },
+  {
+    "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
+    "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
+    "source": "Semi Analysis",
     "score": 0.5
   }
 ]
