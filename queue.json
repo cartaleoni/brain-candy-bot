@@ -1,11 +1,5 @@
 [
   {
-    "title": "A Thousand Ways",
-    "link": "https://mhdempsey.substack.com/p/a-thousand-ways",
-    "source": "MH Dempsey",
-    "score": 1.0
-  },
-  {
     "title": "The Privilege of Belief",
     "link": "https://mhdempsey.substack.com/p/the-privilege-of-belief",
     "source": "MH Dempsey",
@@ -319,6 +313,12 @@
     "title": "#31: From Skin Trader to NFT Expert \u2013 with Anish Agnihotri and Hasu",
     "link": "https://uncommoncore.co/31-from-skin-trader-to-nft-expert-with-anish-agnihotri-and-hasu/",
     "source": "Hasu",
+    "score": 0.5
+  },
+  {
+    "title": "Beyond AlphaFold",
+    "link": "https://ifp.org/nlm/",
+    "source": "Institute for Progress",
     "score": 0.5
   }
 ]
