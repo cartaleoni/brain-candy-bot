@@ -6,12 +6,6 @@
     "score": 1.0
   },
   {
-    "title": "The Moment Cannot Hold",
-    "link": "https://ademluzrienspects.substack.com/p/the-moment-cannot-hold",
-    "source": "Adem Luz",
-    "score": 1.0
-  },
-  {
     "title": "Endlessly Sinking into Psychosexual Hell",
     "link": "https://ademluzrienspects.substack.com/p/endlessly-sinking-into-psychosexual",
     "source": "Adem Luz",
@@ -319,6 +313,12 @@
     "title": "Beyond AlphaFold",
     "link": "https://ifp.org/nlm/",
     "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "On the compulsion to make art",
+    "link": "https://www.henrikkarlsson.xyz/p/on-the-compulsion-to-make-art",
+    "source": "Henrik Karlsson",
     "score": 0.5
   }
 ]
