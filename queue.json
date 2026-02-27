@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Inchpin is probably shutting down. Please subscribe to my main blog",
-    "link": "https://inchpin.substack.com/p/the-inchpin-is-probably-shutting",
-    "source": "Inchpin",
-    "score": 1.0
-  },
-  {
     "title": "Medici Musings #15",
     "link": "https://medicimusings.substack.com/p/medici-musings-15",
     "source": "Medici Musings",
@@ -319,6 +313,12 @@
     "title": "Property values should be normalized by acre",
     "link": "https://devon.postach.io/post/property-values-should-be-normalized-by-acre",
     "source": "Devon Zuegel",
+    "score": 0.5
+  },
+  {
+    "title": "Getting a better sense for when you\u2019re thinking well and when you\u2019re faking it",
+    "link": "https://www.henrikkarlsson.xyz/p/mental-proprioception",
+    "source": "Henrik Karlsson",
     "score": 0.5
   }
 ]
