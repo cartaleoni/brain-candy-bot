@@ -12,12 +12,6 @@
     "score": 1.0
   },
   {
-    "title": "Tool Shaped Objects",
-    "link": "https://minutes.substack.com/p/tool-shaped-objects",
-    "source": "Minutes",
-    "score": 1.0
-  },
-  {
     "title": "Rented Virtue",
     "link": "https://minutes.substack.com/p/rented-virtue",
     "source": "Minutes",
@@ -319,6 +313,12 @@
     "title": "On the compulsion to make art",
     "link": "https://www.henrikkarlsson.xyz/p/on-the-compulsion-to-make-art",
     "source": "Henrik Karlsson",
+    "score": 0.5
+  },
+  {
+    "title": "Outbreak",
+    "link": "https://meltingasphalt.com/outbreak/",
+    "source": "Melting Asphalt",
     "score": 0.5
   }
 ]
