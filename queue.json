@@ -1,11 +1,5 @@
 [
   {
-    "title": "Rented Virtue",
-    "link": "https://minutes.substack.com/p/rented-virtue",
-    "source": "Minutes",
-    "score": 1.0
-  },
-  {
     "title": "Palantir as Signal: What Enterprise AI Reveals About the SaaS Model",
     "link": "https://visserlabs.substack.com/p/palantir-as-signal-what-enterprise",
     "source": "Visser Labs",
@@ -319,6 +313,12 @@
     "title": "The sights and sounds of Bhutan",
     "link": "https://waitbutwhy.com/2025/11/bhutan.html",
     "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "Another Conversation with Val Bercovici Memory Markets",
+    "link": "https://www.fabricatedknowledge.com/p/another-conversation-with-val-bercovici",
+    "source": "Fabricated Knowledge",
     "score": 0.5
   }
 ]
