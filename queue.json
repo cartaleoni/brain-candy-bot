@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Privilege of Belief",
-    "link": "https://mhdempsey.substack.com/p/the-privilege-of-belief",
-    "source": "MH Dempsey",
-    "score": 1.0
-  },
-  {
     "title": "Endlessly Sinking into Psychosexual Hell",
     "link": "https://ademluzrienspects.substack.com/p/endlessly-sinking-into-psychosexual",
     "source": "Adem Luz",
@@ -319,6 +313,12 @@
     "title": "Outbreak",
     "link": "https://meltingasphalt.com/outbreak/",
     "source": "Melting Asphalt",
+    "score": 0.5
+  },
+  {
+    "title": "Ribbonfarm is Retiring",
+    "link": "https://www.ribbonfarm.com/2024/10/10/ribbonfarm-is-retiring/",
+    "source": "Ribbonfarm",
     "score": 0.5
   }
 ]
