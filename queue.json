@@ -1,11 +1,5 @@
 [
   {
-    "title": "Palantir as Signal: What Enterprise AI Reveals About the SaaS Model",
-    "link": "https://visserlabs.substack.com/p/palantir-as-signal-what-enterprise",
-    "source": "Visser Labs",
-    "score": 1.0
-  },
-  {
     "title": "The Synthetic Reality Crisis\nWhy AI Is Forcing NFTs to Become Identity Infrastructure",
     "link": "https://visserlabs.substack.com/p/the-synthetic-reality-crisis-why",
     "source": "Visser Labs",
@@ -319,6 +313,12 @@
     "title": "Another Conversation with Val Bercovici Memory Markets",
     "link": "https://www.fabricatedknowledge.com/p/another-conversation-with-val-bercovici",
     "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "A New Mental Model for Defi Treasuries",
+    "link": "https://uncommoncore.co/a-new-mental-model-for-defi-treasuries/",
+    "source": "Hasu",
     "score": 0.5
   }
 ]
