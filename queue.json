@@ -1,11 +1,5 @@
 [
   {
-    "title": "Where'd all the jobs go",
-    "link": "https://theknower.substack.com/p/whered-all-the-jobs-go",
-    "source": "The Knower",
-    "score": 1.0
-  },
-  {
     "title": "Unpacking decentralized training",
     "link": "https://theknower.substack.com/p/unpacking-decentralized-training",
     "source": "The Knower",
@@ -319,6 +313,12 @@
     "title": "The Death of Software 2.0 (A Better Analogy!)",
     "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
     "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "Truth-Seeking Modes",
+    "link": "https://www.ribbonfarm.com/2024/08/17/truth-seeking-modes/",
+    "source": "Ribbonfarm",
     "score": 0.5
   }
 ]
