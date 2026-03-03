@@ -1,11 +1,5 @@
 [
   {
-    "title": "Yield and Uncertainty",
-    "link": "https://obviously.substack.com/p/yield-and-uncertainty",
-    "source": "Obviously",
-    "score": 1.0
-  },
-  {
     "title": "Where'd all the jobs go",
     "link": "https://theknower.substack.com/p/whered-all-the-jobs-go",
     "source": "The Knower",
@@ -319,6 +313,12 @@
     "title": "Going Critical",
     "link": "https://meltingasphalt.com/going-critical/",
     "source": "Melting Asphalt",
+    "score": 0.5
+  },
+  {
+    "title": "The Death of Software 2.0 (A Better Analogy!)",
+    "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
+    "source": "Fabricated Knowledge",
     "score": 0.5
   }
 ]
