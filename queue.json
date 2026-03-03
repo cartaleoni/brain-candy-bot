@@ -6,12 +6,6 @@
     "score": 1.0
   },
   {
-    "title": "On Dwarkesh Patel's 2026 Podcast With Dario Amodei",
-    "link": "https://thezvi.substack.com/p/on-dwarkesh-patels-2026-podcast-with",
-    "source": "Zvi Mowshowitz",
-    "score": 1.0
-  },
-  {
     "title": "ChatGPT-5.3-Codex Is Also Good At Coding",
     "link": "https://thezvi.substack.com/p/chatgpt-53-codex-is-also-good-at",
     "source": "Zvi Mowshowitz",
@@ -319,6 +313,12 @@
     "title": "Truth-Seeking Modes",
     "link": "https://www.ribbonfarm.com/2024/08/17/truth-seeking-modes/",
     "source": "Ribbonfarm",
+    "score": 0.5
+  },
+  {
+    "title": "Dario Amodei \u2014 \"We are near the end of the exponential\"",
+    "link": "https://www.dwarkesh.com/p/dario-amodei-2",
+    "source": "Dwarkesh Patel",
     "score": 0.5
   }
 ]
