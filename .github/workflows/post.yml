@@ -1,58 +1,62 @@
 name: Brain Candy Scheduled Post
 
-on:
-  repository_dispatch:
-    # Triggered by external cron service
-    types: [post]
-  workflow_dispatch:  # Allow manual trigger from GitHub UI
+  on:
+    schedule:
+      # Run at 9 AM and 4 PM Chicago time (UTC-6 CST / UTC-5 CDT)
+      # Using both possible UTC times to handle daylight saving
+      - cron: '0 14,15,21,22 * * *'
+    repository_dispatch:
+      # Triggered by external cron service (backup)
+      types: [post]
+    workflow_dispatch:  # Allow manual trigger from GitHub UI
 
-# Need write permissions to push state back
-permissions:
-  contents: write
+  # Need write permissions to push state back
+  permissions:
+    contents: write
 
-jobs:
-  post:
-    runs-on: ubuntu-latest
+  jobs:
+    post:
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+        - name: Install dependencies
+          run: pip install -r requirements.txt
 
-      - name: Run bot
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: "@candyforthebrain"
-        run: python main.py --github-actions
+        - name: Run bot
+          env:
+            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+            TELEGRAM_CHANNEL_ID: "@candyforthebrain"
+          run: python main.py --github-actions
 
-      - name: Save state
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+        - name: Save state
+          run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Ensure files exist
-          touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
+            # Ensure files exist
+            touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
 
-          # Add all state files
-          git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
+            # Add all state files
+            git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
 
-          # Only commit and push if there are changes
-          if ! git diff --staged --quiet; then
-            git commit -m "Update bot state [skip ci]"
+            # Only commit and push if there are changes
+            if ! git diff --staged --quiet; then
+              git commit -m "Update bot state [skip ci]"
 
-            # Pull with rebase, auto-resolve conflicts by keeping our changes
-            git pull --rebase -X theirs || git rebase --abort || true
+              # Pull with rebase, auto-resolve conflicts by keeping our changes
+              git pull --rebase -X theirs || git rebase --abort || true
 
-            git push || git push --force-with-lease
-          else
-            echo "No state changes to commit"
-          fi
+              git push || git push --force-with-lease
+            else
+              echo "No state changes to commit"
+            fi
