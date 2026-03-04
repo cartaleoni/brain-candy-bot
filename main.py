@@ -5,7 +5,7 @@
     python main.py              # Training mode (send to Andy for review)
     python main.py --production # Production mode (continuous posting)
     python main.py --scheduled  # Scheduled mode (hourly 9 AM - 6 PM Chicago)
-  """
+"""
   import sys
   import time
   from datetime import datetime
