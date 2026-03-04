@@ -1,11 +1,5 @@
 [
   {
-    "title": "Unpacking decentralized training",
-    "link": "https://theknower.substack.com/p/unpacking-decentralized-training",
-    "source": "The Knower",
-    "score": 1.0
-  },
-  {
     "title": "ChatGPT-5.3-Codex Is Also Good At Coding",
     "link": "https://thezvi.substack.com/p/chatgpt-53-codex-is-also-good-at",
     "source": "Zvi Mowshowitz",
@@ -319,6 +313,12 @@
     "title": "Dario Amodei \u2014 \"We are near the end of the exponential\"",
     "link": "https://www.dwarkesh.com/p/dario-amodei-2",
     "source": "Dwarkesh Patel",
+    "score": 0.5
+  },
+  {
+    "title": "Save the date: Progress Conference 2026",
+    "link": "https://rootsofprogress.org/save-the-date-progress-conference-2026/",
+    "source": "Roots of Progress",
     "score": 0.5
   }
 ]
