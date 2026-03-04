@@ -384,7 +384,7 @@ def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30) -
 
 def fetch_feed(feed_info: dict) -> list:
     try:
-        feed = feedparser.parse(feed_info["url"])
+        feed = feedparser.parse(feed_info["url"], agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
         entries = []
 
         for entry in feed.entries[:10]:
@@ -1148,7 +1148,7 @@ def fetch_from_discovered_sources():
         # Try to fetch the feed
         fetched_count += 1
         try:
-            feed = feedparser.parse(feed_url)
+            feed = feedparser.parse(feed_url, agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
             entries_found = len(feed.entries)
             if entries_found == 0 and fetched_count <= 3:
                 bozo = feed.get("bozo", False)
