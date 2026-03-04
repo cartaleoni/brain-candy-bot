@@ -1149,11 +1149,19 @@ def fetch_from_discovered_sources():
         fetched_count += 1
         try:
             feed = feedparser.parse(feed_url)
+            entries_found = len(feed.entries)
+            if entries_found == 0 and fetched_count <= 3:
+                print(f"  {domain}: 0 entries in feed")
             for entry in feed.entries[:3]:  # Just top 3 per source
                 title = entry.get("title", "Untitled")
                 link = entry.get("link", "")
 
-                if not link or is_blocked(link, title):
+                if not link:
+                    continue
+
+                if is_blocked(link, title):
+                    if fetched_count <= 3:
+                        print(f"  Blocked: {title[:40]}")
                     continue
 
                 articles.append({
