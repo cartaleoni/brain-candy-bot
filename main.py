@@ -1,16 +1,11 @@
-"""
+cat > main.py << 'ENDOFFILE'
+  """
   Brain Candy - Curated essays for @candyforthebrain
-
-  Usage:
-    python main.py              # Training mode (send to Andy for review)
-    python main.py --production # Production mode (continuous posting)
-    python main.py --scheduled  # Scheduled mode (hourly 9 AM - 6 PM Chicago)
-"""
+  """
   import sys
   import time
   from datetime import datetime
   from zoneinfo import ZoneInfo
-
   from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode
 
   CHICAGO_TZ = ZoneInfo("America/Chicago")
@@ -22,9 +17,9 @@
   def is_posting_hour():
       return get_chicago_time().hour in POSTING_HOURS
 
-  SCHEDULED_MODE = "--scheduled" in sys.argv or "-s" in sys.argv
-  PRODUCTION_MODE = "--production" in sys.argv or "-p" in sys.argv
-  GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv or "-g" in sys.argv
+  SCHEDULED_MODE = "--scheduled" in sys.argv
+  PRODUCTION_MODE = "--production" in sys.argv
+  GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv
 
   if GITHUB_ACTIONS_MODE:
       print("Brain Candy - GITHUB ACTIONS MODE")
@@ -34,10 +29,9 @@
       if posting_now:
           print("Within posting window - will post to channel")
       else:
-          print("Outside posting hours - reviews only, no channel post")
+          print("Outside posting hours - reviews only")
       run_review_mode(should_post=posting_now)
       print("Done!")
-
   elif SCHEDULED_MODE:
       print("Brain Candy - SCHEDULED MODE")
       build_queue()
@@ -49,7 +43,6 @@
               last_posted_hour = chicago_now.hour
               build_queue()
           time.sleep(30)
-
   elif PRODUCTION_MODE:
       print("Brain Candy - PRODUCTION MODE")
       while True:
@@ -58,7 +51,6 @@
           except Exception as e:
               print(f"Error: {e}")
           time.sleep(600)
-
   else:
       print("Brain Candy - TRAINING MODE")
       while True:
@@ -67,3 +59,4 @@
           except Exception as e:
               print(f"Error: {e}")
           time.sleep(30)
+  ENDOFFILE
