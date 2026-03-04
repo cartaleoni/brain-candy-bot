@@ -1,16 +1,16 @@
 name: Brain Candy Scheduled Post
 
-  on:
+on:
     schedule:
       - cron: '0 14,15,21,22 * * *'
     repository_dispatch:
       types: [post]
     workflow_dispatch:
 
-  permissions:
+permissions:
     contents: write
 
-  jobs:
+jobs:
     post:
       runs-on: ubuntu-latest
 
