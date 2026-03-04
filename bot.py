@@ -1152,23 +1152,29 @@ def fetch_from_discovered_sources():
     return articles
 
 
-def run_review_mode():
-    """
-    Review mode workflow:
-    1. Process any responses from Andy (approve/reject discovered sources)
-    2. Post from regular queue (existing feeds - no review needed)
-    3. Send NEW discovered sources for review
-    """
-    print(f"[{datetime.now()}] Review mode running...")
+def run_review_mode(should_post: bool = True):
+      """
+      Review mode workflow:
+      1. Process any responses from Andy (approve/reject discovered sources)
+      2. Post from regular queue (only if should_post=True)
+      3. Send NEW discovered sources for review
 
-    # Step 1: Process Andy's responses to discovered source reviews
-    processed = process_review_responses()
-    if processed > 0:
-        print(f"Processed {processed} review responses")
+      Args:
+          should_post: If True, post from queue. If False, only handle reviews.
+      """
+      print(f"[{datetime.now()}] Review mode running...")
 
-    # Step 2: Post from regular queue (existing feeds - these are pre-approved)
-    build_queue()
-    posted = post_from_queue(count=1)
+      # Step 1: Process Andy's responses to discovered source reviews
+      processed = process_review_responses()
+      if processed > 0:
+          print(f"Processed {processed} review responses")
+
+      # Step 2: Post from regular queue (only during posting hours)
+      if should_post:
+          build_queue()
+          posted = post_from_queue(count=1)
+      else:
+          print("Not a posting hour - skipping channel post")
 
     # Step 3: Send ONE discovered source for review (only if nothing pending)
     pending = load_json(PENDING_REVIEW_FILE, [])
