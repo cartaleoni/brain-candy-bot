@@ -1151,7 +1151,10 @@ def fetch_from_discovered_sources():
             feed = feedparser.parse(feed_url)
             entries_found = len(feed.entries)
             if entries_found == 0 and fetched_count <= 3:
-                print(f"  {domain}: 0 entries in feed")
+                bozo = feed.get("bozo", False)
+                bozo_exception = feed.get("bozo_exception", "")
+                status = feed.get("status", "no status")
+                print(f"  {domain}: 0 entries (status={status}, bozo={bozo}, err={bozo_exception})")
             for entry in feed.entries[:3]:  # Just top 3 per source
                 title = entry.get("title", "Untitled")
                 link = entry.get("link", "")
