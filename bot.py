@@ -1176,47 +1176,47 @@ def run_review_mode(should_post: bool = True):
       else:
           print("Not a posting hour - skipping channel post")
 
-    # Step 3: Send ONE discovered source for review (only if nothing pending)
-    pending = load_json(PENDING_REVIEW_FILE, [])
+      # Step 3: Send ONE discovered source for review (only if nothing pending)
+      pending = load_json(PENDING_REVIEW_FILE, [])
 
-    # Only send a new article if there's nothing waiting for review
-    if len(pending) == 0:
-        # Fetch articles from DISCOVERED sources only
-        discovered_articles = fetch_from_discovered_sources()
+      # Only send a new article if there's nothing waiting for review
+      if len(pending) == 0:
+          # Fetch articles from DISCOVERED sources only
+          discovered_articles = fetch_from_discovered_sources()
 
-        # Get URLs to skip
-        posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
-        training_log = load_json(TRAINING_LOG_FILE, [])
-        reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
-        skip_urls = posted_urls | reviewed_urls
+          # Get URLs to skip
+          posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
+          training_log = load_json(TRAINING_LOG_FILE, [])
+          reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
+          skip_urls = posted_urls | reviewed_urls
 
-        # Filter to truly new articles from discovered sources
-        candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
+          # Filter to truly new articles from discovered sources
+          candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
 
-        if candidates:
-            # Send just ONE article for review
-            article = candidates[0]
+          if candidates:
+              # Send just ONE article for review
+              article = candidates[0]
 
-            if send_for_channel_review(article, 1):
-                pending.append({
-                    "title": article["title"],
-                    "url": article["link"],
-                    "source": article["source"],
-                    "domain": article.get("domain", ""),
-                    "feed_url": article.get("feed_url", ""),
-                    "score": 0,
-                    "sent_at": datetime.now().isoformat(),
-                })
-                save_json(PENDING_REVIEW_FILE, pending)
-                print(f"Sent for review: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
-        else:
-            print("No new discovered sources to review")
+              if send_for_channel_review(article, 1):
+                  pending.append({
+                      "title": article["title"],
+                      "url": article["link"],
+                      "source": article["source"],
+                      "domain": article.get("domain", ""),
+                      "feed_url": article.get("feed_url", ""),
+                      "score": 0,
+                      "sent_at": datetime.now().isoformat(),
+                  })
+                  save_json(PENDING_REVIEW_FILE, pending)
+                  print(f"Sent for review: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
+          else:
+              print("No new discovered sources to review")
 
-    else:
-        print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
+      else:
+          print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
 
-    # Stats
-    print(f"Status: {len(pending)} pending review")
+      # Stats
+      print(f"Status: {len(pending)} pending review")
 
 
 if __name__ == "__main__":
