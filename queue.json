@@ -1,11 +1,5 @@
 [
   {
-    "title": "ChatGPT-5.3-Codex Is Also Good At Coding",
-    "link": "https://thezvi.substack.com/p/chatgpt-53-codex-is-also-good-at",
-    "source": "Zvi Mowshowitz",
-    "score": 1.0
-  },
-  {
     "title": "Of Homelessness",
     "link": "https://dragonflyagony.substack.com/p/of-homelessness",
     "source": "Dragonfly Agony",
@@ -319,6 +313,12 @@
     "title": "Save the date: Progress Conference 2026",
     "link": "https://rootsofprogress.org/save-the-date-progress-conference-2026/",
     "source": "Roots of Progress",
+    "score": 0.5
+  },
+  {
+    "title": "2025 letter",
+    "link": "https://danwang.co/2025-letter/",
+    "source": "Dan Wang",
     "score": 0.5
   }
 ]
