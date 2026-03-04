@@ -1183,6 +1183,7 @@ def run_review_mode(should_post: bool = True):
       if len(pending) == 0:
           # Fetch articles from DISCOVERED sources only
           discovered_articles = fetch_from_discovered_sources()
+          print(f"Found {len(discovered_articles)} articles from discovered sources")
 
           # Get URLs to skip
           posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
@@ -1192,10 +1193,12 @@ def run_review_mode(should_post: bool = True):
 
           # Filter to truly new articles from discovered sources
           candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
+          print(f"Candidates for review: {len(candidates)}")
 
           if candidates:
               # Send just ONE article for review
               article = candidates[0]
+              print(f"Attempting to send: {article['title'][:50]}...")
 
               if send_for_channel_review(article, 1):
                   pending.append({
@@ -1209,6 +1212,8 @@ def run_review_mode(should_post: bool = True):
                   })
                   save_json(PENDING_REVIEW_FILE, pending)
                   print(f"Sent for review: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
+              else:
+                  print(f"Failed to send review message via Telegram")
           else:
               print("No new discovered sources to review")
 
