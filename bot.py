@@ -1099,34 +1099,54 @@ def fetch_from_discovered_sources():
     discovered_file = DATA_DIR / "discovered_sources.json"
     discovered = load_json(discovered_file, {"sources": []})
 
+    sources_list = discovered.get("sources", [])
+    print(f"Discovered sources file has {len(sources_list)} sources")
+
     # Get domains already in feeds.py
     existing_domains = set()
     for feed in FEEDS:
         domain = urlparse(feed["url"]).netloc.replace("www.", "").lower()
         existing_domains.add(domain)
+    print(f"Existing domains in feeds.py: {len(existing_domains)}")
 
     # Get rejected domains
     rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
     rejected_domains = set(rejected.get("domains", []))
+    print(f"Rejected domains: {len(rejected_domains)}")
 
     articles = []
-    for source in discovered.get("sources", []):
+    skipped_existing = 0
+    skipped_rejected = 0
+    skipped_no_url = 0
+    skipped_blocked = 0
+    fetched_count = 0
+
+    for source in sources_list:
         domain = source.get("domain", "")
         feed_url = source.get("url")
 
-        # Skip if already in feeds.py or rejected
-        if domain in existing_domains or domain in rejected_domains:
+        # Skip if already in feeds.py
+        if domain in existing_domains:
+            skipped_existing += 1
+            continue
+
+        # Skip if rejected
+        if domain in rejected_domains:
+            skipped_rejected += 1
             continue
 
         # Skip if no valid feed URL
         if not feed_url or feed_url == "null":
+            skipped_no_url += 1
             continue
 
         # Skip corporate/news domains
         if any(blocked in domain for blocked in BLOCKED_DOMAINS):
+            skipped_blocked += 1
             continue
 
         # Try to fetch the feed
+        fetched_count += 1
         try:
             feed = feedparser.parse(feed_url)
             for entry in feed.entries[:3]:  # Just top 3 per source
@@ -1149,6 +1169,8 @@ def fetch_from_discovered_sources():
 
         time.sleep(0.3)
 
+    print(f"Skipped: {skipped_existing} existing, {skipped_rejected} rejected, {skipped_no_url} no URL, {skipped_blocked} blocked")
+    print(f"Fetched from {fetched_count} sources, got {len(articles)} articles")
     return articles
 
 
