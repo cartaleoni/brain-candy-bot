@@ -1,11 +1,5 @@
 [
   {
-    "title": "Of Homelessness",
-    "link": "https://dragonflyagony.substack.com/p/of-homelessness",
-    "source": "Dragonfly Agony",
-    "score": 1.0
-  },
-  {
     "title": "The Fear Before the Dreaming",
     "link": "https://dragonflyagony.substack.com/p/the-fear-before-the-dreaming",
     "source": "Dragonfly Agony",
@@ -319,6 +313,12 @@
     "title": "Announcing Progress in Medicine, a high school summer career exploration program",
     "link": "https://rootsofprogress.org/announcing-progress-in-medicine-a-high-school-summer-career-exploration-program/",
     "source": "Roots of Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Impact, agency, and taste",
+    "link": "https://www.benkuhn.net/impact/",
+    "source": "Ben Kuhn",
     "score": 0.5
   }
 ]
