@@ -1,11 +1,5 @@
 [
   {
-    "title": "Guy stuff",
-    "link": "https://catherineshannon.substack.com/p/guy-stuff",
-    "source": "Catherine Shannon",
-    "score": 1.0
-  },
-  {
     "title": "Chamath. Bubbe. I\u2019m Your White Knight.",
     "link": "https://mojo3324106.substack.com/p/chamath-bubbe-im-your-white-knight",
     "source": "Mojo",
@@ -319,6 +313,12 @@
     "title": "Georgist land taxes balance community benefit &amp; the efficiency of markets",
     "link": "https://devon.postach.io/post/georgist-land-taxes-balance-community-benefit-the-efficiency-of-markets",
     "source": "Devon Zuegel",
+    "score": 0.5
+  },
+  {
+    "title": "Hand-Crafted Artisanal Liquidity Provision",
+    "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
+    "source": "The Diff",
     "score": 0.5
   }
 ]
