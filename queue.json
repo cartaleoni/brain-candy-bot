@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Fear Before the Dreaming",
-    "link": "https://dragonflyagony.substack.com/p/the-fear-before-the-dreaming",
-    "source": "Dragonfly Agony",
-    "score": 1.0
-  },
-  {
     "title": "Guy stuff",
     "link": "https://catherineshannon.substack.com/p/guy-stuff",
     "source": "Catherine Shannon",
@@ -319,6 +313,12 @@
     "title": "scuttleblurb business update (2025)",
     "link": "https://www.scuttleblurb.com/update-25/",
     "source": "Scuttleblurb",
+    "score": 0.5
+  },
+  {
+    "title": "Georgist land taxes balance community benefit &amp; the efficiency of markets",
+    "link": "https://devon.postach.io/post/georgist-land-taxes-balance-community-benefit-the-efficiency-of-markets",
+    "source": "Devon Zuegel",
     "score": 0.5
   }
 ]
