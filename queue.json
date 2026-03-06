@@ -1,11 +1,5 @@
 [
   {
-    "title": "Chamath. Bubbe. I\u2019m Your White Knight.",
-    "link": "https://mojo3324106.substack.com/p/chamath-bubbe-im-your-white-knight",
-    "source": "Mojo",
-    "score": 1.0
-  },
-  {
     "title": "A Primer on Factory Economics for Startups",
     "link": "https://www.a16z.news/p/a-primer-on-factory-economics-for",
     "source": "a16z News",
@@ -319,6 +313,12 @@
     "title": "Hand-Crafted Artisanal Liquidity Provision",
     "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
     "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Of heavens, nations faltering",
+    "link": "https://autotranslucence.wordpress.com/2024/07/30/of-heavens-nations-faltering/",
+    "source": "Autotranslucence",
     "score": 0.5
   }
 ]
