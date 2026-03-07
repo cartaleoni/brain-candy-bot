@@ -1,11 +1,5 @@
 [
   {
-    "title": "A Primer on Factory Economics for Startups",
-    "link": "https://www.a16z.news/p/a-primer-on-factory-economics-for",
-    "source": "a16z News",
-    "score": 1.0
-  },
-  {
     "title": "Is There Such a Thing as Good Taste?",
     "link": "http://www.paulgraham.com/goodtaste.html",
     "source": "Paul Graham Essays",
@@ -319,6 +313,12 @@
     "title": "Of heavens, nations faltering",
     "link": "https://autotranslucence.wordpress.com/2024/07/30/of-heavens-nations-faltering/",
     "source": "Autotranslucence",
+    "score": 0.5
+  },
+  {
+    "title": "2025 letter",
+    "link": "https://danwang.co/2025-letter/",
+    "source": "Dan Wang",
     "score": 0.5
   }
 ]
