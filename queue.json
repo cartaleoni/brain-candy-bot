@@ -1,11 +1,5 @@
 [
   {
-    "title": "A first glimpse of non-duality",
-    "link": "https://nintil.com/nonduality/",
-    "source": "Nintil",
-    "score": 1.0
-  },
-  {
     "title": "Mapping digital worlds",
     "link": "https://nadia.xyz/mapping-digital-worlds",
     "source": "Nadia Asparouhova",
@@ -319,6 +313,12 @@
     "title": "2025 letter",
     "link": "https://danwang.co/2025-letter/",
     "source": "Dan Wang",
+    "score": 0.5
+  },
+  {
+    "title": "Survey results + programming notes",
+    "link": "https://www.scuttleblurb.com/survey-results/",
+    "source": "Scuttleblurb",
     "score": 0.5
   }
 ]
