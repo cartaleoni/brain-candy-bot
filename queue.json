@@ -1,11 +1,5 @@
 [
   {
-    "title": "Mapping digital worlds",
-    "link": "https://nadia.xyz/mapping-digital-worlds",
-    "source": "Nadia Asparouhova",
-    "score": 1.0
-  },
-  {
     "title": "Memory access is O(N^[1/3])",
     "link": "https://vitalik.eth.limo/general/2025/10/05/memory13.html",
     "source": "Vitalik Buterin",
@@ -39,6 +33,12 @@
     "title": "New Media Fellowship: apply for the 2nd cohort!",
     "link": "https://www.a16z.news/p/new-media-fellowship-apply-for-the",
     "source": "a16z News",
+    "score": 1.0
+  },
+  {
+    "title": "Links (95)",
+    "link": "https://nintil.com/links-95/",
+    "source": "Nintil",
     "score": 1.0
   },
   {
