@@ -1105,104 +1105,10 @@ def post_approved_to_channel(count: int = 1):
 
 
 def fetch_from_discovered_sources():
-    """Fetch articles from discovered sources (not yet in feeds.py)."""
-    discovered_file = DATA_DIR / "discovered_sources.json"
-    discovered = load_json(discovered_file, {"sources": []})
-
-    sources_list = discovered.get("sources", [])
-    print(f"Discovered sources file has {len(sources_list)} sources")
-
-    # Get domains already in feeds.py
-    existing_domains = set()
-    for feed in FEEDS:
-        domain = urlparse(feed["url"]).netloc.replace("www.", "").lower()
-        existing_domains.add(domain)
-    print(f"Existing domains in feeds.py: {len(existing_domains)}")
-
-    # Get rejected domains
-    rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
-    rejected_domains = set(rejected.get("domains", []))
-    print(f"Rejected domains: {len(rejected_domains)}")
-
-    articles = []
-    skipped_existing = 0
-    skipped_rejected = 0
-    skipped_no_url = 0
-    skipped_blocked = 0
-    fetched_count = 0
-
-    for source in sources_list:
-        domain = source.get("domain", "")
-        feed_url = source.get("url")
-
-        # Skip if already in feeds.py
-        if domain in existing_domains:
-            skipped_existing += 1
-            continue
-
-        # Skip if rejected
-        if domain in rejected_domains:
-            skipped_rejected += 1
-            continue
-
-        # Skip if no valid feed URL
-        if not feed_url or feed_url == "null":
-            skipped_no_url += 1
-            continue
-
-        # Skip corporate/news domains
-        if any(blocked in domain for blocked in BLOCKED_DOMAINS):
-            skipped_blocked += 1
-            continue
-
-        # Try to fetch the feed
-        fetched_count += 1
-        try:
-            headers = {
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                "Accept": "application/rss+xml, application/xml, text/xml, */*",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Cache-Control": "no-cache",
-            }
-            try:
-                response = requests.get(feed_url, headers=headers, timeout=10)
-                feed = feedparser.parse(response.content)
-            except:
-                feed = feedparser.parse(feed_url)
-            entries_found = len(feed.entries)
-            if entries_found == 0 and fetched_count <= 3:
-                bozo = feed.get("bozo", False)
-                bozo_exception = feed.get("bozo_exception", "")
-                status = feed.get("status", "no status")
-                print(f"  {domain}: 0 entries (status={status}, bozo={bozo}, err={bozo_exception})")
-            for entry in feed.entries[:3]:  # Just top 3 per source
-                title = entry.get("title", "Untitled")
-                link = entry.get("link", "")
-
-                if not link:
-                    continue
-
-                if is_blocked(link, title):
-                    if fetched_count <= 3:
-                        print(f"  Blocked: {title[:40]}")
-                    continue
-
-                articles.append({
-                    "title": title,
-                    "link": link,
-                    "source": source.get("name", domain),
-                    "domain": domain,
-                    "feed_url": feed_url,
-                    "is_discovered": True,
-                })
-        except Exception as e:
-            print(f"Error fetching {domain}: {e}")
-
-        time.sleep(0.3)
-
-    print(f"Skipped: {skipped_existing} existing, {skipped_rejected} rejected, {skipped_no_url} no URL, {skipped_blocked} blocked")
-    print(f"Fetched from {fetched_count} sources, got {len(articles)} articles")
-    return articles
+    """Fetch articles from discovered sources - disabled due to Substack blocking cloud IPs."""
+    # Substack blocks GitHub Actions IPs, so this feature is disabled for now
+    # To re-enable: run the bot locally instead of on GitHub Actions
+    return []
 
 
 def run_review_mode(should_post: bool = True):
@@ -1234,41 +1140,9 @@ def run_review_mode(should_post: bool = True):
 
       # Only send a new article if there's nothing waiting for review
       if len(pending) == 0:
-          # Fetch articles from DISCOVERED sources only
-          discovered_articles = fetch_from_discovered_sources()
-          print(f"Found {len(discovered_articles)} articles from discovered sources")
-
-          # Get URLs to skip
-          posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
-          training_log = load_json(TRAINING_LOG_FILE, [])
-          reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
-          skip_urls = posted_urls | reviewed_urls
-
-          # Filter to truly new articles from discovered sources
-          candidates = [a for a in discovered_articles if normalize_url(a["link"]) not in skip_urls]
-          print(f"Candidates for review: {len(candidates)}")
-
-          if candidates:
-              # Send just ONE article for review
-              article = candidates[0]
-              print(f"Attempting to send: {article['title'][:50]}...")
-
-              if send_for_channel_review(article, 1):
-                  pending.append({
-                      "title": article["title"],
-                      "url": article["link"],
-                      "source": article["source"],
-                      "domain": article.get("domain", ""),
-                      "feed_url": article.get("feed_url", ""),
-                      "score": 0,
-                      "sent_at": datetime.now().isoformat(),
-                  })
-                  save_json(PENDING_REVIEW_FILE, pending)
-                  print(f"Sent for review: {article['title'][:40]}... (NEW SOURCE: {article['source']})")
-              else:
-                  print(f"Failed to send review message via Telegram")
-          else:
-              print("No new discovered sources to review")
+          # Discovered sources feature disabled (Substack blocks cloud IPs)
+          # To use this feature, run the bot locally instead of GitHub Actions
+          print("Discovered sources review: disabled (cloud IP blocking)")
 
       else:
           print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")

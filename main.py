@@ -13,8 +13,11 @@ POSTING_HOURS = [9, 16]
 def get_chicago_time():
     return datetime.now(CHICAGO_TZ)
 
+def is_weekday():
+    return get_chicago_time().weekday() < 5  # Mon=0, Fri=4
+
 def is_posting_hour():
-    return get_chicago_time().hour in POSTING_HOURS
+    return get_chicago_time().hour in POSTING_HOURS and is_weekday()
 
 SCHEDULED_MODE = "--scheduled" in sys.argv
 PRODUCTION_MODE = "--production" in sys.argv
