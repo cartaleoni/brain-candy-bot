@@ -1,11 +1,5 @@
 [
   {
-    "title": "Memory access is O(N^[1/3])",
-    "link": "https://vitalik.eth.limo/general/2025/10/05/memory13.html",
-    "source": "Vitalik Buterin",
-    "score": 1.0
-  },
-  {
     "title": "Links (93)",
     "link": "https://nintil.com/links-93/",
     "source": "Nintil",
@@ -39,6 +33,12 @@
     "title": "Links (95)",
     "link": "https://nintil.com/links-95/",
     "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Mapping out the tribes of climate",
+    "link": "https://nadia.xyz/climate-tribes",
+    "source": "Nadia Asparouhova",
     "score": 1.0
   },
   {
