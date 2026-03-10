@@ -2,7 +2,7 @@ name: Brain Candy Scheduled Post
 
 on:
     schedule:
-      - cron: '0 15,22 * * 1-5'
+      - cron: '0 14,15,21,22 * * 1-5'
     workflow_dispatch:
 
 permissions:
