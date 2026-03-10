@@ -1,11 +1,5 @@
 [
   {
-    "title": "Links (93)",
-    "link": "https://nintil.com/links-93/",
-    "source": "Nintil",
-    "score": 1.0
-  },
-  {
     "title": "Early stage funding markets for science - an analysis",
     "link": "https://nadia.xyz/early-stage-science",
     "source": "Nadia Asparouhova",
@@ -39,6 +33,12 @@
     "title": "Mapping out the tribes of climate",
     "link": "https://nadia.xyz/climate-tribes",
     "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "Low-risk defi can be for Ethereum what search was for Google",
+    "link": "https://vitalik.eth.limo/general/2025/09/21/low_risk_defi.html",
+    "source": "Vitalik Buterin",
     "score": 1.0
   },
   {
