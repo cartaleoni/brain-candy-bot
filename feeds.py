@@ -189,4 +189,7 @@ BLOCKED_DOMAINS = [
 BLOCKED_KEYWORDS = [
     "sponsored", "paid partnership", "giveaway", "airdrop",
     "promoted", "advertisement", "[ad]", "partner content",
+    # Roundups and link collections (low-value)
+    "links (", "roundup", "reading list", "weekly dose",
+    "what i'm reading", "classifieds", "[ainews]",
 ]
