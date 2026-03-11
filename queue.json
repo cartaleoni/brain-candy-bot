@@ -1,11 +1,5 @@
 [
   {
-    "title": "The importance of full-stack openness and verifiability",
-    "link": "https://vitalik.eth.limo/general/2025/09/24/openness_and_verifiability.html",
-    "source": "Vitalik Buterin",
-    "score": 1.0
-  },
-  {
     "title": "I Built TetrisBench, Where LLMs Compete at Playing Tetris",
     "link": "https://www.a16z.news/p/i-built-tetrisbench-where-llms-compete",
     "source": "a16z News",
@@ -39,6 +33,12 @@
     "title": "Slutcon, or the attractiveness of embodied authenticity",
     "link": "https://nintil.com/slutcon-notes/",
     "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Cultivating agency",
+    "link": "https://nadia.xyz/agency",
+    "source": "Nadia Asparouhova",
     "score": 1.0
   },
   {
