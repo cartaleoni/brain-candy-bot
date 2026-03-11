@@ -1,11 +1,5 @@
 [
   {
-    "title": "Early stage funding markets for science - an analysis",
-    "link": "https://nadia.xyz/early-stage-science",
-    "source": "Nadia Asparouhova",
-    "score": 1.0
-  },
-  {
     "title": "The importance of full-stack openness and verifiability",
     "link": "https://vitalik.eth.limo/general/2025/09/24/openness_and_verifiability.html",
     "source": "Vitalik Buterin",
@@ -33,6 +27,18 @@
     "title": "Low-risk defi can be for Ethereum what search was for Google",
     "link": "https://vitalik.eth.limo/general/2025/09/21/low_risk_defi.html",
     "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "33 Things I've Learned at 33",
+    "link": "https://nintil.com/33-things/",
+    "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Slutcon, or the attractiveness of embodied authenticity",
+    "link": "https://nintil.com/slutcon-notes/",
+    "source": "Nintil",
     "score": 1.0
   },
   {
@@ -307,6 +313,12 @@
     "title": "Survey results + programming notes",
     "link": "https://www.scuttleblurb.com/survey-results/",
     "source": "Scuttleblurb",
+    "score": 0.5
+  },
+  {
+    "title": "Costless Sacrifice",
+    "link": "https://www.notboring.co/p/costless-sacrifice",
+    "source": "Not Boring",
     "score": 0.5
   }
 ]
