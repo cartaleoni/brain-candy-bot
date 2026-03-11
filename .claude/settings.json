@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/andycarta/Desktop/cortex-bot-local/**)",
+      "Write(/Users/andycarta/Desktop/cortex-bot-local/**)",
+      "Bash(*)"
+    ],
+    "deny": []
+  }
+}
