@@ -565,17 +565,14 @@ def process_responses():
     """Check for Andy's responses - handles batch responses like '1,0,1,1,0' or individual '1'/'0'"""
     training_log = load_json(TRAINING_LOG_FILE, [])
     pending = load_json(PENDING_REVIEW_FILE, [])
-    
-    if not pending:
-        return
-    
+
     updates = get_updates()
-    
+
     for update in updates:
         message = update.get("message", {})
         chat_id = str(message.get("chat", {}).get("id", ""))
         text = message.get("text", "").strip().lower()
-        
+
         if chat_id != ANDY_CHAT_ID:
             continue
 
@@ -589,6 +586,10 @@ def process_responses():
         url, immediate = extract_url_from_message(raw_text)
         if url:
             handle_url_submission(url, immediate)
+            continue
+
+        # Skip ratings if nothing is pending
+        if not pending:
             continue
 
         # Handle batch response like "1,0,1,x,0" or "10x10"
@@ -1305,9 +1306,6 @@ def process_review_responses():
     approved = load_json(APPROVED_FILE, [])
     training_log = load_json(TRAINING_LOG_FILE, [])
 
-    if not pending:
-        return 0
-
     updates = get_updates()
     processed = 0
 
@@ -1329,6 +1327,10 @@ def process_review_responses():
         url, immediate = extract_url_from_message(raw_text)
         if url:
             handle_url_submission(url, immediate)
+            continue
+
+        # Skip ratings if nothing is pending
+        if not pending:
             continue
 
         # Parse ratings: 1=approve, 0=skip, x=block source
