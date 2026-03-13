@@ -1569,5 +1569,111 @@ def send_weekly_stats():
     print("Weekly stats sent to Andy.")
 
 
+def listen_for_dms():
+    """Continuously listen for Telegram DMs and respond instantly.
+
+    Handles: /help, URL submissions, and article ratings in real time.
+    Does NOT post to the channel — that stays on the GitHub Actions schedule.
+    """
+    print("🧠 Brain Candy — DM Listener")
+    print("Listening for commands... (Ctrl+C to stop)\n")
+
+    while True:
+        try:
+            updates = get_updates()
+
+            for update in updates:
+                message = update.get("message", {})
+                chat_id = str(message.get("chat", {}).get("id", ""))
+                text = message.get("text", "").strip().lower()
+
+                if chat_id != ANDY_CHAT_ID:
+                    continue
+
+                # Help command
+                if text in ("/help", "help", "/start"):
+                    send_help_message()
+                    continue
+
+                # URL submission
+                raw_text = message.get("text", "").strip()
+                url, immediate = extract_url_from_message(raw_text)
+                if url:
+                    handle_url_submission(url, immediate)
+                    continue
+
+                # Process ratings for pending articles
+                pending = load_json(PENDING_REVIEW_FILE, [])
+                training_log = load_json(TRAINING_LOG_FILE, [])
+
+                if not pending:
+                    continue
+
+                ratings = []
+                clean_text = text.replace(",", "").replace(" ", "").replace("y", "1").replace("n", "0")
+
+                for char in clean_text:
+                    if char == "1":
+                        ratings.append("good")
+                    elif char == "0":
+                        ratings.append("bad")
+                    elif char == "x":
+                        ratings.append("block")
+
+                if ratings:
+                    for i, rating in enumerate(ratings):
+                        if i < len(pending):
+                            article = pending[i]
+                            article["rating"] = "bad" if rating == "block" else rating
+                            training_log.append(article)
+
+                            if rating == "good":
+                                # If it's a discovered source, add to queue + feeds
+                                if article.get("feed_url"):
+                                    queue = load_json(QUEUE_FILE, [])
+                                    new_article = {
+                                        "title": article["title"],
+                                        "link": article.get("url", article.get("link", "")),
+                                        "source": article["source"],
+                                        "score": 0.7,
+                                    }
+                                    if len(queue) > 2:
+                                        insert_pos = random.randint(1, len(queue) - 1)
+                                        queue.insert(insert_pos, new_article)
+                                    else:
+                                        queue.append(new_article)
+                                    save_json(QUEUE_FILE, queue)
+
+                                    add_source_to_feeds(
+                                        name=article["source"],
+                                        url=article["feed_url"],
+                                        domain=article.get("domain", "")
+                                    )
+                                print(f"👍 APPROVED: {article.get('title', '')[:50]}")
+                            elif rating == "block":
+                                add_rejected_source(article.get("source", ""), article.get("url", ""))
+                                send_message(ANDY_CHAT_ID, f"🚫 Blocked: {article.get('source', '')}")
+                                print(f"🚫 BLOCKED: {article.get('source', '')}")
+                            else:
+                                print(f"⏭ SKIPPED: {article.get('title', '')[:50]}")
+
+                    pending = pending[len(ratings):]
+                    save_json(PENDING_REVIEW_FILE, pending)
+                    save_json(TRAINING_LOG_FILE, training_log)
+
+            # Acknowledge processed updates
+            if updates:
+                last_update_id = updates[-1]["update_id"]
+                get_updates(offset=last_update_id + 1)
+
+        except KeyboardInterrupt:
+            print("\n\nListener stopped.")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
+
+        time.sleep(3)
+
+
 if __name__ == "__main__":
     run_training()

@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats
+from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats, listen_for_dms
 
 CHICAGO_TZ = ZoneInfo("America/Chicago")
 POSTING_HOURS = [9, 16]  # 9 AM and 4 PM Chicago time
@@ -19,12 +19,16 @@ def is_weekday():
 def is_posting_hour():
     return get_chicago_time().hour in POSTING_HOURS and is_weekday()
 
+LISTEN_MODE = "--listen" in sys.argv
 SCHEDULED_MODE = "--scheduled" in sys.argv
 PRODUCTION_MODE = "--production" in sys.argv
 GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv
 STATS_MODE = "--stats" in sys.argv
 
-if STATS_MODE:
+if LISTEN_MODE:
+    print("Brain Candy - DM LISTENER")
+    listen_for_dms()
+elif STATS_MODE:
     print("Brain Candy - WEEKLY STATS")
     send_weekly_stats()
     print("Done!")
