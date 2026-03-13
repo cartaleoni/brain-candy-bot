@@ -43,6 +43,8 @@ FEEDS_FILE = DATA_DIR / "feeds.py"
 HN_API_URL = "https://hn.algolia.com/api/v1/search"
 
 # Domains to ignore (news sites, social media, corporate sites, etc.)
+# NOTE: is_ignored_domain() also checks parent domains, so "microsoft.com"
+# blocks news.microsoft.com, blog.microsoft.com, etc.
 IGNORE_DOMAINS = {
     # Social media
     "twitter.com", "x.com", "youtube.com", "reddit.com", "old.reddit.com",
@@ -53,17 +55,30 @@ IGNORE_DOMAINS = {
     "github.com", "github.blog", "gitlab.com", "stackoverflow.com",
     "docs.google.com", "drive.google.com", "notion.so", "figma.com",
 
-    # News sites
+    # News/media orgs (not essay writers)
     "nytimes.com", "wsj.com", "bloomberg.com", "ft.com", "economist.com",
     "bbc.com", "bbc.co.uk", "cnn.com", "reuters.com", "apnews.com",
     "theguardian.com", "washingtonpost.com", "news.ycombinator.com",
     "techmeme.com", "techcrunch.com", "theverge.com", "wired.com",
     "arstechnica.com", "engadget.com", "vice.com", "vox.com",
+    "propublica.org", "theatlantic.com", "newyorker.com", "slate.com",
+    "salon.com", "thedailybeast.com", "huffpost.com", "buzzfeed.com",
+    "nbcnews.com", "cbsnews.com", "foxnews.com", "abcnews.go.com",
+    "politico.com", "thehill.com", "axios.com", "semafor.com",
+    "businessinsider.com", "fortune.com", "cnbc.com", "qz.com",
+    "thenation.com", "motherjones.com", "theintercept.com",
 
-    # Corporate sites (not blogs)
+    # Corporate sites (blocks all subdomains too)
     "apple.com", "google.com", "microsoft.com", "amazon.com", "meta.com",
     "openai.com", "anthropic.com", "nvidia.com", "intel.com", "amd.com",
     "stripe.com", "shopify.com", "salesforce.com", "oracle.com",
+    "ibm.com", "cisco.com", "vmware.com", "adobe.com", "spotify.com",
+    "ycombinator.com",
+
+    # Platforms (the platform itself, not individual users)
+    "substack.com",  # blocks substack.com and open.substack.com but NOT writer.substack.com
+    "ghost.io", "wordpress.com", "blogger.com", "tumblr.com",
+    "beehiiv.com",
 
     # Academic/reference
     "arxiv.org", "wikipedia.org", "wikimedia.org", "archive.org",
@@ -72,11 +87,78 @@ IGNORE_DOMAINS = {
     # Other non-blog sites
     "imgur.com", "gfycat.com", "giphy.com", "pastebin.com",
     "dropbox.com", "wetransfer.com", "mega.nz",
-    # Media hosting
-    "imgur.com", "gfycat.com", "giphy.com", "pastebin.com",
-    "dropbox.com", "wetransfer.com", "mega.nz",
     "v.redd.it", "i.redd.it", "preview.redd.it",
 }
+
+# Subdomains that are OK even though parent is blocked
+# (individual writers on platforms)
+SUBDOMAIN_ALLOWLIST_PATTERNS = {
+    "substack.com",  # writer.substack.com is OK, but substack.com and open.substack.com are not
+}
+
+
+def is_ignored_domain(domain: str) -> bool:
+    """Check if domain should be ignored, including subdomain matching.
+
+    'news.microsoft.com' is blocked because 'microsoft.com' is in IGNORE_DOMAINS.
+    'writer.substack.com' is ALLOWED because substack.com is in SUBDOMAIN_ALLOWLIST_PATTERNS.
+    'substack.com' and 'open.substack.com' are blocked (not individual writers).
+    """
+    domain = domain.lower().strip()
+
+    # Direct match
+    if domain in IGNORE_DOMAINS:
+        return True
+
+    # Check parent domain matching (news.microsoft.com -> microsoft.com)
+    parts = domain.split(".")
+    for i in range(1, len(parts)):
+        parent = ".".join(parts[i:])
+        if parent in IGNORE_DOMAINS:
+            # Check if this is an allowed subdomain pattern (individual writer on platform)
+            if parent in SUBDOMAIN_ALLOWLIST_PATTERNS:
+                # Only allow if it's a real individual writer subdomain (exactly one level above)
+                # writer.substack.com = OK (3 parts), open.substack.com = block it too
+                subdomain_part = ".".join(parts[:i])
+                # Block platform-owned subdomains
+                platform_subdomains = {"open", "www", "blog", "news", "support", "help", "api", "app", "mail", "about", "press", "media", "jobs", "careers"}
+                if subdomain_part in platform_subdomains:
+                    return True
+                # It's a real writer subdomain, allow it
+                return False
+            # Parent is blocked, no allowlist exception
+            return True
+
+    return False
+
+
+# Keywords that indicate non-essay content (newsletters, roundups, news)
+NON_ESSAY_NAME_KEYWORDS = {
+    "weekly", "daily", "digest", "roundup", "newsletter", "briefing",
+    "morning", "evening", "recap", "update", "bulletin", "dispatch",
+    "business", "fintech", "insider", "transcript", "earnings",
+    "mainstream", "institutional",
+}
+
+# Keywords in sample titles that suggest essay/opinion content
+ESSAY_TITLE_KEYWORDS = [
+    "why", "how", "against", "defense of", "case for", "case against",
+    "lessons", "what i learned", "thinking about", "notes on", "reflections",
+    "paradox", "myth", "essay", "philosophy", "theory", "framework",
+    "principles", "mental model", "first principles",
+]
+
+# User's interest topics for relevance scoring
+INTEREST_KEYWORDS = [
+    "crypto", "defi", "ethereum", "bitcoin", "blockchain", "token",
+    "ai", "alignment", "intelligence", "machine learning", "llm", "gpt",
+    "philosophy", "epistemology", "rationality", "consciousness", "ethics",
+    "startup", "venture", "founder", "vc", "fundrais",
+    "market", "macro", "fed", "inflation", "rates", "economy",
+    "progress", "acceleration", "technology", "innovation", "civilization",
+    "culture", "psychology", "identity", "meaning", "society",
+    "mechanism design", "game theory", "incentive", "governance",
+]
 
 # Browser headers for scraping
 HEADERS = {
@@ -159,6 +241,24 @@ def find_rss_feed(domain: str) -> str:
     return None
 
 
+def _normalize_domain_for_dedup(domain: str) -> str:
+    """Normalize domain for dedup matching.
+    scuttleblurb.substack.com -> scuttleblurb (to match scuttleblurb.com in feeds)
+    writer.substack.com -> writer
+    myblog.com -> myblog
+    """
+    domain = domain.lower().replace("www.", "")
+    # Strip common platform suffixes to match cross-domain
+    for suffix in [".substack.com", ".ghost.io", ".wordpress.com", ".beehiiv.com", ".mirror.xyz"]:
+        if domain.endswith(suffix):
+            return domain.replace(suffix, "")
+    # Strip TLD for bare domains
+    parts = domain.split(".")
+    if len(parts) >= 2:
+        return parts[0]
+    return domain
+
+
 def deduplicate_sources(raw_sources: list) -> list:
     """Merge and deduplicate discoveries from all methods against all known sources."""
     from bot import load_json
@@ -167,6 +267,12 @@ def deduplicate_sources(raw_sources: list) -> list:
     existing_domains = get_existing_domains()
     discovered = load_discovered()
     seen_domains = set(discovered.get("seen_domains", []))
+
+    # Build normalized set from existing feeds for cross-domain matching
+    existing_normalized = set()
+    for d in existing_domains:
+        existing_normalized.add(_normalize_domain_for_dedup(d))
+        existing_normalized.add(d)  # Keep exact match too
 
     # Rejected domains
     rejected = load_json(REJECTED_SOURCES_FILE, [])
@@ -185,13 +291,23 @@ def deduplicate_sources(raw_sources: list) -> list:
                 parsed = urlparse(r["url"])
                 rejected_domains.add(parsed.netloc.replace("www.", ""))
 
-    skip_domains = existing_domains | seen_domains | rejected_domains | IGNORE_DOMAINS
+    skip_domains = existing_domains | seen_domains | rejected_domains
 
     # Deduplicate and merge
     by_domain = {}
     for source in raw_sources:
         domain = source.get("domain", "").lower()
-        if not domain or domain in skip_domains:
+        if not domain:
+            continue
+
+        # Skip if ignored domain
+        if is_ignored_domain(domain):
+            continue
+
+        # Skip if already known (exact or normalized match)
+        if domain in skip_domains:
+            continue
+        if _normalize_domain_for_dedup(domain) in existing_normalized:
             continue
 
         if domain in by_domain:
@@ -211,62 +327,121 @@ def deduplicate_sources(raw_sources: list) -> list:
 
 
 def score_discovered_source(source: dict) -> float:
-    """Score a discovered source based on signals from all methods (0-100 scale)."""
+    """Score a discovered source. Heavily favors individual essay writers over news/newsletters.
+
+    Scoring philosophy:
+    - Individual blogs writing essays on user's interest topics = high score
+    - News orgs, corporate blogs, newsletters, roundups = penalized hard
+    - Popularity signals (HN points) are secondary to content quality signals
+    """
     score = 0.0
     evidence = source.get("evidence", {})
     methods = source.get("methods", [])
     domain = source.get("domain", "")
+    name = source.get("name", "").lower()
 
-    # RSS feed bonus
-    if source.get("url"):
-        score += 20
-    else:
+    # Collect all sample titles for analysis
+    all_titles = []
+    for key in ["sample_titles", "link_text"]:
+        all_titles.extend(evidence.get(key, []))
+    titles_lower = " ".join(t.lower() for t in all_titles)
+
+    # === HARD PENALTIES (filter out garbage) ===
+
+    # Penalty: Name contains newsletter/roundup keywords
+    name_lower = name.lower()
+    for keyword in NON_ESSAY_NAME_KEYWORDS:
+        if keyword in name_lower:
+            score -= 40
+            break
+
+    # Penalty: Titles look like news, not essays
+    news_signals = ["announces", "launches", "raises $", "acquires", "ipo", "q1", "q2", "q3", "q4",
+                    "earnings", "revenue", "quarterly", "breaking", "report:", "update:"]
+    news_hits = sum(1 for sig in news_signals if sig in titles_lower)
+    if news_hits >= 2:
         score -= 30
 
-    # Platform bonus
-    if "substack.com" in domain:
+    # Penalty: Looks like a multi-author org/publication (not a personal blog)
+    org_signals = ["staff", "team", "editors", "contributors", "newsroom", "editorial board"]
+    if any(sig in titles_lower or sig in name_lower for sig in org_signals):
+        score -= 25
+
+    # === POSITIVE SIGNALS ===
+
+    # RSS feed found
+    if source.get("url"):
+        score += 15
+    else:
+        score -= 20
+
+    # Individual Substack (personal writer, good signal)
+    if ".substack.com" in domain and domain != "substack.com":
         score += 10
-    elif any(p in domain for p in ["wordpress.com", "ghost.io", "beehiiv.com"]):
+
+    # Personal blog domains (strong signal for essays)
+    personal_tlds = [".me", ".xyz", ".io", ".co", ".net"]
+    if any(domain.endswith(tld) for tld in personal_tlds):
         score += 5
 
-    # Multi-method bonus
+    # Multi-method bonus (found independently by multiple sources = real signal)
     if len(methods) >= 3:
-        score += 25
+        score += 20
     elif len(methods) >= 2:
-        score += 15
-
-    # HN signals
-    hn_count = evidence.get("hn_count", 0)
-    hn_avg = evidence.get("hn_avg_points", 0)
-    score += min(30, hn_count * 5)
-    score += min(20, hn_avg * 0.05)
-    if evidence.get("user_liked_hn"):
         score += 10
 
-    # Lobsters signals
-    lob_count = evidence.get("lobsters_count", 0)
-    score += min(25, lob_count * 8)
+    # Blogroll signals (STRONGEST signal — curated by trusted thinkers)
+    blogroll_count = len(evidence.get("found_on_blogrolls", []))
+    if blogroll_count >= 2:
+        score += 30
+    elif blogroll_count >= 1:
+        score += 20
 
-    # Reddit signals
+    # HN signals (moderate — popular but not necessarily essay quality)
+    hn_count = evidence.get("hn_count", 0)
+    hn_avg = evidence.get("hn_avg_points", 0)
+    score += min(15, hn_count * 3)
+    # Cap avg points contribution — ultra-viral isn't a quality signal
+    score += min(10, hn_avg * 0.02)
+    if evidence.get("user_liked_hn"):
+        score += 15
+
+    # Lobsters signals (good — more curated community)
+    lob_count = evidence.get("lobsters_count", 0)
+    score += min(20, lob_count * 6)
+
+    # Reddit signals (moderate)
     reddit_count = evidence.get("reddit_count", 0)
-    score += min(20, reddit_count * 5)
+    score += min(15, reddit_count * 4)
     if len(evidence.get("subreddits", [])) >= 2:
         score += 5
 
-    # Blogroll signals
-    blogroll_count = len(evidence.get("found_on_blogrolls", []))
-    if blogroll_count >= 2:
-        score += 25
-    elif blogroll_count >= 1:
-        score += 15
-
     # Topic search signals
     query_matches = len(evidence.get("query_matches", []))
-    score += min(20, query_matches * 5)
+    score += min(15, query_matches * 4)
 
-    # Substack recommendation signal
+    # Substack recommendation
     if evidence.get("substack_rec"):
+        score += 10
+
+    # === TOPIC RELEVANCE (big boost for matching user interests) ===
+    interest_hits = 0
+    for keyword in INTEREST_KEYWORDS:
+        if keyword in titles_lower or keyword in name_lower:
+            interest_hits += 1
+    if interest_hits >= 3:
+        score += 25
+    elif interest_hits >= 2:
         score += 15
+    elif interest_hits >= 1:
+        score += 8
+
+    # === ESSAY QUALITY SIGNALS ===
+    essay_hits = sum(1 for kw in ESSAY_TITLE_KEYWORDS if kw in titles_lower)
+    if essay_hits >= 2:
+        score += 15
+    elif essay_hits >= 1:
+        score += 8
 
     return round(max(0, score), 1)
 
@@ -295,7 +470,7 @@ def discover_via_hn_enhanced() -> list:
                         if not url:
                             continue
                         domain = urlparse(url).netloc.replace("www.", "").lower()
-                        if domain in IGNORE_DOMAINS or len(domain) < 5:
+                        if is_ignored_domain(domain) or len(domain) < 5:
                             continue
                         if domain not in domain_stats:
                             domain_stats[domain] = {"count": 0, "total_points": 0, "titles": [], "topics": set()}
@@ -323,7 +498,7 @@ def discover_via_hn_enhanced() -> list:
                         if not url:
                             continue
                         domain = urlparse(url).netloc.replace("www.", "").lower()
-                        if domain in IGNORE_DOMAINS or len(domain) < 5:
+                        if is_ignored_domain(domain) or len(domain) < 5:
                             continue
                         if domain not in domain_stats:
                             domain_stats[domain] = {"count": 0, "total_points": 0, "titles": [], "topics": set()}
@@ -403,7 +578,7 @@ def discover_via_topic_search() -> list:
                     real_url = href
 
                 domain = urlparse(real_url).netloc.replace("www.", "").lower()
-                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                if not domain or is_ignored_domain(domain) or len(domain) < 5:
                     continue
 
                 if domain not in domain_hits:
@@ -466,7 +641,7 @@ def discover_via_blogrolls() -> list:
                     continue
 
                 domain = urlparse(href).netloc.replace("www.", "").lower()
-                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                if not domain or is_ignored_domain(domain) or len(domain) < 5:
                     continue
                 if domain == blogroll_domain:
                     continue
@@ -523,7 +698,7 @@ def discover_via_lobsters() -> list:
                     continue
 
                 domain = urlparse(url).netloc.replace("www.", "").lower()
-                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                if not domain or is_ignored_domain(domain) or len(domain) < 5:
                     continue
 
                 score = story.get("score", 0)
@@ -589,7 +764,7 @@ def discover_via_reddit() -> list:
                     continue
 
                 domain = urlparse(post_url).netloc.replace("www.", "").lower()
-                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                if not domain or is_ignored_domain(domain) or len(domain) < 5:
                     continue
 
                 ups = post_data.get("ups", 0)
@@ -796,10 +971,20 @@ def run_deep_discovery():
         source.pop("_prescore", None)
 
     unique_sources.sort(key=lambda x: x["discovery_score"], reverse=True)
-    top_sources = unique_sources[:15]
+
+    # Filter: minimum score of 20 (don't send garbage)
+    quality_sources = [s for s in unique_sources if s["discovery_score"] >= 20]
+    # Also require RSS feed — no point suggesting a source we can't subscribe to
+    quality_sources = [s for s in quality_sources if s.get("url")]
+    top_sources = quality_sources[:15]
+
+    if not top_sources:
+        print("\nNo quality sources found above threshold.")
+        send_telegram_message("🔍 Deep discovery ran — no quality essay sources found this time.")
+        return
 
     # Print summary
-    print(f"\n--- Top 15 Discoveries ---")
+    print(f"\n--- Top {len(top_sources)} Discoveries ---")
     for i, s in enumerate(top_sources, 1):
         print(f"  {i}. {s['domain']} (score: {s['discovery_score']}, methods: {', '.join(s.get('methods', []))})")
 
@@ -951,7 +1136,7 @@ def mine_hn_domains(min_points: int = 150, num_pages: int = 3) -> dict:
                 domain = parsed.netloc.replace("www.", "").lower()
 
                 # Skip ignored domains
-                if domain in IGNORE_DOMAINS:
+                if is_ignored_domain(domain):
                     continue
 
                 # Skip if too short (probably not a blog)
