@@ -12,6 +12,15 @@ from zoneinfo import ZoneInfo
 from feeds import FEEDS, BLOCKED_DOMAINS, BLOCKED_KEYWORDS
 from canonical import CANONICAL_READINGS
 
+# Load .env file if it exists (no extra dependency needed)
+_env_path = Path(__file__).parent / ".env"
+if _env_path.exists():
+    for _line in _env_path.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _key, _val = _line.split("=", 1)
+            os.environ.setdefault(_key.strip(), _val.strip())
+
 # Hacker News API settings
 HN_API_URL = "https://hn.algolia.com/api/v1/search"
 HN_MIN_POINTS = 100  # Only fetch stories with 100+ points
