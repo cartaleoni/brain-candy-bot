@@ -4,16 +4,31 @@ Source Discovery Module for Brain Candy Bot
 Discovers new sources through:
 1. Substack Recommendations - scrapes "recommended" writers from existing Substacks
 2. Hacker News Domain Mining - tracks domains that frequently appear in high-scoring posts
+3. Enhanced HN Mining - lower threshold + topic-specific searches
+4. Topic-Based Web Search - DuckDuckGo searches for interest-related blogs
+5. Blogroll Mining - scrape links pages from trusted sources
+6. Lobsters Mining - curated tech link aggregator
+7. Reddit Mining - quality intellectual subreddits
 """
 
 import requests
 import json
 import re
 import os
+import time
 from pathlib import Path
 from urllib.parse import urlparse
 from datetime import datetime
 from bs4 import BeautifulSoup
+
+# Load .env file if it exists
+_env_path = Path(__file__).parent / ".env"
+if _env_path.exists():
+    for _line in _env_path.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _key, _val = _line.split("=", 1)
+            os.environ.setdefault(_key.strip(), _val.strip())
 
 # Telegram config
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
@@ -57,7 +72,763 @@ IGNORE_DOMAINS = {
     # Other non-blog sites
     "imgur.com", "gfycat.com", "giphy.com", "pastebin.com",
     "dropbox.com", "wetransfer.com", "mega.nz",
+    # Media hosting
+    "imgur.com", "gfycat.com", "giphy.com", "pastebin.com",
+    "dropbox.com", "wetransfer.com", "mega.nz",
+    "v.redd.it", "i.redd.it", "preview.redd.it",
 }
+
+# Browser headers for scraping
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+}
+
+# Interest-based search queries for topic discovery
+TOPIC_QUERIES = [
+    "best crypto essays blog",
+    "AI alignment essays blog",
+    "systems thinking blog essays",
+    "techno optimism acceleration essays",
+    "first principles thinking blog",
+    "DeFi mechanism design essays",
+    "rationality epistemology blog",
+    "macro economics essays substack",
+    "philosophy of technology essays",
+    "venture capital strategy essays",
+    "progress studies blog essays",
+    "contrarian investing essays blog",
+]
+
+# Trusted blogroll pages to mine
+BLOGROLL_SOURCES = [
+    {"url": "https://gwern.net/links", "name": "Gwern"},
+    {"url": "https://www.ribbonfarm.com/now-reading/", "name": "Ribbonfarm"},
+    {"url": "https://slatestarcodex.com/blogroll/", "name": "SlateStarCodex"},
+    {"url": "https://www.benkuhn.net/blogroll/", "name": "Ben Kuhn"},
+    {"url": "https://nintil.com/blogroll", "name": "Nintil"},
+    {"url": "https://patrickcollison.com/bookshelf", "name": "Patrick Collison"},
+    {"url": "https://nadia.xyz/", "name": "Nadia Asparouhova"},
+]
+
+# Lobsters tags matching user interests
+LOBSTERS_TAGS = ["ai", "philosophy", "culture", "practices", "compsci", "economics"]
+
+# Quality subreddits for discovery
+QUALITY_SUBREDDITS = [
+    "slatestarcodex",
+    "TheMotte",
+    "CryptoCurrency",
+    "ethereum",
+    "philosophy",
+    "DepthHub",
+    "TrueReddit",
+]
+
+# HN topic queries for enhanced mining
+HN_TOPIC_QUERIES = [
+    "crypto defi essay",
+    "AI alignment essay",
+    "systems thinking",
+    "philosophy technology essay",
+    "startup essay founder",
+    "macro economics essay",
+]
+
+
+# === SHARED UTILITIES ===
+
+def find_rss_feed(domain: str) -> str:
+    """Try common RSS feed URL patterns for a domain. Returns first working URL or None."""
+    if "substack.com" in domain:
+        return f"https://{domain}/feed"
+
+    patterns = ["/feed", "/rss", "/feed.xml", "/rss.xml", "/atom.xml", "/index.xml", "/feed/atom"]
+
+    for pattern in patterns:
+        test_url = f"https://{domain}{pattern}"
+        try:
+            r = requests.get(test_url, headers=HEADERS, timeout=5, allow_redirects=True)
+            if r.status_code == 200:
+                content_type = r.headers.get("content-type", "").lower()
+                body_start = r.text[:500].lower()
+                if "xml" in content_type or "<rss" in body_start or "<feed" in body_start or "<?xml" in body_start:
+                    return test_url
+        except Exception:
+            continue
+
+    return None
+
+
+def deduplicate_sources(raw_sources: list) -> list:
+    """Merge and deduplicate discoveries from all methods against all known sources."""
+    from bot import load_json
+    from bot import POSTED_FILE, REJECTED_SOURCES_FILE
+
+    existing_domains = get_existing_domains()
+    discovered = load_discovered()
+    seen_domains = set(discovered.get("seen_domains", []))
+
+    # Rejected domains
+    rejected = load_json(REJECTED_SOURCES_FILE, [])
+    rejected_domains = set()
+    for r in rejected:
+        if isinstance(r, str):
+            parsed = urlparse(r) if r.startswith("http") else None
+            if parsed and parsed.netloc:
+                rejected_domains.add(parsed.netloc.replace("www.", ""))
+            else:
+                rejected_domains.add(r.lower())
+        elif isinstance(r, dict):
+            if r.get("domain"):
+                rejected_domains.add(r["domain"])
+            if r.get("url"):
+                parsed = urlparse(r["url"])
+                rejected_domains.add(parsed.netloc.replace("www.", ""))
+
+    skip_domains = existing_domains | seen_domains | rejected_domains | IGNORE_DOMAINS
+
+    # Deduplicate and merge
+    by_domain = {}
+    for source in raw_sources:
+        domain = source.get("domain", "").lower()
+        if not domain or domain in skip_domains:
+            continue
+
+        if domain in by_domain:
+            # Merge evidence
+            existing = by_domain[domain]
+            existing["evidence"].update(source.get("evidence", {}))
+            existing.setdefault("methods", [])
+            method = source.get("source_type", "unknown")
+            if method not in existing["methods"]:
+                existing["methods"].append(method)
+        else:
+            source.setdefault("methods", [source.get("source_type", "unknown")])
+            source.setdefault("evidence", {})
+            by_domain[domain] = source
+
+    return list(by_domain.values())
+
+
+def score_discovered_source(source: dict) -> float:
+    """Score a discovered source based on signals from all methods (0-100 scale)."""
+    score = 0.0
+    evidence = source.get("evidence", {})
+    methods = source.get("methods", [])
+    domain = source.get("domain", "")
+
+    # RSS feed bonus
+    if source.get("url"):
+        score += 20
+    else:
+        score -= 30
+
+    # Platform bonus
+    if "substack.com" in domain:
+        score += 10
+    elif any(p in domain for p in ["wordpress.com", "ghost.io", "beehiiv.com"]):
+        score += 5
+
+    # Multi-method bonus
+    if len(methods) >= 3:
+        score += 25
+    elif len(methods) >= 2:
+        score += 15
+
+    # HN signals
+    hn_count = evidence.get("hn_count", 0)
+    hn_avg = evidence.get("hn_avg_points", 0)
+    score += min(30, hn_count * 5)
+    score += min(20, hn_avg * 0.05)
+    if evidence.get("user_liked_hn"):
+        score += 10
+
+    # Lobsters signals
+    lob_count = evidence.get("lobsters_count", 0)
+    score += min(25, lob_count * 8)
+
+    # Reddit signals
+    reddit_count = evidence.get("reddit_count", 0)
+    score += min(20, reddit_count * 5)
+    if len(evidence.get("subreddits", [])) >= 2:
+        score += 5
+
+    # Blogroll signals
+    blogroll_count = len(evidence.get("found_on_blogrolls", []))
+    if blogroll_count >= 2:
+        score += 25
+    elif blogroll_count >= 1:
+        score += 15
+
+    # Topic search signals
+    query_matches = len(evidence.get("query_matches", []))
+    score += min(20, query_matches * 5)
+
+    # Substack recommendation signal
+    if evidence.get("substack_rec"):
+        score += 15
+
+    return round(max(0, score), 1)
+
+
+# === DISCOVERY METHODS ===
+
+def discover_via_hn_enhanced() -> list:
+    """Enhanced HN mining: lower threshold, more pages, topic-specific searches."""
+    sources = []
+    domain_stats = {}
+
+    try:
+        # A) Generic high-score mining at 50+ points, 5 pages
+        for page in range(5):
+            params = {
+                "tags": "story",
+                "numericFilters": "points>50",
+                "hitsPerPage": 100,
+                "page": page,
+            }
+            try:
+                r = requests.get(HN_API_URL, params=params, timeout=15)
+                if r.status_code == 200:
+                    for hit in r.json().get("hits", []):
+                        url = hit.get("url", "")
+                        if not url:
+                            continue
+                        domain = urlparse(url).netloc.replace("www.", "").lower()
+                        if domain in IGNORE_DOMAINS or len(domain) < 5:
+                            continue
+                        if domain not in domain_stats:
+                            domain_stats[domain] = {"count": 0, "total_points": 0, "titles": [], "topics": set()}
+                        domain_stats[domain]["count"] += 1
+                        domain_stats[domain]["total_points"] += hit.get("points", 0)
+                        if len(domain_stats[domain]["titles"]) < 3:
+                            domain_stats[domain]["titles"].append(hit.get("title", ""))
+            except Exception as e:
+                print(f"  HN page {page} error: {e}")
+            time.sleep(0.5)
+
+        # B) Topic-specific searches
+        for query in HN_TOPIC_QUERIES:
+            try:
+                params = {
+                    "query": query,
+                    "tags": "story",
+                    "numericFilters": "points>30",
+                    "hitsPerPage": 50,
+                }
+                r = requests.get(HN_API_URL, params=params, timeout=15)
+                if r.status_code == 200:
+                    for hit in r.json().get("hits", []):
+                        url = hit.get("url", "")
+                        if not url:
+                            continue
+                        domain = urlparse(url).netloc.replace("www.", "").lower()
+                        if domain in IGNORE_DOMAINS or len(domain) < 5:
+                            continue
+                        if domain not in domain_stats:
+                            domain_stats[domain] = {"count": 0, "total_points": 0, "titles": [], "topics": set()}
+                        domain_stats[domain]["count"] += 1
+                        domain_stats[domain]["total_points"] += hit.get("points", 0)
+                        if len(domain_stats[domain]["titles"]) < 3:
+                            domain_stats[domain]["titles"].append(hit.get("title", ""))
+                        domain_stats[domain]["topics"].add(query.split()[0])
+            except Exception as e:
+                print(f"  HN topic '{query}' error: {e}")
+            time.sleep(0.5)
+
+        # C) Cross-reference with user-liked domains
+        try:
+            from bot import get_hn_liked_domains
+            liked = get_hn_liked_domains()
+        except Exception:
+            liked = set()
+
+        # Build source list — require 2+ appearances OR 1 with user-liked
+        for domain, stats in domain_stats.items():
+            avg_points = stats["total_points"] / max(1, stats["count"])
+            is_liked = domain in liked
+
+            if stats["count"] >= 2 or (stats["count"] >= 1 and is_liked):
+                sources.append({
+                    "name": domain.split(".")[0].title(),
+                    "domain": domain,
+                    "url": None,
+                    "source_type": "hn_enhanced",
+                    "discovered_at": datetime.now().isoformat(),
+                    "evidence": {
+                        "hn_count": stats["count"],
+                        "hn_avg_points": round(avg_points, 1),
+                        "hn_topics": list(stats["topics"]),
+                        "user_liked_hn": is_liked,
+                        "sample_titles": stats["titles"],
+                    },
+                })
+
+    except Exception as e:
+        print(f"  Enhanced HN mining error: {e}")
+
+    return sources
+
+
+def discover_via_topic_search() -> list:
+    """Search DuckDuckGo for blogs matching interest topics."""
+    sources = []
+    domain_hits = {}
+
+    for query in TOPIC_QUERIES:
+        try:
+            r = requests.get(
+                "https://html.duckduckgo.com/html/",
+                params={"q": query},
+                headers=HEADERS,
+                timeout=10,
+            )
+            if r.status_code != 200:
+                continue
+
+            soup = BeautifulSoup(r.text, "html.parser")
+
+            for result in soup.select("a.result__a"):
+                href = result.get("href", "")
+                if not href or "duckduckgo.com" in href:
+                    continue
+
+                # DuckDuckGo wraps URLs — extract the real one
+                if "uddg=" in href:
+                    from urllib.parse import parse_qs, urlparse as _parse
+                    parsed_href = _parse(href)
+                    qs = parse_qs(parsed_href.query)
+                    real_url = qs.get("uddg", [href])[0]
+                else:
+                    real_url = href
+
+                domain = urlparse(real_url).netloc.replace("www.", "").lower()
+                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                    continue
+
+                if domain not in domain_hits:
+                    domain_hits[domain] = {"queries": [], "titles": []}
+                if query not in domain_hits[domain]["queries"]:
+                    domain_hits[domain]["queries"].append(query)
+                title = result.get_text(strip=True)
+                if title and len(domain_hits[domain]["titles"]) < 2:
+                    domain_hits[domain]["titles"].append(title[:80])
+
+        except Exception as e:
+            print(f"  Search error for '{query}': {e}")
+
+        time.sleep(3)  # Be polite to DuckDuckGo
+
+    for domain, data in domain_hits.items():
+        sources.append({
+            "name": domain.split(".")[0].title(),
+            "domain": domain,
+            "url": None,
+            "source_type": "topic_search",
+            "discovered_at": datetime.now().isoformat(),
+            "evidence": {
+                "query_matches": data["queries"],
+                "sample_titles": data["titles"],
+            },
+        })
+
+    return sources
+
+
+def discover_via_blogrolls() -> list:
+    """Scrape blogroll/links pages from trusted sources for external links."""
+    sources = []
+    domain_hits = {}
+
+    for blogroll in BLOGROLL_SOURCES:
+        try:
+            r = requests.get(blogroll["url"], headers=HEADERS, timeout=10)
+            if r.status_code != 200:
+                print(f"  Blogroll {blogroll['name']}: {r.status_code}")
+                continue
+
+            soup = BeautifulSoup(r.text, "html.parser")
+
+            # Try content-specific areas first, fall back to body
+            content = (
+                soup.find("article") or soup.find("main") or
+                soup.find(class_="content") or soup.find(id="content") or
+                soup.find("body")
+            )
+            if not content:
+                continue
+
+            blogroll_domain = urlparse(blogroll["url"]).netloc.replace("www.", "")
+
+            for link in content.find_all("a", href=True):
+                href = link.get("href", "")
+                if not href.startswith("http"):
+                    continue
+
+                domain = urlparse(href).netloc.replace("www.", "").lower()
+                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                    continue
+                if domain == blogroll_domain:
+                    continue
+
+                if domain not in domain_hits:
+                    domain_hits[domain] = {"blogrolls": [], "link_text": []}
+                if blogroll["name"] not in domain_hits[domain]["blogrolls"]:
+                    domain_hits[domain]["blogrolls"].append(blogroll["name"])
+                text = link.get_text(strip=True)
+                if text and len(domain_hits[domain]["link_text"]) < 2:
+                    domain_hits[domain]["link_text"].append(text[:60])
+
+        except Exception as e:
+            print(f"  Blogroll {blogroll['name']} error: {e}")
+
+        time.sleep(1)
+
+    for domain, data in domain_hits.items():
+        sources.append({
+            "name": data["link_text"][0] if data["link_text"] else domain.split(".")[0].title(),
+            "domain": domain,
+            "url": None,
+            "source_type": "blogroll",
+            "discovered_at": datetime.now().isoformat(),
+            "evidence": {
+                "found_on_blogrolls": data["blogrolls"],
+                "link_text": data["link_text"],
+            },
+        })
+
+    return sources
+
+
+def discover_via_lobsters() -> list:
+    """Mine Lobsters for domains appearing in high-quality stories."""
+    sources = []
+    domain_stats = {}
+
+    # Fetch hottest + tag-specific endpoints
+    endpoints = ["https://lobste.rs/hottest.json"]
+    for tag in LOBSTERS_TAGS:
+        endpoints.append(f"https://lobste.rs/t/{tag}.json")
+
+    for endpoint in endpoints:
+        try:
+            r = requests.get(endpoint, headers=HEADERS, timeout=10)
+            if r.status_code != 200:
+                continue
+
+            stories = r.json()
+            for story in stories[:50]:  # Top 50 per endpoint
+                url = story.get("url", "")
+                if not url:
+                    continue
+
+                domain = urlparse(url).netloc.replace("www.", "").lower()
+                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                    continue
+
+                score = story.get("score", 0)
+                tags = [t for t in story.get("tags", []) if t in LOBSTERS_TAGS]
+
+                if domain not in domain_stats:
+                    domain_stats[domain] = {"count": 0, "total_score": 0, "tags": set(), "titles": []}
+                domain_stats[domain]["count"] += 1
+                domain_stats[domain]["total_score"] += score
+                domain_stats[domain]["tags"].update(tags)
+                if len(domain_stats[domain]["titles"]) < 3:
+                    domain_stats[domain]["titles"].append(story.get("title", ""))
+
+        except Exception as e:
+            print(f"  Lobsters error ({endpoint}): {e}")
+
+        time.sleep(1)  # Be polite
+
+    for domain, stats in domain_stats.items():
+        avg_score = stats["total_score"] / max(1, stats["count"])
+        if stats["count"] >= 2 and avg_score > 5:
+            sources.append({
+                "name": domain.split(".")[0].title(),
+                "domain": domain,
+                "url": None,
+                "source_type": "lobsters",
+                "discovered_at": datetime.now().isoformat(),
+                "evidence": {
+                    "lobsters_count": stats["count"],
+                    "lobsters_avg_score": round(avg_score, 1),
+                    "lobsters_tags": list(stats["tags"]),
+                    "sample_titles": stats["titles"],
+                },
+            })
+
+    return sources
+
+
+def discover_via_reddit() -> list:
+    """Mine quality subreddits for domains shared with high engagement."""
+    sources = []
+    domain_stats = {}
+    reddit_headers = {"User-Agent": "BrainCandyBot/1.0 (source discovery)"}
+
+    for subreddit in QUALITY_SUBREDDITS:
+        try:
+            url = f"https://www.reddit.com/r/{subreddit}/top.json?t=month&limit=100"
+            r = requests.get(url, headers=reddit_headers, timeout=10)
+            if r.status_code != 200:
+                print(f"  Reddit r/{subreddit}: {r.status_code}")
+                continue
+
+            data = r.json().get("data", {}).get("children", [])
+            for post in data:
+                post_data = post.get("data", {})
+
+                # Skip self-posts (text posts without external links)
+                if post_data.get("is_self", True):
+                    continue
+
+                post_url = post_data.get("url", "")
+                if not post_url:
+                    continue
+
+                domain = urlparse(post_url).netloc.replace("www.", "").lower()
+                if not domain or domain in IGNORE_DOMAINS or len(domain) < 5:
+                    continue
+
+                ups = post_data.get("ups", 0)
+                title = post_data.get("title", "")
+
+                if domain not in domain_stats:
+                    domain_stats[domain] = {"count": 0, "total_ups": 0, "subreddits": set(), "titles": []}
+                domain_stats[domain]["count"] += 1
+                domain_stats[domain]["total_ups"] += ups
+                domain_stats[domain]["subreddits"].add(subreddit)
+                if len(domain_stats[domain]["titles"]) < 3:
+                    domain_stats[domain]["titles"].append(title[:80])
+
+        except Exception as e:
+            print(f"  Reddit r/{subreddit} error: {e}")
+
+        time.sleep(2)  # Reddit needs longer delays
+
+    for domain, stats in domain_stats.items():
+        avg_ups = stats["total_ups"] / max(1, stats["count"])
+        if stats["count"] >= 2 or (stats["count"] >= 1 and avg_ups >= 100):
+            sources.append({
+                "name": domain.split(".")[0].title(),
+                "domain": domain,
+                "url": None,
+                "source_type": "reddit",
+                "discovered_at": datetime.now().isoformat(),
+                "evidence": {
+                    "reddit_count": stats["count"],
+                    "reddit_avg_upvotes": round(avg_ups, 1),
+                    "subreddits": list(stats["subreddits"]),
+                    "sample_titles": stats["titles"],
+                },
+            })
+
+    return sources
+
+
+# === DEEP DISCOVERY ORCHESTRATION ===
+
+def send_discoveries_for_review(top_sources: list):
+    """Send discovered sources to Telegram DM for 1/0/x review."""
+    for i, source in enumerate(top_sources, 1):
+        name = source.get("name", "Unknown")
+        domain = source.get("domain", "")
+        score = source.get("discovery_score", 0)
+        feed = source.get("url", "No RSS found")
+        evidence = source.get("evidence", {})
+        methods = source.get("methods", [])
+
+        # Build "found via" summary
+        found_parts = []
+        if "hn_enhanced" in methods:
+            ct = evidence.get("hn_count", 0)
+            pt = evidence.get("hn_avg_points", 0)
+            found_parts.append(f"HN ({ct} stories, avg {pt}pt)")
+        if "blogroll" in methods:
+            blogs = evidence.get("found_on_blogrolls", [])
+            found_parts.append(f"Blogrolls ({', '.join(blogs)})")
+        if "lobsters" in methods:
+            ct = evidence.get("lobsters_count", 0)
+            found_parts.append(f"Lobsters ({ct} stories)")
+        if "reddit" in methods:
+            subs = evidence.get("subreddits", [])
+            found_parts.append(f"Reddit (r/{', r/'.join(subs)})")
+        if "topic_search" in methods:
+            found_parts.append("Topic search")
+        if "substack_recommendation" in methods:
+            found_parts.append("Substack recs")
+
+        found_via = ", ".join(found_parts) if found_parts else "Discovery"
+
+        # Get sample title
+        sample = ""
+        for key in ["sample_titles", "link_text"]:
+            titles = evidence.get(key, [])
+            if titles:
+                sample = titles[0][:60]
+                break
+
+        msg = f"🔍 <b>Discovery #{i}</b> (Score: {score})\n\n"
+        msg += f"<b>{name}</b> ({domain})\n"
+        if feed and feed != "No RSS found":
+            msg += f"Feed: {feed}\n"
+        msg += f"\nFound via: {found_via}\n"
+        if sample:
+            msg += f"Sample: <i>{sample}</i>\n"
+        msg += "\nReply: <b>1</b>=Add  <b>0</b>=Skip  <b>x</b>=Block"
+
+        send_telegram_message(msg)
+        time.sleep(1)
+
+
+def run_deep_discovery():
+    """Run comprehensive source discovery using all methods."""
+    print(f"[{datetime.now()}] Running DEEP discovery (all methods)...\n")
+
+    all_sources = []
+
+    # Method 1: Substack Recommendations
+    print("--- Method 1: Substack Recommendations ---")
+    try:
+        substack_feeds = []
+        with open(FEEDS_FILE, "r") as f:
+            content = f.read()
+            substack_urls = re.findall(r'https://[a-zA-Z0-9-]+\.substack\.com/feed', content)
+            substack_feeds = list(set(substack_urls))
+
+        existing_domains = get_existing_domains()
+        substack_count = 0
+        for feed_url in substack_feeds[:20]:
+            recs = scrape_substack_recommendations(feed_url)
+            for rec in recs:
+                domain = rec["domain"]
+                if domain not in existing_domains:
+                    all_sources.append({
+                        "name": rec["name"],
+                        "domain": domain,
+                        "url": rec.get("url"),
+                        "source_type": "substack_recommendation",
+                        "discovered_at": datetime.now().isoformat(),
+                        "evidence": {"substack_rec": True, "discovered_from": rec.get("discovered_from", "")},
+                    })
+                    substack_count += 1
+        print(f"  Found {substack_count} from Substack recs")
+    except Exception as e:
+        print(f"  Substack error: {e}")
+
+    # Method 2: Enhanced HN Mining
+    print("\n--- Method 2: Enhanced HN Mining ---")
+    try:
+        hn_sources = discover_via_hn_enhanced()
+        all_sources.extend(hn_sources)
+        print(f"  Found {len(hn_sources)} from enhanced HN")
+    except Exception as e:
+        print(f"  HN error: {e}")
+
+    # Method 3: Topic-Based Web Search
+    print("\n--- Method 3: Topic-Based Web Search ---")
+    try:
+        search_sources = discover_via_topic_search()
+        all_sources.extend(search_sources)
+        print(f"  Found {len(search_sources)} from topic search")
+    except Exception as e:
+        print(f"  Topic search error: {e}")
+
+    # Method 4: Blogroll Mining
+    print("\n--- Method 4: Blogroll Mining ---")
+    try:
+        blogroll_sources = discover_via_blogrolls()
+        all_sources.extend(blogroll_sources)
+        print(f"  Found {len(blogroll_sources)} from blogrolls")
+    except Exception as e:
+        print(f"  Blogroll error: {e}")
+
+    # Method 5: Lobsters Mining
+    print("\n--- Method 5: Lobsters Mining ---")
+    try:
+        lobsters_sources = discover_via_lobsters()
+        all_sources.extend(lobsters_sources)
+        print(f"  Found {len(lobsters_sources)} from Lobsters")
+    except Exception as e:
+        print(f"  Lobsters error: {e}")
+
+    # Method 6: Reddit Mining
+    print("\n--- Method 6: Reddit Mining ---")
+    try:
+        reddit_sources = discover_via_reddit()
+        all_sources.extend(reddit_sources)
+        print(f"  Found {len(reddit_sources)} from Reddit")
+    except Exception as e:
+        print(f"  Reddit error: {e}")
+
+    # Deduplicate
+    print(f"\n--- Deduplication ---")
+    print(f"  Raw total: {len(all_sources)}")
+    unique_sources = deduplicate_sources(all_sources)
+    print(f"  After dedup: {len(unique_sources)}")
+
+    if not unique_sources:
+        print("\nNo new sources found.")
+        send_telegram_message("🔍 Deep discovery ran — no new sources found.")
+        return
+
+    # Probe RSS for top candidates (by pre-score without RSS bonus)
+    print(f"\n--- RSS Feed Detection (top 30) ---")
+    for source in unique_sources:
+        source["_prescore"] = score_discovered_source(source)
+    unique_sources.sort(key=lambda x: x["_prescore"], reverse=True)
+
+    probed = 0
+    for source in unique_sources[:30]:
+        if not source.get("url"):
+            feed = find_rss_feed(source["domain"])
+            if feed:
+                source["url"] = feed
+                print(f"  RSS found: {source['domain']} -> {feed}")
+                probed += 1
+    print(f"  Found RSS for {probed} sources")
+
+    # Final scoring
+    for source in unique_sources:
+        source["discovery_score"] = score_discovered_source(source)
+        source.pop("_prescore", None)
+
+    unique_sources.sort(key=lambda x: x["discovery_score"], reverse=True)
+    top_sources = unique_sources[:15]
+
+    # Print summary
+    print(f"\n--- Top 15 Discoveries ---")
+    for i, s in enumerate(top_sources, 1):
+        print(f"  {i}. {s['domain']} (score: {s['discovery_score']}, methods: {', '.join(s.get('methods', []))})")
+
+    # Save all to discovered_sources.json
+    discovered = load_discovered()
+    discovered["sources"].extend(unique_sources)
+    new_seen = {s["domain"] for s in unique_sources}
+    discovered["seen_domains"] = list(set(discovered.get("seen_domains", [])) | new_seen)
+    save_discovered(discovered)
+
+    # Send top 15 to Telegram for review
+    print(f"\nSending top {len(top_sources)} to Telegram for review...")
+    send_discoveries_for_review(top_sources)
+
+    # Save pending for --process-reviews
+    pending = []
+    for source in top_sources:
+        pending.append({
+            "name": source.get("name", ""),
+            "domain": source.get("domain", ""),
+            "url": source.get("url"),
+            "source_type": ", ".join(source.get("methods", [])),
+            "sent_at": datetime.now().isoformat(),
+        })
+
+    with open(PENDING_DISCOVERY_FILE, "w") as f:
+        json.dump(pending, f, indent=2)
+
+    print(f"\nDone! Review in Telegram, then run: python3 discover.py --process-reviews")
 
 
 def load_discovered():
@@ -669,7 +1440,9 @@ def auto_add_top_sources_single(source: dict) -> bool:
 if __name__ == "__main__":
     import sys
 
-    if "--weekly" in sys.argv:
+    if "--deep" in sys.argv:
+        run_deep_discovery()
+    elif "--weekly" in sys.argv:
         run_weekly_discovery()
     elif "--local" in sys.argv:
         run_local_interactive()
