@@ -166,19 +166,20 @@ HEADERS = {
 }
 
 # Interest-based search queries for topic discovery
+# Queries designed to find actual essay writers, not listicles
 TOPIC_QUERIES = [
-    "best crypto essays blog",
-    "AI alignment essays blog",
-    "systems thinking blog essays",
-    "techno optimism acceleration essays",
-    "first principles thinking blog",
-    "DeFi mechanism design essays",
-    "rationality epistemology blog",
-    "macro economics essays substack",
-    "philosophy of technology essays",
-    "venture capital strategy essays",
-    "progress studies blog essays",
-    "contrarian investing essays blog",
+    "crypto DeFi mechanism design essay site:substack.com",
+    "AI alignment risk essay site:substack.com",
+    "philosophy rationality consciousness essay site:substack.com",
+    "macro economics contrarian investing essay site:substack.com",
+    "startup venture capital founder essay site:substack.com",
+    "progress studies techno optimism essay site:substack.com",
+    "systems thinking complexity essay blog",
+    "ethereum L2 rollup analysis essay",
+    "effective altruism longtermism essay blog",
+    "game theory incentive design essay",
+    "culture technology society essay substack",
+    "mental models decision making essay blog",
 ]
 
 # Trusted blogroll pages to mine
@@ -367,41 +368,46 @@ def score_discovered_source(source: dict) -> float:
     if any(sig in titles_lower or sig in name_lower for sig in org_signals):
         score -= 25
 
+    # === EVIDENCE QUALITY ===
+
+    # Penalty: no sample titles = no way to judge what they write about
+    if not all_titles:
+        score -= 15
+
     # === POSITIVE SIGNALS ===
 
-    # RSS feed found
+    # RSS feed found (small bonus — most Substacks have this, not discriminating)
     if source.get("url"):
-        score += 15
+        score += 5
     else:
-        score -= 20
+        score -= 10
 
-    # Individual Substack (personal writer, good signal)
+    # Individual Substack (minor — easy to set up, not a quality signal)
     if ".substack.com" in domain and domain != "substack.com":
-        score += 10
+        score += 3
 
-    # Personal blog domains (strong signal for essays)
+    # Personal blog domains (independent thinkers tend to self-host)
     personal_tlds = [".me", ".xyz", ".io", ".co", ".net"]
     if any(domain.endswith(tld) for tld in personal_tlds):
         score += 5
 
-    # Multi-method bonus (found independently by multiple sources = real signal)
+    # Multi-method bonus (STRONG — found independently by multiple sources = real signal)
     if len(methods) >= 3:
-        score += 20
+        score += 30
     elif len(methods) >= 2:
-        score += 10
+        score += 20
 
     # Blogroll signals (STRONGEST signal — curated by trusted thinkers)
     blogroll_count = len(evidence.get("found_on_blogrolls", []))
     if blogroll_count >= 2:
-        score += 30
+        score += 40
     elif blogroll_count >= 1:
-        score += 20
+        score += 25
 
     # HN signals (moderate — popular but not necessarily essay quality)
     hn_count = evidence.get("hn_count", 0)
     hn_avg = evidence.get("hn_avg_points", 0)
     score += min(15, hn_count * 3)
-    # Cap avg points contribution — ultra-viral isn't a quality signal
     score += min(10, hn_avg * 0.02)
     if evidence.get("user_liked_hn"):
         score += 15
@@ -410,19 +416,19 @@ def score_discovered_source(source: dict) -> float:
     lob_count = evidence.get("lobsters_count", 0)
     score += min(20, lob_count * 6)
 
-    # Reddit signals (moderate)
+    # Reddit quality subreddit signals
     reddit_count = evidence.get("reddit_count", 0)
     score += min(15, reddit_count * 4)
     if len(evidence.get("subreddits", [])) >= 2:
-        score += 5
+        score += 10
 
     # Topic search signals
     query_matches = len(evidence.get("query_matches", []))
     score += min(15, query_matches * 4)
 
-    # Substack recommendation
+    # Substack recommendation (weak signal — just means someone recommended them)
     if evidence.get("substack_rec"):
-        score += 10
+        score += 5
 
     # === TOPIC RELEVANCE (big boost for matching user interests) ===
     interest_hits = 0
@@ -565,15 +571,17 @@ def discover_via_topic_search() -> list:
 
             for result in soup.select("a.result__a"):
                 href = result.get("href", "")
-                if not href or "duckduckgo.com" in href:
+                if not href:
                     continue
 
-                # DuckDuckGo wraps URLs — extract the real one
+                # DuckDuckGo wraps all URLs — extract the real one first
                 if "uddg=" in href:
                     from urllib.parse import parse_qs, urlparse as _parse
                     parsed_href = _parse(href)
                     qs = parse_qs(parsed_href.query)
                     real_url = qs.get("uddg", [href])[0]
+                elif "duckduckgo.com" in href:
+                    continue  # Skip DDG internal links that aren't search results
                 else:
                     real_url = href
 
@@ -950,13 +958,13 @@ def run_deep_discovery():
         return
 
     # Probe RSS for top candidates (by pre-score without RSS bonus)
-    print(f"\n--- RSS Feed Detection (top 30) ---")
+    print(f"\n--- RSS Feed Detection (top 50) ---")
     for source in unique_sources:
         source["_prescore"] = score_discovered_source(source)
     unique_sources.sort(key=lambda x: x["_prescore"], reverse=True)
 
     probed = 0
-    for source in unique_sources[:30]:
+    for source in unique_sources[:50]:
         if not source.get("url"):
             feed = find_rss_feed(source["domain"])
             if feed:
@@ -965,6 +973,29 @@ def run_deep_discovery():
                 probed += 1
     print(f"  Found RSS for {probed} sources")
 
+    # Fetch sample titles from feeds that have RSS but no titles (enrichment)
+    print(f"\n--- Fetching sample titles for top candidates ---")
+    import feedparser
+    enriched = 0
+    for source in unique_sources[:50]:
+        evidence = source.get("evidence", {})
+        has_titles = any(evidence.get(k) for k in ["sample_titles", "link_text"])
+        if has_titles or not source.get("url"):
+            continue
+        try:
+            feed_data = feedparser.parse(source["url"])
+            titles = []
+            for entry in feed_data.entries[:3]:
+                title = entry.get("title", "").strip()
+                if title:
+                    titles.append(title[:80])
+            if titles:
+                evidence["sample_titles"] = titles
+                enriched += 1
+        except Exception:
+            pass
+    print(f"  Enriched {enriched} sources with sample titles")
+
     # Final scoring
     for source in unique_sources:
         source["discovery_score"] = score_discovered_source(source)
@@ -972,11 +1003,15 @@ def run_deep_discovery():
 
     unique_sources.sort(key=lambda x: x["discovery_score"], reverse=True)
 
-    # Filter: minimum score of 20 (don't send garbage)
-    quality_sources = [s for s in unique_sources if s["discovery_score"] >= 20]
-    # Also require RSS feed — no point suggesting a source we can't subscribe to
-    quality_sources = [s for s in quality_sources if s.get("url")]
-    top_sources = quality_sources[:15]
+    # Filter: minimum score of 25 (don't send garbage)
+    quality_sources = [s for s in unique_sources if s["discovery_score"] >= 25]
+    # Prefer sources with RSS, but allow top sources without (we'll find feed later)
+    with_rss = [s for s in quality_sources if s.get("url")]
+    without_rss = [s for s in quality_sources if not s.get("url")]
+    # Fill top 15: prioritize RSS sources, then backfill with non-RSS
+    top_sources = with_rss[:15]
+    if len(top_sources) < 15:
+        top_sources.extend(without_rss[:15 - len(top_sources)])
 
     if not top_sources:
         print("\nNo quality sources found above threshold.")
