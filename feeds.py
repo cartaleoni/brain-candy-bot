@@ -58,12 +58,12 @@ FEEDS = [
     {"name": "Sid Bharth", "url": "https://sidbharth.substack.com/feed", "category": "Crypto"},
     {"name": "Adem Luz", "url": "https://ademluzrienspects.substack.com/feed", "category": "Essays"},
     {"name": "Mojo", "url": "https://mojo3324106.substack.com/feed", "category": "Markets"},
-    {"name": "a16z News", "url": "https://www.a16z.news/feed", "category": "Tech"},
+    {"name": "a16z News", "url": "https://www.a16z.news/feed", "category": "Tech", "type": "news"},
 
     # ===========================================
     # AI / FRONTIER TECH - Key Voices
     # ===========================================
-    {"name": "Import AI", "url": "https://importai.substack.com/feed", "category": "AI"},
+    {"name": "Import AI", "url": "https://importai.substack.com/feed", "category": "AI", "type": "news"},
     {"name": "The Gradient", "url": "https://thegradientpub.substack.com/feed", "category": "AI"},
     {"name": "The Algorithmic Bridge", "url": "https://thealgorithmicbridge.substack.com/feed", "category": "AI"},
     {"name": "Zvi Mowshowitz", "url": "https://thezvi.substack.com/feed", "category": "AI"},
@@ -112,7 +112,7 @@ FEEDS = [
     # ===========================================
     # e/acc / PROGRESS / ACCELERATIONISM
     # ===========================================
-    {"name": "Pirate Wires", "url": "https://piratewires.com/feed", "category": "Tech"},
+    {"name": "Pirate Wires", "url": "https://piratewires.com/feed", "category": "Tech", "type": "news"},
     {"name": "Palladium Magazine", "url": "https://palladiummag.com/feed/", "category": "Ideas"},
     {"name": "Works in Progress", "url": "https://worksinprogress.co/feed", "category": "Progress"},
     {"name": "Roots of Progress", "url": "https://rootsofprogress.org/feed.xml", "category": "Progress"},
@@ -192,4 +192,8 @@ BLOCKED_KEYWORDS = [
     # Roundups and link collections (low-value)
     "links (", "roundup", "reading list", "weekly dose",
     "what i'm reading", "classifieds", "[ainews]",
+    # Calls-to-action / recruitment (not essays)
+    "apply for", "apply now", "applications open", "accepting applications",
+    "sign up for", "register for", "join our", "now hiring",
+    "we're hiring", "job opening", "apply for the",
 ]

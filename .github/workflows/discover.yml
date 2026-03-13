@@ -27,6 +27,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: python discover.py --weekly
 
+      - name: Send weekly stats
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python main.py --stats
+
       - name: Commit new sources
         run: |
           git config user.name "github-actions[bot]"

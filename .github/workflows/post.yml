@@ -37,7 +37,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             touch posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json
-            git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json feeds.py 2>/dev/null || true
+            git add -f posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feeds.py 2>/dev/null || true
             if ! git diff --staged --quiet; then
               git commit -m "Update bot state [skip ci]"
               git pull --rebase -X theirs || git rebase --abort || true

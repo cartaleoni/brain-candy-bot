@@ -457,17 +457,15 @@ def auto_add_top_sources(n: int = 5) -> list:
 
 def run_weekly_discovery():
     """
-    Run weekly discovery silently.
+    Run weekly discovery silently (via GitHub Actions).
+    Note: Only HN mining works on GHA (Substack blocks cloud IPs).
     Auto-adds top 5 high-quality sources without sending any messages.
-    Fully autonomous - expands reach without user intervention.
     """
     print(f"[{datetime.now()}] Running silent weekly discovery...")
 
-    # Run discovery
     new_sources = discover_new_sources()
     print(f"Found {len(new_sources)} new potential sources")
 
-    # Auto-add top 5 sources (silently)
     added = auto_add_top_sources(n=5)
 
     if added:
@@ -480,14 +478,204 @@ def run_weekly_discovery():
     return {"new_sources": len(new_sources), "added": added}
 
 
+PENDING_DISCOVERY_FILE = DATA_DIR / "pending_discovery_review.json"
+
+
+def run_local_interactive():
+    """Run discovery locally with interactive Telegram review.
+    Use this when on your local machine (Substack works from local IPs)."""
+    import time
+
+    print(f"[{datetime.now()}] Running LOCAL interactive discovery...")
+    print("(Substack scraping + HN mining both work locally)")
+
+    # Full discovery (Substack + HN both work locally)
+    new_sources = discover_new_sources()
+
+    if not new_sources:
+        print("No new sources found.")
+        send_telegram_message("Discovery ran locally — no new sources found.")
+        return
+
+    # Get top discoveries
+    top = get_top_discoveries(10)
+
+    if not top:
+        print("No high-quality sources to review.")
+        send_telegram_message("Discovery found sources but none met quality threshold.")
+        return
+
+    # Send each to Andy for review via DM
+    for i, source in enumerate(top, 1):
+        name = source.get("name", "Unknown")
+        domain = source.get("domain", "")
+        source_type = source.get("source_type", "")
+        url = source.get("url", "No RSS")
+
+        info = f"🔍 <b>Discovery #{i}</b>\n\n"
+        info += f"<b>{name}</b> ({domain})\n"
+        info += f"Type: {source_type}\n"
+
+        if source.get("hn_count"):
+            info += f"HN: {source['hn_count']} posts, avg {source['hn_avg_points']} pts\n"
+
+        if source.get("sample_titles"):
+            info += f"Sample: {source['sample_titles'][0][:60]}\n"
+
+        info += f"Feed: {url}\n\n"
+        info += "Reply: <b>1</b>=Add  <b>0</b>=Skip  <b>x</b>=Block"
+
+        send_telegram_message(info)
+        time.sleep(1)
+
+    # Save pending for review processing
+    pending = []
+    for source in top:
+        pending.append({
+            "name": source.get("name", ""),
+            "domain": source.get("domain", ""),
+            "url": source.get("url"),
+            "source_type": source.get("source_type", ""),
+            "sent_at": datetime.now().isoformat(),
+        })
+
+    with open(PENDING_DISCOVERY_FILE, "w") as f:
+        json.dump(pending, f, indent=2)
+
+    print(f"Sent {len(top)} discoveries for review via Telegram.")
+    print("Run 'python discover.py --process-reviews' after responding.")
+
+
+def process_discovery_reviews():
+    """Process Andy's responses to discovery review DMs."""
+    if not PENDING_DISCOVERY_FILE.exists():
+        print("No pending discovery reviews.")
+        return
+
+    with open(PENDING_DISCOVERY_FILE, "r") as f:
+        pending = json.load(f)
+
+    if not pending:
+        print("No pending discovery reviews.")
+        return
+
+    from bot import get_updates, add_rejected_source
+
+    updates = get_updates()
+    processed = 0
+
+    for update in updates:
+        message = update.get("message", {})
+        chat_id = str(message.get("chat", {}).get("id", ""))
+        text = message.get("text", "").strip().lower()
+
+        if chat_id != ANDY_CHAT_ID:
+            continue
+
+        ratings = []
+        clean_text = text.replace(",", "").replace(" ", "")
+        for char in clean_text:
+            if char == "1":
+                ratings.append("add")
+            elif char == "0":
+                ratings.append("skip")
+            elif char == "x":
+                ratings.append("block")
+
+        if ratings:
+            for i, rating in enumerate(ratings):
+                if i < len(pending):
+                    source = pending[i]
+                    if rating == "add" and source.get("url"):
+                        auto_add_top_sources_single(source)
+                        send_telegram_message(f"Added: {source['name']} ({source['domain']})")
+                        print(f"ADDED: {source['name']} ({source['domain']})")
+                    elif rating == "block":
+                        add_rejected_source(source.get("name", ""),
+                                            f"https://{source.get('domain', '')}")
+                        send_telegram_message(f"Blocked: {source['name']}")
+                        print(f"BLOCKED: {source['name']} ({source['domain']})")
+                    else:
+                        print(f"SKIPPED: {source['name']} ({source['domain']})")
+
+                    processed += 1
+
+            pending = pending[len(ratings):]
+
+    # Save remaining
+    with open(PENDING_DISCOVERY_FILE, "w") as f:
+        json.dump(pending, f, indent=2)
+
+    # Clear processed updates
+    if updates:
+        last_update_id = updates[-1]["update_id"]
+        get_updates(offset=last_update_id + 1)
+
+    print(f"Processed {processed} discovery reviews. {len(pending)} remaining.")
+
+
+def auto_add_top_sources_single(source: dict) -> bool:
+    """Add a single discovered source to feeds.py."""
+    domain = source.get("domain", "")
+    url = source.get("url")
+    name = source.get("name", domain.split(".")[0].title())
+
+    if not url:
+        print(f"No RSS feed for {name}")
+        return False
+
+    existing_domains = get_existing_domains()
+    if domain in existing_domains:
+        print(f"Already in feeds: {name}")
+        return False
+
+    # Verify feed works
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            return False
+    except Exception:
+        return False
+
+    # Add to feeds.py
+    try:
+        with open(FEEDS_FILE, "r") as f:
+            content = f.read()
+
+        insert_point = content.find("BLOCKED_DOMAINS")
+        if insert_point == -1:
+            return False
+
+        last_bracket = content.rfind("},", 0, insert_point)
+        if last_bracket == -1:
+            return False
+
+        category = "Discovered"
+        new_entry = f'\n    {{"name": "{name}", "url": "{url}", "category": "{category}"}},  # Andy-approved'
+
+        new_content = content[:last_bracket + 2] + new_entry + content[last_bracket + 2:]
+
+        with open(FEEDS_FILE, "w") as f:
+            f.write(new_content)
+
+        print(f"Added to feeds.py: {name} ({domain})")
+        return True
+
+    except Exception as e:
+        print(f"Error adding {domain}: {e}")
+        return False
+
+
 if __name__ == "__main__":
     import sys
 
     if "--weekly" in sys.argv:
-        # Run weekly discovery with Telegram report
         run_weekly_discovery()
+    elif "--local" in sys.argv:
+        run_local_interactive()
+    elif "--process-reviews" in sys.argv:
+        process_discovery_reviews()
     else:
-        # Run discovery only
         new_sources = discover_new_sources()
         print("\n" + "=" * 50)
         print(format_discoveries_report())

@@ -66,6 +66,13 @@ ANDY_CHAT_ID = "1023849161"
 # Scoring thresholds
 MIN_SCORE_THRESHOLD = 0.45  # Only post articles scoring above this
 
+# Queue expiry (essays never expire)
+NEWS_EXPIRY_DAYS = 7
+HN_EXPIRY_DAYS = 3
+
+# Category diversity
+MAX_PER_CATEGORY = 5
+
 # Files for tracking state
 DATA_DIR = Path(__file__).parent
 POSTED_FILE = DATA_DIR / "posted.json"
@@ -76,18 +83,7 @@ DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted tod
 APPROVED_FILE = DATA_DIR / "approved.json"  # Articles approved by Andy, ready to post
 REJECTED_SOURCES_FILE = DATA_DIR / "rejected_sources.json"  # Sources Andy has rejected
 
-# URLs Andy already shared (don't send these for review)
-ALREADY_SEEN_URLS = [
-    "https://catherineshannon.substack.com/p/everyone-is-numbing-out",
-    "https://reducibleerrors.com/prediction-markets/",
-    "https://telah.vc/hyperstitions",
-    "https://pmillerd.com/mediocre/",
-    "https://welf.substack.com/p/what-does-it-take-for-wisdom-to-win",
-    "https://nadia.xyz/basic",
-    "https://www.pride.com/culture/celebrities/tiktok-censoring-megan-stalter-and-finneas",
-    "https://tech.lgbt/@JadedBlueEyes/115967791152135761",
-    "https://freddiedeboer.substack.com/p/the-buffalo-bills-are-a-mess-but",
-]
+# Previously hardcoded ALREADY_SEEN_URLS have been merged into posted.json
 
 # Additional blocked keywords (paywalled/premium content)
 PREMIUM_KEYWORDS = [
@@ -98,16 +94,8 @@ PREMIUM_KEYWORDS = [
 
 # Temporarily paused sources (too much recently) - expires after date
 # Format: source name or domain -> expiration date (YYYY-MM-DD)
-PAUSED_SOURCES = {
-    "Paul Graham Essays": "2026-02-18",
-    "paulgraham.com": "2026-02-18",
-    "Vitalik Buterin": "2026-02-18",
-    "vitalik.eth.limo": "2026-02-18",
-    "Nadia Asparouhova": "2026-02-18",
-    "nadia.xyz": "2026-02-18",
-    "Nintil": "2026-02-18",
-    "nintil.com": "2026-02-18",
-}
+# To pause a source, add it here with a future date
+PAUSED_SOURCES = {}
 
 
 def is_source_paused(source: str, url: str = "") -> bool:
@@ -267,10 +255,6 @@ def is_blocked(url: str, title: str = "") -> bool:
     if "/vote?" in url_lower or "/login" in url_lower or "/submit" in url_lower:
         return True
 
-    # Check if already seen
-    if any(normalize_url(seen_url) == normalized for seen_url in ALREADY_SEEN_URLS):
-        return True
-
     # Check blocked domains
     for domain in BLOCKED_DOMAINS:
         if domain in url_lower:
@@ -322,7 +306,111 @@ def get_updates(offset=None):
     return []
 
 
-def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30) -> list:
+def send_help_message():
+    """Send a list of available bot commands via DM."""
+    help_text = (
+        "🧠 <b>Brain Candy Commands</b>\n"
+        "\n"
+        "<b>Rating articles:</b>\n"
+        "  <code>1</code> — Approve article\n"
+        "  <code>0</code> — Skip article (no penalty to source)\n"
+        "  <code>x</code> — Block source permanently\n"
+        "  <code>1,0,x,1</code> — Batch rate multiple articles\n"
+        "\n"
+        "<b>Submitting articles:</b>\n"
+        "  Send a URL — Add to queue (posts next slot)\n"
+        "  <code>!URL</code> — Post immediately to channel\n"
+        "\n"
+        "<b>Other:</b>\n"
+        "  <code>/help</code> — Show this command list\n"
+    )
+    send_message(ANDY_CHAT_ID, help_text)
+    print("Sent help message to Andy")
+
+
+def extract_url_from_message(text: str) -> tuple:
+    """Check if message is a URL submission. Returns (url, immediate) or (None, False).
+    Prefix with ! for immediate posting."""
+    text = text.strip()
+
+    immediate = False
+    if text.startswith("!"):
+        immediate = True
+        text = text[1:].strip()
+
+    if text.startswith("http://") or text.startswith("https://"):
+        url = text.split()[0]
+        return url, immediate
+
+    return None, False
+
+
+def fetch_page_title(url: str) -> str:
+    """Fetch the <title> tag from a URL."""
+    try:
+        from bs4 import BeautifulSoup
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                          "AppleWebKit/537.36"
+        }
+        response = requests.get(url, headers=headers, timeout=8)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+            title_tag = soup.find("title")
+            if title_tag:
+                return title_tag.get_text(strip=True)
+    except Exception as e:
+        print(f"Error fetching title for {url}: {e}")
+    return "Untitled"
+
+
+def handle_url_submission(url: str, immediate: bool = False) -> bool:
+    """Queue or immediately post a user-submitted URL."""
+    title = fetch_page_title(url)
+    domain = urlparse(url).netloc.replace("www.", "")
+
+    article = {
+        "title": title,
+        "link": url,
+        "source": f"Andy via {domain}",
+        "score": 0.9,
+        "queued_at": datetime.now().isoformat(),
+        "content_type": "essay",
+        "user_submitted": True,
+    }
+
+    if immediate:
+        if post_to_channel(article):
+            posted_urls = load_json(POSTED_FILE, [])
+            posted_urls.append(normalize_url(url))
+            save_json(POSTED_FILE, posted_urls)
+            send_message(ANDY_CHAT_ID, f"Posted: {title}\nfrom {domain}")
+            return True
+        else:
+            send_message(ANDY_CHAT_ID, f"Failed to post: {title}")
+            return False
+    else:
+        queue = load_json(QUEUE_FILE, [])
+
+        queue_urls = {normalize_url(item["link"]) for item in queue}
+        posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
+        normalized = normalize_url(url)
+
+        if normalized in queue_urls:
+            send_message(ANDY_CHAT_ID, f"Already in queue: {title}")
+            return False
+        if normalized in posted_urls:
+            send_message(ANDY_CHAT_ID, f"Already posted: {title}")
+            return False
+
+        queue.insert(0, article)
+        save_json(QUEUE_FILE, queue)
+        send_message(ANDY_CHAT_ID, f"Queued: {title}\nfrom {domain}")
+        return True
+
+
+def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30,
+                      extra_preferred: set = None) -> list:
     """Fetch high-scoring articles from Hacker News."""
     articles = []
 
@@ -361,7 +449,11 @@ def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30) -
             source_name = f"HN ({points}pt) via {domain}"
 
             # Boost score for preferred domains
-            is_preferred = any(pref in url.lower() for pref in HN_PREFERRED_DOMAINS)
+            # Boost for preferred domains (hardcoded + learned from training)
+            all_preferred = set(HN_PREFERRED_DOMAINS)
+            if extra_preferred:
+                all_preferred.update(extra_preferred)
+            is_preferred = any(pref in url.lower() for pref in all_preferred)
 
             articles.append({
                 "title": title,
@@ -464,7 +556,7 @@ def send_for_review(article: dict, num: int = 1) -> bool:
 
 <i>— {source}</i>
 
-Reply: <b>1</b>=👍  <b>0</b>=👎"""
+Reply: <b>1</b>=👍  <b>0</b>=👎  <b>x</b>=🚫 block source"""
     
     return send_message(ANDY_CHAT_ID, message)
 
@@ -486,27 +578,48 @@ def process_responses():
         
         if chat_id != ANDY_CHAT_ID:
             continue
-        
-        # Handle batch response like "1,0,1,1,0" or "10110"
+
+        # Check for help command
+        if text in ("/help", "help", "/start"):
+            send_help_message()
+            continue
+
+        # Check if message is a URL submission
+        raw_text = message.get("text", "").strip()
+        url, immediate = extract_url_from_message(raw_text)
+        if url:
+            handle_url_submission(url, immediate)
+            continue
+
+        # Handle batch response like "1,0,1,x,0" or "10x10"
+        # 1 = approve (good), 0 = skip (bad), x = block entire source
         ratings = []
-        
-        # Remove any spaces or commas, just get the 1s and 0s
+
+        # Remove any spaces or commas, normalize shortcuts
         clean_text = text.replace(",", "").replace(" ", "").replace("y", "1").replace("n", "0")
-        
+
         for char in clean_text:
             if char == "1":
                 ratings.append("good")
             elif char == "0":
                 ratings.append("bad")
-        
+            elif char == "x":
+                ratings.append("block")
+
         # Apply ratings to pending articles in order
         if ratings:
             for i, rating in enumerate(ratings):
                 if i < len(pending):
-                    pending[i]["rating"] = rating
+                    pending[i]["rating"] = "bad" if rating == "block" else rating
                     training_log.append(pending[i])
-                    print(f"Logged {rating.upper()}: {pending[i].get('title', '')[:40]}...")
-            
+
+                    if rating == "block":
+                        # Permanently block this source and domain
+                        add_rejected_source(pending[i].get("source", ""), pending[i].get("url", ""))
+                        print(f"BLOCKED SOURCE: {pending[i].get('source', '')} — {pending[i].get('title', '')[:40]}...")
+                    else:
+                        print(f"Logged {rating.upper()}: {pending[i].get('title', '')[:40]}...")
+
             # Remove rated articles from pending
             pending = pending[len(ratings):]
             save_json(PENDING_REVIEW_FILE, pending)
@@ -591,6 +704,102 @@ BAD_TITLE_PATTERNS = [
     "trade alert", "earnings,", "personal day",
 ]
 
+# Content type classification patterns
+CTA_PATTERNS = [
+    "apply for", "apply now", "applications open", "accepting applications",
+    "sign up for", "register for", "join our", "now hiring",
+    "we're hiring", "job opening", "cohort", "save the date",
+    "rsvp", "tickets available", "early bird",
+]
+
+NEWS_TITLE_PATTERNS = [
+    "announces", "announcing", "launches", "launched", "released",
+    "raises $", "funding round", "series a", "series b", "acquires",
+    "has been", "is now", "update:", "breaking:",
+]
+
+EVENT_PATTERNS = [
+    "conference 20", "summit 20", "meetup", "webinar",
+    "workshop 20",
+]
+
+PRODUCT_PATTERNS = [
+    "introducing:", "we built", "we shipped", "changelog",
+    "new feature:", "product update", "beta launch",
+]
+
+
+def classify_title(title: str) -> str:
+    """Classify title into content type.
+    Returns: 'essay', 'cta', 'news', 'roundup', 'event', or 'product'."""
+    title_lower = title.lower()
+
+    for pattern in CTA_PATTERNS:
+        if pattern in title_lower:
+            return "cta"
+
+    for pattern in EVENT_PATTERNS:
+        if pattern in title_lower:
+            return "event"
+
+    for pattern in PRODUCT_PATTERNS:
+        if pattern in title_lower:
+            return "product"
+
+    for pattern in NEWS_TITLE_PATTERNS:
+        if pattern in title_lower:
+            return "news"
+
+    return "essay"
+
+
+def fetch_article_summary(url: str, max_chars: int = 500) -> str:
+    """Fetch first ~500 chars of article body text for content checking."""
+    try:
+        from bs4 import BeautifulSoup
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/120.0.0.0 Safari/537.36",
+        }
+        response = requests.get(url, headers=headers, timeout=8)
+        if response.status_code != 200:
+            return ""
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        for tag in soup(["script", "style", "nav", "header", "footer"]):
+            tag.decompose()
+
+        content = soup.find("article") or soup.find("main") or soup.find("body")
+        if not content:
+            return ""
+
+        text = content.get_text(separator=" ", strip=True)
+        return text[:max_chars]
+
+    except Exception as e:
+        print(f"Error fetching summary for {url}: {e}")
+        return ""
+
+
+def is_substantive_content(summary: str) -> bool:
+    """Check if summary reads like an essay vs. a CTA/announcement."""
+    if not summary or len(summary) < 100:
+        return True  # Benefit of the doubt if we can't fetch
+
+    summary_lower = summary.lower()
+
+    cta_signals = [
+        "apply now", "sign up", "register today", "limited spots",
+        "deadline", "applications close", "join us", "enroll",
+        "submit your", "application form",
+    ]
+
+    cta_count = sum(1 for signal in cta_signals if signal in summary_lower)
+    return cta_count < 2
+
 
 def get_source_scores() -> dict:
     """Calculate trust scores per source from training data."""
@@ -609,16 +818,54 @@ def get_source_scores() -> dict:
         elif rating == "bad":
             source_stats[source]["bad"] += 1
 
-    # Calculate scores (good ratio)
+    # Calculate scores with Bayesian smoothing
+    # Uses (good + prior) / (total + 2*prior) to pull small samples toward 0.5
+    # This prevents a source with 1/1 good from outranking one with 9/10 good
+    PRIOR = 2  # Equivalent to adding 2 fake "good" and 2 fake "bad" ratings
     scores = {}
     for source, stats in source_stats.items():
         total = stats["good"] + stats["bad"]
         if total > 0:
-            scores[source] = stats["good"] / total
+            scores[source] = (stats["good"] + PRIOR) / (total + 2 * PRIOR)
         else:
             scores[source] = 0.5  # Neutral for unknown
 
     return scores
+
+
+def get_hn_liked_domains() -> set:
+    """Build dynamic set of HN domains the user has historically liked."""
+    training_log = load_json(TRAINING_LOG_FILE, [])
+    domain_stats = {}
+
+    for item in training_log:
+        source = item.get("source", "")
+        rating = item.get("rating", "")
+
+        # Match HN source pattern: "HN (Npt) via domain.com"
+        if "HN" not in source or "via" not in source:
+            continue
+
+        parts = source.split("via ")
+        if len(parts) < 2:
+            continue
+        domain = parts[1].strip()
+
+        if domain not in domain_stats:
+            domain_stats[domain] = {"good": 0, "bad": 0}
+
+        if rating == "good":
+            domain_stats[domain]["good"] += 1
+        elif rating == "bad":
+            domain_stats[domain]["bad"] += 1
+
+    # Include domains with more good than bad ratings
+    liked = set()
+    for domain, stats in domain_stats.items():
+        if stats["good"] > stats["bad"] and stats["good"] >= 1:
+            liked.add(domain)
+
+    return liked
 
 
 def score_article(article: dict, source_scores: dict) -> float:
@@ -649,6 +896,19 @@ def score_article(article: dict, source_scores: dict) -> float:
         # Extra bonus for preferred essay domains
         if article.get("hn_preferred", False):
             score += 0.15
+
+    # Content type penalty
+    content_type = classify_title(title)
+    if content_type == "cta":
+        score -= 0.5
+    elif content_type == "event":
+        score -= 0.4
+    elif content_type == "roundup":
+        score -= 0.3
+    elif content_type == "product":
+        score -= 0.2
+    elif content_type == "news":
+        score -= 0.1
 
     # Clamp to 0-1
     return max(0.0, min(1.0, score))
@@ -777,6 +1037,43 @@ def run_production():
 
 # === SCHEDULED POSTING MODE ===
 
+def prune_expired_articles(queue: list) -> list:
+    """Remove expired news/HN articles from queue. Essays never expire."""
+    now = datetime.now()
+    pruned = []
+
+    for article in queue:
+        queued_at_str = article.get("queued_at")
+        content_type = article.get("content_type", "essay")
+
+        # Essays and legacy articles (no timestamp) never expire
+        if content_type == "essay" or not queued_at_str:
+            pruned.append(article)
+            continue
+
+        try:
+            queued_at = datetime.fromisoformat(queued_at_str)
+        except (ValueError, TypeError):
+            pruned.append(article)
+            continue
+
+        age_days = (now - queued_at).days
+
+        if content_type == "hn" and age_days > HN_EXPIRY_DAYS:
+            print(f"Expired (HN, {age_days}d): {article['title'][:40]}...")
+            continue
+        elif content_type == "news" and age_days > NEWS_EXPIRY_DAYS:
+            print(f"Expired (news, {age_days}d): {article['title'][:40]}...")
+            continue
+
+        pruned.append(article)
+
+    if len(pruned) < len(queue):
+        print(f"Pruned {len(queue) - len(pruned)} expired articles")
+
+    return pruned
+
+
 def build_queue():
     """Build a queue of scored articles ready for scheduled posting."""
     print(f"[{datetime.now()}] Building queue...")
@@ -784,8 +1081,9 @@ def build_queue():
     # Get source scores
     source_scores = get_source_scores()
 
-    # Load existing queue
+    # Load existing queue and prune expired articles
     queue = load_json(QUEUE_FILE, [])
+    queue = prune_expired_articles(queue)
     queue_urls = {normalize_url(item["link"]) for item in queue}
 
     # Load URLs to skip (already posted or reviewed)
@@ -794,11 +1092,21 @@ def build_queue():
     reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
     skip_urls = queue_urls | posted_urls | reviewed_urls
 
+    # Build feed type and category lookups
+    feed_types = {}
+    feed_categories = {}
+    for feed in FEEDS:
+        feed_types[feed["name"]] = feed.get("type", "essay")
+        feed_categories[feed["name"]] = feed.get("category", "Uncategorized")
+
     # Collect new articles from RSS feeds
     articles = collect_articles_without_saving()
 
-    # Also fetch from Hacker News
-    hn_articles = fetch_hacker_news()
+    # Also fetch from Hacker News (with dynamic preferred domains)
+    hn_liked = get_hn_liked_domains()
+    if hn_liked:
+        print(f"Dynamic HN preferred domains: {', '.join(list(hn_liked)[:5])}{'...' if len(hn_liked) > 5 else ''}")
+    hn_articles = fetch_hacker_news(extra_preferred=hn_liked)
     for hn_article in hn_articles:
         normalized = normalize_url(hn_article["link"])
         if normalized not in skip_urls:
@@ -815,12 +1123,15 @@ def build_queue():
                     "source": canon.get("author", "Canonical"),
                 })
 
-    # Track source counts for diversity (max 2 per source in queue)
+    # Track source and category counts for diversity
     MAX_PER_SOURCE = 2
     source_counts = {}
+    category_counts = {}
     for item in queue:
         src = item.get("source", "")
         source_counts[src] = source_counts.get(src, 0) + 1
+        cat = item.get("category", "Uncategorized")
+        category_counts[cat] = category_counts.get(cat, 0) + 1
 
     # Score and filter new articles
     for article in articles:
@@ -828,7 +1139,6 @@ def build_queue():
         if normalized in skip_urls:
             continue
 
-        # Limit articles per source for diversity
         source = article.get("source", "")
         link = article.get("link", "")
 
@@ -840,16 +1150,46 @@ def build_queue():
         if is_source_rejected(source, link):
             continue
 
+        # Source diversity limit
         if source_counts.get(source, 0) >= MAX_PER_SOURCE:
             continue
 
+        # Determine category
+        if article.get("hn_points"):
+            category = "Tech"  # Default for HN articles
+        else:
+            category = feed_categories.get(source, "Uncategorized")
+
+        # Category diversity limit
+        if category_counts.get(category, 0) >= MAX_PER_CATEGORY:
+            continue
+
         score = score_article(article, source_scores)
+
+        # For non-essay titles that still score well, check article body
+        content_type_label = classify_title(article.get("title", ""))
+        if content_type_label != "essay" and score >= MIN_SCORE_THRESHOLD:
+            summary = fetch_article_summary(link)
+            if summary and not is_substantive_content(summary):
+                score -= 0.3
+                print(f"Body check failed: {article['title'][:40]}...")
+
         if score >= MIN_SCORE_THRESHOLD:
             article["score"] = score
+            article["queued_at"] = datetime.now().isoformat()
+            article["category"] = category
+
+            # Determine content type for expiry
+            if article.get("hn_points"):
+                article["content_type"] = "hn"
+            else:
+                article["content_type"] = feed_types.get(source, "essay")
+
             queue.append(article)
             skip_urls.add(normalized)
             source_counts[source] = source_counts.get(source, 0) + 1
-            print(f"Queued (score {score:.2f}): {article['title'][:40]}...")
+            category_counts[category] = category_counts.get(category, 0) + 1
+            print(f"Queued (score {score:.2f}, {category}): {article['title'][:40]}...")
 
     # Sort queue by score
     queue.sort(key=lambda x: x.get("score", 0), reverse=True)
@@ -870,6 +1210,7 @@ def post_from_queue(count: int = 2):
     print(f"[{datetime.now()}] Posting {count} articles from queue...")
 
     queue = load_json(QUEUE_FILE, [])
+    queue = prune_expired_articles(queue)
 
     if not queue:
         print("Queue is empty! Building queue first...")
@@ -953,7 +1294,7 @@ def send_for_channel_review(article: dict, num: int = 1) -> bool:
 <i>— {source}</i>
 <i>Score: {score:.2f}</i>
 
-Reply: <b>1</b>=✅ Post to channel  <b>0</b>=❌ Skip"""
+Reply: <b>1</b>=✅ Post  <b>0</b>=❌ Skip  <b>x</b>=🚫 Block source"""
 
     return send_message(ANDY_CHAT_ID, message)
 
@@ -978,7 +1319,19 @@ def process_review_responses():
         if chat_id != ANDY_CHAT_ID:
             continue
 
-        # Parse ratings (1s and 0s)
+        # Check for help command
+        if text in ("/help", "help", "/start"):
+            send_help_message()
+            continue
+
+        # Check if message is a URL submission
+        raw_text = message.get("text", "").strip()
+        url, immediate = extract_url_from_message(raw_text)
+        if url:
+            handle_url_submission(url, immediate)
+            continue
+
+        # Parse ratings: 1=approve, 0=skip, x=block source
         ratings = []
         clean_text = text.replace(",", "").replace(" ", "").replace("y", "1").replace("n", "0")
 
@@ -987,13 +1340,15 @@ def process_review_responses():
                 ratings.append("good")
             elif char == "0":
                 ratings.append("bad")
+            elif char == "x":
+                ratings.append("block")
 
         # Apply ratings
         if ratings:
             for i, rating in enumerate(ratings):
                 if i < len(pending):
                     article = pending[i]
-                    article["rating"] = rating
+                    article["rating"] = "bad" if rating == "block" else rating
                     training_log.append(article)
 
                     if rating == "good":
@@ -1022,10 +1377,13 @@ def process_review_responses():
                             )
 
                         print(f"APPROVED: {article['title'][:40]}... (added to queue, source added to feeds)")
-                    else:
-                        # Reject article AND block the source
+                    elif rating == "block":
+                        # Permanently block source and domain
                         add_rejected_source(article["source"], article.get("url", ""))
-                        print(f"REJECTED (source blocked): {article['title'][:40]}...")
+                        print(f"BLOCKED SOURCE: {article.get('source', '')} — {article['title'][:40]}...")
+                    else:
+                        # Just skip this article, don't punish the source
+                        print(f"SKIPPED: {article['title'][:40]}...")
 
                     processed += 1
 
@@ -1149,6 +1507,64 @@ def run_review_mode(should_post: bool = True):
 
       # Stats
       print(f"Status: {len(pending)} pending review")
+
+
+def send_weekly_stats():
+    """Send a weekly stats summary to Andy via Telegram DM."""
+    from collections import Counter
+
+    queue = load_json(QUEUE_FILE, [])
+    posted_urls = load_json(POSTED_FILE, [])
+    training_log = load_json(TRAINING_LOG_FILE, [])
+
+    # This week's ratings
+    now = datetime.now()
+    week_ago = now - timedelta(days=7)
+
+    week_ratings = []
+    for item in training_log:
+        sent_at = item.get("sent_at", "")
+        try:
+            if sent_at and datetime.fromisoformat(sent_at) > week_ago:
+                week_ratings.append(item)
+        except (ValueError, TypeError):
+            continue
+
+    good_count = len([p for p in week_ratings if p.get("rating") == "good"])
+    bad_count = len([p for p in week_ratings if p.get("rating") == "bad"])
+
+    # Queue stats
+    queue_categories = Counter(a.get("category", "Uncategorized") for a in queue)
+
+    # Source scores
+    source_scores = get_source_scores()
+    top_sources = sorted(source_scores.items(), key=lambda x: x[1], reverse=True)[:5]
+
+    # Sources with 0 articles in queue
+    all_feed_names = {f["name"] for f in FEEDS}
+    queue_feed_names = {a.get("source", "") for a in queue}
+    empty_sources_count = len(all_feed_names - queue_feed_names)
+
+    # Build message
+    msg = "<b>Weekly Brain Candy Stats</b>\n\n"
+
+    msg += f"<b>Queue:</b> {len(queue)} articles\n"
+    msg += f"<b>Total posted:</b> {len(posted_urls)}\n"
+    msg += f"<b>This week:</b> {good_count} approved, {bad_count} skipped\n\n"
+
+    if queue_categories:
+        msg += "<b>Queue by Category:</b>\n"
+        for cat, count in queue_categories.most_common(8):
+            msg += f"  {cat}: {count}\n"
+
+    msg += f"\n<b>Top Sources (trust):</b>\n"
+    for source, score in top_sources:
+        msg += f"  {source}: {score:.2f}\n"
+
+    msg += f"\n<b>Sources with 0 queued:</b> {empty_sources_count}"
+
+    send_message(ANDY_CHAT_ID, msg)
+    print("Weekly stats sent to Andy.")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode
+from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats
 
 CHICAGO_TZ = ZoneInfo("America/Chicago")
 POSTING_HOURS = [9, 16]  # 9 AM and 4 PM Chicago time
@@ -22,8 +22,13 @@ def is_posting_hour():
 SCHEDULED_MODE = "--scheduled" in sys.argv
 PRODUCTION_MODE = "--production" in sys.argv
 GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv
+STATS_MODE = "--stats" in sys.argv
 
-if GITHUB_ACTIONS_MODE:
+if STATS_MODE:
+    print("Brain Candy - WEEKLY STATS")
+    send_weekly_stats()
+    print("Done!")
+elif GITHUB_ACTIONS_MODE:
     print("Brain Candy - GITHUB ACTIONS MODE")
     chicago_now = get_chicago_time()
     print(f"Current time: {chicago_now.strftime('%Y-%m-%d %H:%M %Z')}")
