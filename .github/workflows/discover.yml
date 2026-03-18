@@ -20,7 +20,7 @@ jobs:
         run: |
           STATE_FILES="posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json"
           for f in $STATE_FILES; do
-            LATEST_COMMIT=$(git log --all -1 --format="%H" -- "$f")
+            LATEST_COMMIT=$(git log --all -1 --format="%H" --diff-filter=AM -- "$f")
             if [ -n "$LATEST_COMMIT" ]; then
               git show "$LATEST_COMMIT:$f" > "$f" 2>/dev/null && echo "Restored $f from $LATEST_COMMIT" || true
             fi
