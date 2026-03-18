@@ -6,12 +6,12 @@ Telegram bot that posts curated essays to @candyforthebrain channel.
 
 Two-part system:
 - **Local listener** (`--listen`) — Always-on process for instant DM handling
-- **GitHub Actions** (`--github-actions`) — Scheduled channel posting at 9 AM / 4 PM Chicago
+- **GitHub Actions** (`--github-actions`) — Scheduled channel posting at 11 AM Chicago
 
 ## Schedule
-- **9 AM and 4 PM Chicago time, Monday-Friday only**
+- **11 AM Chicago time, Monday-Friday only** (one post per day)
 - Runs via GitHub Actions (`.github/workflows/post.yml`)
-- Cron: `0 14,15,21,22 * * 1-5` (UTC times)
+- Cron: `0 16,17 * * 1-5` (UTC times, two slots to cover CST/CDT)
 
 ## Key Files
 - `main.py` — Entry point, handles mode selection

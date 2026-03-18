@@ -327,6 +327,66 @@ def deduplicate_sources(raw_sources: list) -> list:
     return list(by_domain.values())
 
 
+# Cache for dynamic keywords (computed once per process)
+_dynamic_keywords_cache = None
+
+def get_dynamic_interest_keywords() -> list:
+    """Extract topic keywords from articles Andy has rated 'good'.
+
+    Returns top 30 keywords by frequency, giving discovery scoring
+    a personalized signal based on actual taste rather than static lists.
+    """
+    global _dynamic_keywords_cache
+    if _dynamic_keywords_cache is not None:
+        return _dynamic_keywords_cache
+
+    stopwords = {
+        "the", "a", "an", "of", "to", "in", "and", "is", "for", "on", "with",
+        "that", "this", "it", "from", "by", "at", "as", "or", "be", "was",
+        "are", "were", "been", "has", "have", "had", "will", "would", "could",
+        "should", "not", "but", "if", "so", "than", "then", "no", "do", "did",
+        "its", "you", "your", "we", "our", "my", "their", "his", "her", "all",
+        "each", "every", "any", "about", "more", "how", "why", "what", "when",
+        "where", "who", "which", "can", "new", "one", "two", "just", "like",
+        "into", "over", "also", "back", "after", "use", "way", "than", "them",
+        "these", "some", "other", "most", "very", "don", "get", "got", "need",
+        "been", "being", "does", "much", "well", "too", "out", "still", "only",
+    }
+
+    training_log_file = DATA_DIR / "training_log.json"
+    if not training_log_file.exists():
+        _dynamic_keywords_cache = []
+        return []
+
+    try:
+        with open(training_log_file, "r") as f:
+            training_log = json.load(f)
+    except Exception:
+        _dynamic_keywords_cache = []
+        return []
+
+    # Extract words from titles of approved articles
+    word_counts = {}
+    for entry in training_log:
+        if entry.get("rating") != "good":
+            continue
+        title = entry.get("title", "")
+        words = re.findall(r'[a-z]+', title.lower())
+        for word in words:
+            if len(word) >= 3 and word not in stopwords:
+                word_counts[word] = word_counts.get(word, 0) + 1
+
+    # Return top 30 by frequency (minimum 2 occurrences to avoid noise)
+    keywords = sorted(
+        [(w, c) for w, c in word_counts.items() if c >= 2],
+        key=lambda x: x[1],
+        reverse=True,
+    )[:30]
+
+    _dynamic_keywords_cache = [w for w, c in keywords]
+    return _dynamic_keywords_cache
+
+
 def score_discovered_source(source: dict) -> float:
     """Score a discovered source. Heavily favors individual essay writers over news/newsletters.
 
@@ -448,6 +508,12 @@ def score_discovered_source(source: dict) -> float:
         score += 15
     elif essay_hits >= 1:
         score += 8
+
+    # === DYNAMIC INTEREST KEYWORDS (learned from Andy's approvals) ===
+    dynamic_keywords = get_dynamic_interest_keywords()
+    if dynamic_keywords:
+        dynamic_hits = sum(1 for kw in dynamic_keywords if kw in titles_lower or kw in name_lower)
+        score += min(15, dynamic_hits * 3)
 
     return round(max(0, score), 1)
 
@@ -793,7 +859,7 @@ def discover_via_reddit() -> list:
 
     for domain, stats in domain_stats.items():
         avg_ups = stats["total_ups"] / max(1, stats["count"])
-        if stats["count"] >= 2 or (stats["count"] >= 1 and avg_ups >= 100):
+        if stats["count"] >= 3 or (stats["count"] >= 2 and avg_ups >= 200):
             sources.append({
                 "name": domain.split(".")[0].title(),
                 "domain": domain,
@@ -1448,25 +1514,67 @@ def auto_add_top_sources(n: int = 5) -> list:
 
 def run_weekly_discovery():
     """
-    Run weekly discovery silently (via GitHub Actions).
+    Run weekly discovery (via GitHub Actions).
     Note: Only HN mining works on GHA (Substack blocks cloud IPs).
-    Auto-adds top 5 high-quality sources without sending any messages.
+    Scores sources properly and sends top 10 for DM review.
     """
-    print(f"[{datetime.now()}] Running silent weekly discovery...")
+    print(f"[{datetime.now()}] Running weekly discovery...")
 
     new_sources = discover_new_sources()
     print(f"Found {len(new_sources)} new potential sources")
 
-    added = auto_add_top_sources(n=5)
+    # Score all discovered sources with the proper scoring function
+    discovered = load_discovered()
+    existing_domains = get_existing_domains()
+    rejected = set()
+    rejected_file = DATA_DIR / "rejected_sources.json"
+    if rejected_file.exists():
+        try:
+            with open(rejected_file, "r") as f:
+                rej_data = json.load(f)
+            rejected = set(rej_data.get("domains", []))
+        except Exception:
+            pass
 
-    if added:
-        print(f"Auto-added {len(added)} new sources:")
-        for source in added:
-            print(f"  + {source['name']} ({source['domain']})")
-    else:
-        print("No new sources met quality threshold")
+    # Score and filter
+    candidates = []
+    for source in discovered.get("sources", []):
+        domain = source.get("domain", "")
+        if domain in existing_domains or domain in rejected:
+            continue
+        source["discovery_score"] = score_discovered_source(source)
+        if source["discovery_score"] >= 25 and source.get("url"):
+            candidates.append(source)
 
-    return {"new_sources": len(new_sources), "added": added}
+    candidates.sort(key=lambda x: x["discovery_score"], reverse=True)
+    top = candidates[:10]
+
+    if not top:
+        print("No quality sources found above threshold.")
+        send_telegram_message("Weekly discovery ran — no quality sources to review.")
+        return {"new_sources": len(new_sources), "sent_for_review": 0}
+
+    # Send for DM review instead of auto-adding
+    print(f"Sending top {len(top)} discoveries for review...")
+    send_discoveries_for_review(top)
+
+    # Save pending for review processing
+    pending = []
+    for source in top:
+        pending.append({
+            "name": source.get("name", ""),
+            "domain": source.get("domain", ""),
+            "url": source.get("url"),
+            "source_type": ", ".join(source.get("methods", [])),
+            "sent_at": datetime.now().isoformat(),
+        })
+
+    with open(PENDING_DISCOVERY_FILE, "w") as f:
+        json.dump(pending, f, indent=2)
+
+    save_discovered(discovered)
+    print(f"Sent {len(top)} discoveries for review via Telegram.")
+    return {"new_sources": len(new_sources), "sent_for_review": len(top)}
 
 
 PENDING_DISCOVERY_FILE = DATA_DIR / "pending_discovery_review.json"
@@ -1657,10 +1765,80 @@ def auto_add_top_sources_single(source: dict) -> bool:
         return False
 
 
+def rescore_all_discovered():
+    """Re-score all discovered sources and send top ones for review.
+
+    Use this to clean up the backlog after improving the scoring algorithm.
+    Run: python discover.py --rescore
+    """
+    discovered = load_discovered()
+    sources = discovered.get("sources", [])
+    print(f"Rescoring {len(sources)} discovered sources...")
+
+    existing_domains = get_existing_domains()
+    rejected = set()
+    rejected_file = DATA_DIR / "rejected_sources.json"
+    if rejected_file.exists():
+        try:
+            with open(rejected_file, "r") as f:
+                rej_data = json.load(f)
+            rejected = set(rej_data.get("domains", []))
+        except Exception:
+            pass
+
+    # Score all sources
+    for source in sources:
+        source["discovery_score"] = score_discovered_source(source)
+
+    # Filter out garbage, already-added, and rejected
+    kept = [
+        s for s in sources
+        if s.get("discovery_score", 0) > 0
+        and s.get("domain", "") not in existing_domains
+        and s.get("domain", "") not in rejected
+    ]
+    kept.sort(key=lambda x: x["discovery_score"], reverse=True)
+
+    removed = len(sources) - len(kept)
+    print(f"Kept {len(kept)} sources, removed {removed} (score=0, already added, or rejected)")
+
+    # Save cleaned list
+    discovered["sources"] = kept
+    save_discovered(discovered)
+
+    # Send top 15 for review
+    top = [s for s in kept if s.get("url")][:15]
+    if top:
+        print(f"\nSending top {len(top)} for review...")
+        send_discoveries_for_review(top)
+
+        pending = []
+        for source in top:
+            pending.append({
+                "name": source.get("name", ""),
+                "domain": source.get("domain", ""),
+                "url": source.get("url"),
+                "source_type": ", ".join(source.get("methods", [])),
+                "sent_at": datetime.now().isoformat(),
+            })
+        with open(PENDING_DISCOVERY_FILE, "w") as f:
+            json.dump(pending, f, indent=2)
+        print(f"Review the top {len(top)} in Telegram, then run: python3 discover.py --process-reviews")
+    else:
+        print("No sources with RSS feeds to review.")
+
+    # Print top 20 summary
+    print(f"\nTop 20 scored sources:")
+    for i, s in enumerate(kept[:20], 1):
+        print(f"  {i:2d}. {s.get('discovery_score', 0):5.1f}  {s.get('domain', '?')}  ({s.get('name', '?')})")
+
+
 if __name__ == "__main__":
     import sys
 
-    if "--deep" in sys.argv:
+    if "--rescore" in sys.argv:
+        rescore_all_discovered()
+    elif "--deep" in sys.argv:
         run_deep_discovery()
     elif "--weekly" in sys.argv:
         run_weekly_discovery()

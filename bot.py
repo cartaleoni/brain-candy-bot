@@ -49,9 +49,11 @@ def normalize_url(url: str) -> str:
 
     parsed = urlparse(url)
 
-    # Force https, lowercase domain only (not path)
+    # Force https, lowercase domain, strip www. prefix
     scheme = "https"
     netloc = parsed.netloc.lower()
+    if netloc.startswith("www."):
+        netloc = netloc[4:]
 
     # Remove trailing slash from path (keep original case)
     path = parsed.path.rstrip("/")
@@ -91,14 +93,40 @@ PENDING_REVIEW_FILE = DATA_DIR / "pending_review.json"
 DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted today
 APPROVED_FILE = DATA_DIR / "approved.json"  # Articles approved by Andy, ready to post
 REJECTED_SOURCES_FILE = DATA_DIR / "rejected_sources.json"  # Sources Andy has rejected
+FEED_HEALTH_FILE = DATA_DIR / "feed_health.json"  # Track consecutive feed failures
 
 # Previously hardcoded ALREADY_SEEN_URLS have been merged into posted.json
 
-# Additional blocked keywords (paywalled/premium content)
+# Additional blocked keywords (paywalled/premium content) — checked in titles
 PREMIUM_KEYWORDS = [
     "trade alert", "premium", "members only", "subscriber only",
     "paid subscribers", "upgrade to read", "unlock this post",
     "for paying subscribers", "member-only",
+]
+
+# Paywall indicators found in article body/HTML — checked by fetch
+PAYWALL_BODY_SIGNALS = [
+    "this post is for paid subscribers",
+    "this post is for paying subscribers",
+    "upgrade to paid",
+    "subscribe to read",
+    "continue reading with a subscription",
+    "already a paid subscriber",
+    "become a paid subscriber",
+    "only paid subscribers",
+    "only for paid subscribers",
+    "available to paid subscribers",
+    "to read the rest of this story",
+    "subscribe to continue reading",
+    "this content is for subscribers",
+    "premium subscribers only",
+    "you need a subscription",
+    "sign in to read",
+    "create a free account to continue",
+    "free preview",
+    "to continue reading",
+    "unlock this article",
+    "paywall",
 ]
 
 # Temporarily paused sources (too much recently) - expires after date
@@ -171,8 +199,8 @@ def add_source_to_feeds(name: str, url: str, domain: str = ""):
         with open(feeds_file, "r") as f:
             content = f.read()
 
-        # Check if already exists
-        if url in content or (domain and domain in content):
+        # Check if already exists (by name, URL, or domain)
+        if url in content or f'"name": "{name}"' in content or (domain and domain in content):
             print(f"Source already in feeds.py: {name}")
             return False
 
@@ -212,14 +240,20 @@ def add_source_to_feeds(name: str, url: str, domain: str = ""):
 
 def load_json(filepath, default):
     if filepath.exists():
-        with open(filepath, "r") as f:
-            return json.load(f)
+        try:
+            with open(filepath, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, ValueError):
+            print(f"Warning: corrupted JSON in {filepath}, using default")
+            return default
     return default
 
 
 def save_json(filepath, data):
-    with open(filepath, "w") as f:
+    tmp = filepath.with_suffix(".tmp")
+    with open(tmp, "w") as f:
         json.dump(data, f, indent=2)
+    tmp.replace(filepath)
 
 
 def get_today_date() -> str:
@@ -258,7 +292,6 @@ def save_daily_source(source: str):
 def is_blocked(url: str, title: str = "") -> bool:
     url_lower = url.lower()
     title_lower = title.lower()
-    normalized = normalize_url(url)
 
     # Block action URLs (votes, logins, etc.)
     if "/vote?" in url_lower or "/login" in url_lower or "/submit" in url_lower:
@@ -293,7 +326,14 @@ def send_message(chat_id: str, text: str) -> bool:
     
     try:
         response = requests.post(url, json=payload, timeout=10)
-        return response.status_code == 200
+        if response.status_code != 200:
+            print(f"Telegram API HTTP error: {response.status_code}")
+            return False
+        result = response.json()
+        if not result.get("ok"):
+            print(f"Telegram API error: {result.get('description', 'unknown')}")
+            return False
+        return True
     except Exception as e:
         print(f"Error sending message: {e}")
         return False
@@ -316,25 +356,118 @@ def get_updates(offset=None):
 
 
 def send_help_message():
-    """Send a list of available bot commands via DM."""
+    """Send a quick command reference via DM."""
     help_text = (
         "🧠 <b>Brain Candy Commands</b>\n"
         "\n"
-        "<b>Rating articles:</b>\n"
-        "  <code>1</code> — Approve article\n"
-        "  <code>0</code> — Skip article (no penalty to source)\n"
-        "  <code>x</code> — Block source permanently\n"
-        "  <code>1,0,x,1</code> — Batch rate multiple articles\n"
+        "<b>Rating:</b>\n"
+        "  <code>1</code> — Approve  |  <code>0</code> — Skip  |  <code>x</code> — Block source\n"
+        "  <code>1,0,x,1</code> — Batch rate multiple\n"
         "\n"
-        "<b>Submitting articles:</b>\n"
-        "  Send a URL — Add to queue (posts next slot)\n"
-        "  <code>!URL</code> — Post immediately to channel\n"
+        "<b>Submitting:</b>\n"
+        "  Send a URL — Queue for next slot\n"
+        "  <code>!URL</code> — Post immediately\n"
         "\n"
-        "<b>Other:</b>\n"
-        "  <code>/help</code> — Show this command list\n"
+        "<b>Commands:</b>\n"
+        "  <code>/help</code> — This quick reference\n"
+        "  <code>/guide</code> — Full bot guide (scoring, schedule, etc.)\n"
+        "  <code>/stats</code> — Weekly stats summary\n"
+        "  <code>/undo</code> — Undo last rating\n"
     )
     send_message(ANDY_CHAT_ID, help_text)
     print("Sent help message to Andy")
+
+
+def send_guide_message():
+    """Send a comprehensive bot guide covering all features and scoring."""
+    queue = load_json(QUEUE_FILE, [])
+    pending = load_json(PENDING_REVIEW_FILE, [])
+    posted = load_json(POSTED_FILE, [])
+
+    guide = (
+        "📖 <b>Brain Candy — Full Guide</b>\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>🎯 WHAT THIS BOT DOES</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "Posts one curated essay per day to @candyforthebrain at 11 AM Chicago time (Mon-Fri). "
+        "You train it by rating articles in DMs.\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>💬 DM COMMANDS</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>Rating articles:</b>\n"
+        "  <code>1</code> — Approve (adds to queue, boosts source trust)\n"
+        "  <code>0</code> — Skip (no penalty to source score)\n"
+        "  <code>x</code> — Block source permanently\n"
+        "  <code>1,0,x,1</code> — Batch rate (maps left→right to pending articles)\n"
+        "\n"
+        "<b>Submitting:</b>\n"
+        "  Send a URL — Queues article for next posting slot\n"
+        "  <code>!URL</code> — Posts immediately to channel\n"
+        "\n"
+        "<b>Commands:</b>\n"
+        "  <code>/help</code> — Quick command reference\n"
+        "  <code>/guide</code> — This full guide\n"
+        "  <code>/stats</code> — Weekly stats (approvals, queue, top sources)\n"
+        "  <code>/undo</code> — Undo last rating (including unblocking)\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>📊 SCORING SYSTEM</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>Source trust (Bayesian):</b>\n"
+        "  • Starts at 0.5 (neutral)\n"
+        "  • Each <code>1</code> rating pushes toward 1.0\n"
+        "  • Each <code>0</code> rating pushes toward 0.0\n"
+        "  • PRIOR=2 means ~4 ratings to move significantly\n"
+        "  • Score = (approvals + 2×0.5) / (total + 2)\n"
+        "\n"
+        "<b>Article scoring:</b>\n"
+        "  • Base score = source trust score\n"
+        "  • Title type penalties:\n"
+        "    CTA: -0.5 | Event: -0.4 | Roundup: -0.3\n"
+        "    Product: -0.2 | News: -0.1 | Essay: 0\n"
+        "  • MIN_SCORE_THRESHOLD = 0.45 to enter queue\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>📋 QUEUE RULES</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  • Max 50 articles, max 5 per category, max 2 per source\n"
+        "  • Essays never expire\n"
+        "  • News expires in 7 days, HN posts in 3 days\n"
+        "  • One source per day (variety enforcement)\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>🔄 SCHEDULE</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  • <b>Daily 11 AM Chicago (Mon-Fri):</b> Posts 1 article\n"
+        "  • <b>Monday 11 AM:</b> Also sends weekly stats\n"
+        "  • <b>Sunday 10 AM:</b> Runs source discovery, sends top finds for review\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>🔍 DISCOVERY</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  • Mines HN, Lobsters, Reddit, Substack recs, blogrolls\n"
+        "  • Scores sources by: multi-method evidence, essay quality signals, topic match\n"
+        "  • Learns from your approvals — topics you like boost future discoveries\n"
+        "  • Sunday auto-discovery sends top 10 for your review\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>⚡ ALERTS</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  • Queue below 5 → warning DM\n"
+        "  • Feed fails 5x in a row → dead feed alert\n"
+        "  • Approve article → shows if source has more in queue\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"<b>📈 CURRENT STATE</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"  • Queue: {len(queue)} articles\n"
+        f"  • Pending review: {len(pending)}\n"
+        f"  • Total posted: {len(posted)}\n"
+    )
+    send_message(ANDY_CHAT_ID, guide)
+    print("Sent full guide to Andy")
 
 
 def extract_url_from_message(text: str) -> tuple:
@@ -375,6 +508,10 @@ def fetch_page_title(url: str) -> str:
 
 def handle_url_submission(url: str, immediate: bool = False) -> bool:
     """Queue or immediately post a user-submitted URL."""
+    if is_blocked(url):
+        send_message(ANDY_CHAT_ID, f"⚠️ URL is from a blocked domain — skipping.")
+        return False
+
     title = fetch_page_title(url)
     domain = urlparse(url).netloc.replace("www.", "")
 
@@ -389,8 +526,11 @@ def handle_url_submission(url: str, immediate: bool = False) -> bool:
     }
 
     if immediate:
+        posted_urls = load_json(POSTED_FILE, [])
+        if normalize_url(url) in {normalize_url(u) for u in posted_urls}:
+            send_message(ANDY_CHAT_ID, f"📌 Already shared — <b>{title}</b>")
+            return False
         if post_to_channel(article):
-            posted_urls = load_json(POSTED_FILE, [])
             posted_urls.append(normalize_url(url))
             save_json(POSTED_FILE, posted_urls)
             send_message(ANDY_CHAT_ID, f"Posted: {title}\nfrom {domain}")
@@ -406,15 +546,15 @@ def handle_url_submission(url: str, immediate: bool = False) -> bool:
         normalized = normalize_url(url)
 
         if normalized in queue_urls:
-            send_message(ANDY_CHAT_ID, f"Already in queue: {title}")
+            send_message(ANDY_CHAT_ID, f"⏳ Already in queue — <b>{title}</b>")
             return False
         if normalized in posted_urls:
-            send_message(ANDY_CHAT_ID, f"Already posted: {title}")
+            send_message(ANDY_CHAT_ID, f"📌 Already shared — <b>{title}</b>")
             return False
 
         queue.insert(0, article)
         save_json(QUEUE_FILE, queue)
-        send_message(ANDY_CHAT_ID, f"Queued: {title}\nfrom {domain}")
+        send_message(ANDY_CHAT_ID, f"✅ Added to queue — posting next.\n\n<b>{title}</b>\n<i>{domain}</i>")
         return True
 
 
@@ -483,6 +623,26 @@ def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30,
         return []
 
 
+def _update_feed_health(feed_url: str, success: bool, feed_name: str = ""):
+    """Track consecutive feed failures. DM Andy after 5 failures."""
+    health = load_json(FEED_HEALTH_FILE, {})
+    entry = health.get(feed_url, {"consecutive_failures": 0, "warned": False})
+
+    if success:
+        entry["consecutive_failures"] = 0
+        entry["warned"] = False
+    else:
+        entry["consecutive_failures"] = entry.get("consecutive_failures", 0) + 1
+        entry["last_failure"] = datetime.now().isoformat()
+        if entry["consecutive_failures"] >= 5 and not entry.get("warned"):
+            name = feed_name or feed_url
+            send_message(ANDY_CHAT_ID, f"Dead feed warning: <b>{name}</b> has failed {entry['consecutive_failures']}x in a row.")
+            entry["warned"] = True
+
+    health[feed_url] = entry
+    save_json(FEED_HEALTH_FILE, health)
+
+
 def fetch_feed(feed_info: dict) -> list:
     try:
         headers = {
@@ -494,7 +654,7 @@ def fetch_feed(feed_info: dict) -> list:
         try:
             response = requests.get(feed_info["url"], headers=headers, timeout=10)
             feed = feedparser.parse(response.content)
-        except:
+        except Exception:
             feed = feedparser.parse(feed_info["url"])
         entries = []
 
@@ -505,17 +665,19 @@ def fetch_feed(feed_info: dict) -> list:
             if is_blocked(link, title):
                 print(f"Blocked: {title[:40]}...")
                 continue
-            
+
             entries.append({
                 "title": title,
                 "link": link,
                 "source": feed_info["name"],
             })
-        
+
+        _update_feed_health(feed_info["url"], success=len(entries) > 0 or len(feed.entries) > 0, feed_name=feed_info["name"])
         return entries
-    
+
     except Exception as e:
         print(f"Error fetching {feed_info['name']}: {e}")
+        _update_feed_health(feed_info["url"], success=False, feed_name=feed_info["name"])
         return []
 
 
@@ -547,7 +709,6 @@ def collect_articles():
         
         time.sleep(0.3)
     
-    save_json(POSTED_FILE, list(seen))
     return new_articles
 
 
@@ -738,6 +899,11 @@ PRODUCT_PATTERNS = [
     "new feature:", "product update", "beta launch",
 ]
 
+ROUNDUP_PATTERNS = [
+    "roundup", "reading list", "links (", "weekly dose",
+    "what i'm reading", "classifieds",
+]
+
 
 def classify_title(title: str) -> str:
     """Classify title into content type.
@@ -751,6 +917,10 @@ def classify_title(title: str) -> str:
     for pattern in EVENT_PATTERNS:
         if pattern in title_lower:
             return "event"
+
+    for pattern in ROUNDUP_PATTERNS:
+        if pattern in title_lower:
+            return "roundup"
 
     for pattern in PRODUCT_PATTERNS:
         if pattern in title_lower:
@@ -792,6 +962,78 @@ def fetch_article_summary(url: str, max_chars: int = 500) -> str:
     except Exception as e:
         print(f"Error fetching summary for {url}: {e}")
         return ""
+
+
+def check_paywall(url: str) -> bool:
+    """Check if an article is behind a paywall by fetching and inspecting the page.
+
+    Returns True if paywalled, False if free/accessible.
+    On network errors, returns False (benefit of the doubt).
+    """
+    try:
+        from bs4 import BeautifulSoup
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/120.0.0.0 Safari/537.36",
+        }
+        response = requests.get(url, headers=headers, timeout=8)
+
+        # 402 Payment Required or 403 Forbidden often = paywall
+        if response.status_code in (402, 403):
+            return True
+
+        if response.status_code != 200:
+            return False  # Can't tell, benefit of the doubt
+
+        html_lower = response.text.lower()
+
+        # Check raw HTML for paywall class names and data attributes
+        html_paywall_signals = [
+            "class=\"paywall\"", "class=\"paywall-", "id=\"paywall\"",
+            "data-paywall", "class=\"subscriber-only\"",
+            "class=\"premium-content\"", "class=\"locked-content\"",
+            "class=\"gate\"", "data-gate",
+            "paywall-content", "subscription-required",
+        ]
+        for signal in html_paywall_signals:
+            if signal in html_lower:
+                return True
+
+        # Substack-specific: check meta tags for paywall indicator
+        if "substack" in html_lower:
+            # Substack paywalled posts have this in their JSON-LD or meta
+            if '"isAccessibleForFree":false' in html_lower or '"isAccessibleForFree": false' in html_lower:
+                return True
+            if 'class="paywall-title"' in html_lower or 'class="paywall"' in html_lower:
+                return True
+
+        # Parse body text for paywall language
+        soup = BeautifulSoup(response.text, "html.parser")
+        for tag in soup(["script", "style", "nav"]):
+            tag.decompose()
+        body_text = (soup.find("article") or soup.find("main") or soup.find("body"))
+        if not body_text:
+            return False
+
+        text = body_text.get_text(separator=" ", strip=True).lower()
+
+        # Check for paywall body signals
+        for signal in PAYWALL_BODY_SIGNALS:
+            if signal in text:
+                return True
+
+        # Suspiciously short content often means gated (< 200 chars of actual content)
+        # But only flag this for sources we know gate content (Substack, etc.)
+        if len(text) < 150 and ("substack" in url.lower() or "every.to" in url.lower()):
+            return True
+
+        return False
+
+    except Exception as e:
+        print(f"Paywall check error for {url}: {e}")
+        return False  # Can't reach it, benefit of the doubt
 
 
 def is_substantive_content(summary: str) -> bool:
@@ -929,6 +1171,11 @@ def post_to_channel(article: dict) -> bool:
     title = article["title"]
     link = article["link"]
     source = article["source"]
+
+    # Last-check: don't post paywalled content
+    if check_paywall(link):
+        print(f"Paywall detected at post time — skipping: {title[:40]}...")
+        return False
 
     message = f"""<b>{title}</b>
 
@@ -1185,6 +1432,12 @@ def build_queue():
                 print(f"Body check failed: {article['title'][:40]}...")
 
         if score >= MIN_SCORE_THRESHOLD:
+            # Paywall check — don't queue articles behind a paywall
+            if check_paywall(link):
+                print(f"Paywalled — skipping: {article['title'][:40]}...")
+                skip_urls.add(normalized)
+                continue
+
             article["score"] = score
             article["queued_at"] = datetime.now().isoformat()
             article["category"] = category
@@ -1212,12 +1465,13 @@ def build_queue():
     return len(queue)
 
 
-def post_from_queue(count: int = 2):
-    """Post articles from the queue (for scheduled posting).
+def post_from_queue(count: int = 1):
+    """Post one article from the queue (for scheduled posting).
 
+    Runs once daily at 11 AM Chicago time.
     Enforces one article per source per day to ensure variety.
     """
-    print(f"[{datetime.now()}] Posting {count} articles from queue...")
+    print(f"[{datetime.now()}] Posting {count} article(s) from queue...")
 
     queue = load_json(QUEUE_FILE, [])
     queue = prune_expired_articles(queue)
@@ -1233,6 +1487,7 @@ def post_from_queue(count: int = 2):
 
     posted_count = 0
     posted_urls = load_json(POSTED_FILE, [])
+    posted_normalized = {normalize_url(u) for u in posted_urls}
 
     # Load sources already posted TODAY (resets at midnight Chicago time)
     daily_sources = load_daily_sources()
@@ -1250,7 +1505,7 @@ def post_from_queue(count: int = 2):
         normalized_link = normalize_url(link)
 
         # Skip if already posted (prevent duplicates)
-        if normalized_link in {normalize_url(u) for u in posted_urls}:
+        if normalized_link in posted_normalized:
             print(f"Skipping (already posted): {article['title'][:40]}...")
             continue  # Don't add back to queue - it's already posted
 
@@ -1272,17 +1527,20 @@ def post_from_queue(count: int = 2):
             daily_sources.add(source)
             save_daily_source(source)  # Persist immediately
             posted_urls.append(normalize_url(article["link"]))
+            save_json(POSTED_FILE, posted_urls)  # Save immediately to prevent duplicates if crash
             time.sleep(2)
         else:
             print(f"Failed to post: {article['title'][:40]}...")
             remaining_queue.append(article)
 
-    # Save state
-    if posted_count > 0:
-        save_json(POSTED_FILE, posted_urls)
     save_json(QUEUE_FILE, remaining_queue)
 
     print(f"Posted {posted_count} articles. Queue remaining: {len(remaining_queue)}")
+
+    # Queue depletion warning
+    if len(remaining_queue) < 5:
+        send_message(ANDY_CHAT_ID, f"Low queue: only {len(remaining_queue)} articles remaining. Consider submitting URLs or running discovery.")
+
     return posted_count
 
 
@@ -1426,6 +1684,7 @@ def post_approved_to_channel(count: int = 1):
 
     posted_count = 0
     remaining = []
+    posted_normalized = {normalize_url(u) for u in posted_urls}
 
     for article in approved:
         if posted_count >= count:
@@ -1434,6 +1693,12 @@ def post_approved_to_channel(count: int = 1):
 
         source = article.get("source", "")
         link = article.get("link", "")
+        normalized_link = normalize_url(link)
+
+        # Skip if already posted (prevent duplicates)
+        if normalized_link in posted_normalized:
+            print(f"Skipping (already posted): {article['title'][:40]}...")
+            continue
 
         # Check daily source limit
         if source in daily_sources:
@@ -1459,14 +1724,12 @@ def post_approved_to_channel(count: int = 1):
             daily_sources.add(source)
             save_daily_source(source)
             posted_urls.append(normalize_url(link))
+            save_json(POSTED_FILE, posted_urls)  # Save immediately to prevent duplicates if crash
             time.sleep(2)
         else:
             print(f"Failed to post: {article['title'][:40]}...")
             remaining.append(article)
 
-    # Save state
-    if posted_count > 0:
-        save_json(POSTED_FILE, posted_urls)
     save_json(APPROVED_FILE, remaining)
 
     print(f"Posted {posted_count} approved articles to channel")
@@ -1481,43 +1744,40 @@ def fetch_from_discovered_sources():
 
 
 def run_review_mode(should_post: bool = True):
-      """
-      Review mode workflow:
-      1. Process any responses from Andy (approve/reject discovered sources)
-      2. Post from regular queue (only if should_post=True)
-      3. Send NEW discovered sources for review
+    """Review mode workflow:
+    1. Process any responses from Andy (approve/reject discovered sources)
+    2. Post from regular queue (only if should_post=True)
+    3. Send NEW discovered sources for review
+    """
+    print(f"[{datetime.now()}] Review mode running...")
 
-      Args:
-          should_post: If True, post from queue. If False, only handle reviews.
-      """
-      print(f"[{datetime.now()}] Review mode running...")
+    # Step 1: Process Andy's responses to discovered source reviews
+    processed = process_review_responses()
+    if processed > 0:
+        print(f"Processed {processed} review responses")
 
-      # Step 1: Process Andy's responses to discovered source reviews
-      processed = process_review_responses()
-      if processed > 0:
-          print(f"Processed {processed} review responses")
+    # Step 2: Post from regular queue (only during posting hours)
+    if should_post:
+        build_queue()
+        posted = post_from_queue(count=1)
+    else:
+        print("Not a posting hour - skipping channel post")
 
-      # Step 2: Post from regular queue (only during posting hours)
-      if should_post:
-          build_queue()
-          posted = post_from_queue(count=1)
-      else:
-          print("Not a posting hour - skipping channel post")
+    # Step 3: Send ONE discovered source for review (only if nothing pending)
+    pending = load_json(PENDING_REVIEW_FILE, [])
 
-      # Step 3: Send ONE discovered source for review (only if nothing pending)
-      pending = load_json(PENDING_REVIEW_FILE, [])
+    if len(pending) == 0:
+        print("Discovered sources review: disabled (cloud IP blocking)")
+    else:
+        print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
 
-      # Only send a new article if there's nothing waiting for review
-      if len(pending) == 0:
-          # Discovered sources feature disabled (Substack blocks cloud IPs)
-          # To use this feature, run the bot locally instead of GitHub Actions
-          print("Discovered sources review: disabled (cloud IP blocking)")
+    print(f"Status: {len(pending)} pending review")
 
-      else:
-          print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
-
-      # Stats
-      print(f"Status: {len(pending)} pending review")
+    # Step 4: Send weekly stats on Mondays
+    chicago_now = datetime.now(ZoneInfo("America/Chicago"))
+    if chicago_now.weekday() == 0:  # Monday
+        print("Monday — sending weekly stats")
+        send_weekly_stats()
 
 
 def send_weekly_stats():
@@ -1578,6 +1838,58 @@ def send_weekly_stats():
     print("Weekly stats sent to Andy.")
 
 
+def _handle_undo(action: dict):
+    """Undo the last rating action."""
+    article = action["article"]
+    rating = action["type"]
+    source = action.get("source", "")
+    url = action.get("url", "")
+    title = article.get("title", article.get("source", "Unknown"))[:50]
+
+    # Remove from training log (last matching entry)
+    training_log = load_json(TRAINING_LOG_FILE, [])
+    for i in range(len(training_log) - 1, -1, -1):
+        entry = training_log[i]
+        entry_url = entry.get("url", entry.get("link", ""))
+        if normalize_url(entry_url) == normalize_url(url):
+            training_log.pop(i)
+            break
+    save_json(TRAINING_LOG_FILE, training_log)
+
+    # If it was a block, remove from rejected_sources
+    if rating == "block":
+        rejected = load_json(REJECTED_SOURCES_FILE, {"sources": [], "domains": []})
+        if source and source in rejected["sources"]:
+            rejected["sources"].remove(source)
+        if url:
+            domain = urlparse(url).netloc.replace("www.", "")
+            if domain and domain in rejected["domains"]:
+                rejected["domains"].remove(domain)
+        save_json(REJECTED_SOURCES_FILE, rejected)
+
+    # Restore article to pending review
+    pending = load_json(PENDING_REVIEW_FILE, [])
+    article.pop("rating", None)
+    pending.insert(0, article)
+    save_json(PENDING_REVIEW_FILE, pending)
+
+    action_label = {"good": "approval", "bad": "skip", "block": "block"}.get(rating, rating)
+    send_message(ANDY_CHAT_ID, f"Undid {action_label} of <b>{title}</b>. Restored to pending.")
+    print(f"Undid {action_label}: {title}")
+
+
+def _suggest_more_from_source(article: dict):
+    """After approving an article, suggest more from the same source if available."""
+    source = article.get("source", "")
+    if not source:
+        return
+
+    queue = load_json(QUEUE_FILE, [])
+    same_source = [a for a in queue if a.get("source") == source]
+    if same_source:
+        send_message(ANDY_CHAT_ID, f"FYI: <b>{source}</b> has {len(same_source)} more article(s) in your queue.")
+
+
 def listen_for_dms():
     """Continuously listen for Telegram DMs and respond instantly.
 
@@ -1586,6 +1898,8 @@ def listen_for_dms():
     """
     print("🧠 Brain Candy — DM Listener")
     print("Listening for commands... (Ctrl+C to stop)\n")
+
+    last_actions = []  # Stack for /undo (max 10)
 
     while True:
         try:
@@ -1602,6 +1916,25 @@ def listen_for_dms():
                 # Help command
                 if text in ("/help", "help", "/start"):
                     send_help_message()
+                    continue
+
+                # Guide command (full reference)
+                if text in ("/guide", "guide"):
+                    send_guide_message()
+                    continue
+
+                # Stats command
+                if text in ("/stats", "stats"):
+                    send_weekly_stats()
+                    continue
+
+                # Undo command
+                if text in ("/undo", "undo"):
+                    if not last_actions:
+                        send_message(ANDY_CHAT_ID, "Nothing to undo.")
+                    else:
+                        action = last_actions.pop()
+                        _handle_undo(action)
                     continue
 
                 # URL submission
@@ -1665,6 +1998,20 @@ def listen_for_dms():
                                 print(f"🚫 BLOCKED: {article.get('source', '')}")
                             else:
                                 print(f"⏭ SKIPPED: {article.get('title', '')[:50]}")
+
+                            # Track for /undo
+                            last_actions.append({
+                                "type": rating,
+                                "article": article,
+                                "source": article.get("source", ""),
+                                "url": article.get("url", article.get("link", "")),
+                            })
+                            if len(last_actions) > 10:
+                                last_actions = last_actions[-10:]
+
+                            # "More like this" suggestion on approve
+                            if rating == "good":
+                                _suggest_more_from_source(article)
 
                     pending = pending[len(ratings):]
                     save_json(PENDING_REVIEW_FILE, pending)

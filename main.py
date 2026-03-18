@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats, listen_for_dms
 
 CHICAGO_TZ = ZoneInfo("America/Chicago")
-POSTING_HOURS = [9, 16]  # 9 AM and 4 PM Chicago time
+POSTING_HOURS = [11]  # 11 AM Chicago time (one post per day)
 
 def get_chicago_time():
     return datetime.now(CHICAGO_TZ)

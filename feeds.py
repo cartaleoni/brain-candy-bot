@@ -39,7 +39,7 @@ FEEDS = [
     {"name": "Hasu", "url": "https://uncommoncore.co/feed/", "category": "Crypto"},
     {"name": "a16z Crypto", "url": "https://a16zcrypto.substack.com/feed", "category": "Crypto"},
     {"name": "Paradigm Research", "url": "https://research.paradigm.xyz/feed.xml", "category": "Crypto"},
-    {"name": "Polynya", "url": "https://polynya.mirror.xyz/feed/atom", "category": "Crypto"},
+    {"name": "Polynya", "url": "https://paragraph.com/@polynya/feed", "category": "Crypto"},
     {"name": "Delphi Digital", "url": "https://members.delphidigital.io/feed", "category": "Crypto"},
 
     # ===========================================
@@ -84,7 +84,7 @@ FEEDS = [
     {"name": "Every", "url": "https://every.to/feed", "category": "Business"},
     {"name": "Net Interest", "url": "https://netinterest.substack.com/feed", "category": "Finance"},
     {"name": "The Diff", "url": "https://thediff.co/feed", "category": "Business"},
-    {"name": "Stratechery", "url": "https://stratechery.com/feed/", "category": "Tech"},
+    # Stratechery removed — paywalled, also in BLOCKED_DOMAINS
     {"name": "Paul Graham Essays", "url": "http://www.aaronsw.com/2002/feeds/pgessays.rss", "category": "Startups"},
     {"name": "Bits About Money", "url": "https://bitsaboutmoney.com/feed/", "category": "Finance"},  # Patrick McKenzie (patio11)
     {"name": "Morgan Housel", "url": "https://collabfund.com/blog/feed/", "category": "Finance"},
@@ -147,7 +147,15 @@ FEEDS = [
     {"name": "Ben Kuhn", "url": "https://benkuhn.net/index.xml", "category": "Tech"},
     {"name": "Alexey Guzey", "url": "https://guzey.com/feed/", "category": "Ideas"},
     {"name": "Gwern", "url": "https://gwern.net/feed", "category": "Rationality"},
-    {"name": "Ciechanow", "url": "https://ciechanow.ski/atom.xml", "category": "Discovered"},  # Auto-approved
+    {"name": "Ciechanow", "url": "https://ciechanow.ski/atom.xml", "category": "Discovered"},
+    {"name": "LessWrong.com", "url": "https://lesswrong.com/rss", "category": "Discovered"},
+    {"name": "Aeon", "url": "https://aeon.co/feed", "category": "Discovered"},
+    {"name": "Economics", "url": "https://economics.mit.edu/rss.xml", "category": "Discovered"},
+    {"name": "Fantastic Anachronism", "url": "https://fantasticanachronism.com/feed", "category": "Discovered"},
+    {"name": "Stay SaaSy", "url": "https://staysaasy.com/feed.xml", "category": "Discovered"},
+    {"name": "Neuralhorizons", "url": "https://neuralhorizons.substack.com/feed", "category": "Discovered"},
+    {"name": "Antirez", "url": "https://antirez.com/rss", "category": "Discovered"},
+    {"name": "The Last Conformer", "url": "https://last-conformer.net/feed", "category": "Discovered"},  # Andy-approved
 ]
 
 # Domains to skip (paywalled, news sites, corporate sites)
