@@ -13,6 +13,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore latest state files
+        run: |
+          STATE_FILES="posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json feed_health.json"
+          for f in $STATE_FILES; do
+            LATEST_COMMIT=$(git log --all -1 --format="%H" -- "$f")
+            if [ -n "$LATEST_COMMIT" ]; then
+              git show "$LATEST_COMMIT:$f" > "$f" 2>/dev/null && echo "Restored $f from $LATEST_COMMIT" || true
+            fi
+          done
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,6 +48,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add feeds.py discovered_sources.json 2>/dev/null || true
+          git add feeds.py discovered_sources.json pending_discovery_review.json rejected_sources.json feed_health.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "Weekly discovery: add new sources [skip ci]"
           git push || true

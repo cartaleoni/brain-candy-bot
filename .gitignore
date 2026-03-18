@@ -1,6 +1,15 @@
-# Note: State files are tracked for GitHub Actions persistence:
-# posted.json, queue.json, training_log.json, pending_review.json,
-# approved.json, rejected_sources.json, daily_sources.json
+# Bot state — managed exclusively by GitHub Actions (uses git add -f).
+# Ignored locally to prevent code pushes from overwriting GHA state.
+posted.json
+queue.json
+daily_sources.json
+pending_review.json
+approved.json
+rejected_sources.json
+training_log.json
+discovered_sources.json
+pending_discovery_review.json
+feed_health.json
 
 # Python
 __pycache__/
