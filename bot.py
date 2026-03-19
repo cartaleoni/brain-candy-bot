@@ -1579,10 +1579,20 @@ Reply: <b>1</b>=✅ Post  <b>0</b>=❌ Skip  <b>x</b>=🚫 Block source"""
 
 
 def process_review_responses():
-    """Process Andy's responses to review requests."""
+    """Process Andy's responses to review requests.
+
+    Handles both article reviews (pending_review.json) and discovery source
+    reviews (pending_discovery_review.json) in a single pass over Telegram
+    updates. Article reviews take priority; if none are pending, ratings
+    are applied to discovery reviews instead.
+    """
     pending = load_json(PENDING_REVIEW_FILE, [])
     approved = load_json(APPROVED_FILE, [])
     training_log = load_json(TRAINING_LOG_FILE, [])
+
+    # Also load discovery reviews
+    discovery_pending_file = DATA_DIR / "pending_discovery_review.json"
+    discovery_pending = load_json(discovery_pending_file, [])
 
     updates = get_updates()
     processed = 0
@@ -1607,10 +1617,6 @@ def process_review_responses():
             handle_url_submission(url, immediate)
             continue
 
-        # Skip ratings if nothing is pending
-        if not pending:
-            continue
-
         # Parse ratings: 1=approve, 0=skip, x=block source
         ratings = []
         clean_text = text.replace(",", "").replace(" ", "").replace("y", "1").replace("n", "0")
@@ -1623,8 +1629,11 @@ def process_review_responses():
             elif char == "x":
                 ratings.append("block")
 
-        # Apply ratings
-        if ratings:
+        if not ratings:
+            continue
+
+        # Apply ratings to article reviews first, then discovery reviews
+        if pending:
             for i, rating in enumerate(ratings):
                 if i < len(pending):
                     article = pending[i]
@@ -1670,10 +1679,40 @@ def process_review_responses():
             # Remove processed from pending
             pending = pending[len(ratings):]
 
+        elif discovery_pending:
+            # No article reviews pending — apply ratings to discovery source reviews
+            for i, rating in enumerate(ratings):
+                if i < len(discovery_pending):
+                    source = discovery_pending[i]
+                    source_name = source.get("name", "Unknown")
+                    source_domain = source.get("domain", "")
+
+                    if rating == "good" and source.get("url"):
+                        # Add discovered source to feeds.py
+                        try:
+                            from discover import auto_add_top_sources_single
+                            auto_add_top_sources_single(source)
+                            send_message(ANDY_CHAT_ID, f"✅ Added source: {source_name} ({source_domain})")
+                            print(f"DISCOVERY APPROVED: {source_name} ({source_domain})")
+                        except Exception as e:
+                            print(f"Error adding source {source_name}: {e}")
+                    elif rating == "block":
+                        add_rejected_source(source_name, f"https://{source_domain}")
+                        send_message(ANDY_CHAT_ID, f"🚫 Blocked source: {source_name}")
+                        print(f"DISCOVERY BLOCKED: {source_name} ({source_domain})")
+                    else:
+                        print(f"DISCOVERY SKIPPED: {source_name} ({source_domain})")
+
+                    processed += 1
+
+            # Remove processed from discovery pending
+            discovery_pending = discovery_pending[len(ratings):]
+
     # Save state
     save_json(PENDING_REVIEW_FILE, pending)
     save_json(APPROVED_FILE, approved)
     save_json(TRAINING_LOG_FILE, training_log)
+    save_json(discovery_pending_file, discovery_pending)
 
     # Clear processed updates
     if updates:
@@ -1774,15 +1813,16 @@ def run_review_mode(should_post: bool = True):
     else:
         print("Not a posting hour - skipping channel post")
 
-    # Step 3: Send ONE discovered source for review (only if nothing pending)
+    # Step 3: Report pending review status
     pending = load_json(PENDING_REVIEW_FILE, [])
+    discovery_pending = load_json(DATA_DIR / "pending_discovery_review.json", [])
 
-    if len(pending) == 0:
-        print("Discovered sources review: disabled (cloud IP blocking)")
+    if pending:
+        print(f"Article reviews pending: {len(pending)} — waiting for your 1/0/x response")
+    elif discovery_pending:
+        print(f"Discovery source reviews pending: {len(discovery_pending)} — respond 1/0/x in DMs")
     else:
-        print(f"Waiting for your review - respond 1 (approve) or 0 (reject)")
-
-    print(f"Status: {len(pending)} pending review")
+        print("No reviews pending")
 
     # Step 4: Send weekly stats on Mondays
     chicago_now = datetime.now(ZoneInfo("America/Chicago"))
