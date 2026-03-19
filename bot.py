@@ -1265,11 +1265,17 @@ def run_production():
     # Post top articles (limit to 3 per cycle, max 1 per source)
     posted_count = 0
     posted_urls = load_json(POSTED_FILE, [])
+    posted_normalized = {normalize_url(u) for u in posted_urls}
     posted_sources = set()
 
     for article in scored:
         if posted_count >= 3:
             break
+
+        # Skip if already posted
+        normalized_link = normalize_url(article["link"])
+        if normalized_link in posted_normalized:
+            continue
 
         # Skip if we already posted from this source this cycle
         source = article.get("source", "")
@@ -1280,14 +1286,12 @@ def run_production():
             print(f"Posted (score {article['score']:.2f}): {article['title'][:40]}...")
             posted_count += 1
             posted_sources.add(source)
-            posted_urls.append(normalize_url(article["link"]))
+            posted_urls.append(normalized_link)
+            posted_normalized.add(normalized_link)
+            save_json(POSTED_FILE, posted_urls)  # Save immediately after each post
             time.sleep(2)
         else:
             print(f"Failed to post: {article['title'][:40]}...")
-
-    # Save successfully posted URLs
-    if posted_count > 0:
-        save_json(POSTED_FILE, posted_urls)
 
     print(f"Posted {posted_count} articles to {TELEGRAM_CHANNEL_ID}")
 
