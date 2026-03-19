@@ -62,10 +62,10 @@ jobs:
               [ -f "$f" ] && cp "$f" /tmp/bot-state/
             done
 
-            # Switch to bot-state branch (create orphan if needed)
+            # Switch to bot-state branch (force — state is safe in /tmp)
             if git ls-remote --heads origin bot-state | grep -q bot-state; then
               git fetch origin bot-state
-              git checkout origin/bot-state -B bot-state
+              git checkout -f origin/bot-state -B bot-state
             else
               git checkout --orphan bot-state
               git rm -rf . 2>/dev/null || true
