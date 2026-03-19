@@ -1341,12 +1341,19 @@ def build_queue():
     # Load existing queue and prune expired articles
     queue = load_json(QUEUE_FILE, [])
     queue = prune_expired_articles(queue)
-    queue_urls = {normalize_url(item["link"]) for item in queue}
 
     # Load URLs to skip (already posted or reviewed)
     posted_urls = {normalize_url(u) for u in load_json(POSTED_FILE, [])}
     training_log = load_json(TRAINING_LOG_FILE, [])
     reviewed_urls = {normalize_url(item.get("url", "")) for item in training_log}
+
+    # Purge already-posted articles from the queue
+    before = len(queue)
+    queue = [item for item in queue if normalize_url(item["link"]) not in posted_urls]
+    if before > len(queue):
+        print(f"Purged {before - len(queue)} already-posted articles from queue")
+
+    queue_urls = {normalize_url(item["link"]) for item in queue}
     skip_urls = queue_urls | posted_urls | reviewed_urls
 
     # Build feed type and category lookups
