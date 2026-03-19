@@ -1,0 +1,324 @@
+[
+  {
+    "title": "Mapping out the tribes of climate",
+    "link": "https://nadia.xyz/climate-tribes",
+    "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "Low-risk defi can be for Ethereum what search was for Google",
+    "link": "https://vitalik.eth.limo/general/2025/09/21/low_risk_defi.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "33 Things I've Learned at 33",
+    "link": "https://nintil.com/33-things/",
+    "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Slutcon, or the attractiveness of embodied authenticity",
+    "link": "https://nintil.com/slutcon-notes/",
+    "source": "Nintil",
+    "score": 1.0
+  },
+  {
+    "title": "Cultivating agency",
+    "link": "https://nadia.xyz/agency",
+    "source": "Nadia Asparouhova",
+    "score": 1.0
+  },
+  {
+    "title": "On idea-driven ideas",
+    "link": "https://vitalik.eth.limo/general/2025/08/12/ideas.html",
+    "source": "Vitalik Buterin",
+    "score": 1.0
+  },
+  {
+    "title": "Charts of the Week: Monitoring the Situation in Hormuz",
+    "link": "https://www.a16z.news/p/charts-of-the-week-monitoring-the",
+    "source": "a16z News",
+    "score": 1.0
+  },
+  {
+    "title": "Show HN: Gemini Pro 3 imagines the HN front page 10 years from now",
+    "link": "https://dosaygo-studio.github.io/hn-front-page-2035/news",
+    "source": "HN (3346pt) via dosaygo-studio.github.io",
+    "hn_points": 3346,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Switch from Chrome to Firefox",
+    "link": "https://www.mozilla.org/en-US/firefox/switch/",
+    "source": "HN (3287pt) via mozilla.org",
+    "hn_points": 3287,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Cloudflare Reverse Proxies Are Dumping Uninitialized Memory",
+    "link": "https://bugs.chromium.org/p/project-zero/issues/detail?id=1139",
+    "source": "HN (3238pt) via bugs.chromium.org",
+    "hn_points": 3238,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Show HN: I made an open-source laptop from scratch",
+    "link": "https://www.byran.ee/posts/creation/",
+    "source": "HN (3237pt) via byran.ee",
+    "hn_points": 3237,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "\u201cClick to subscribe, call to cancel\u201d is illegal, FTC says",
+    "link": "https://www.niemanlab.org/2021/11/the-end-of-click-to-subscribe-call-to-cancel-one-of-the-news-industrys-favorite-retention-tactics-is-illegal-ftc-says/",
+    "source": "HN (3192pt) via niemanlab.org",
+    "hn_points": 3192,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "FDIC Takes over Silicon Valley Bank",
+    "link": "https://www.fdic.gov/news/press-releases/2023/pr23016.html",
+    "source": "HN (3172pt) via fdic.gov",
+    "hn_points": 3172,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Tim Cook Speaks Up",
+    "link": "http://www.businessweek.com/articles/2014-10-30/tim-cook-im-proud-to-be-gay",
+    "source": "HN (3086pt) via businessweek.com",
+    "hn_points": 3086,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Stimulation Clicker",
+    "link": "https://neal.fun/stimulation-clicker/",
+    "source": "HN (3082pt) via neal.fun",
+    "hn_points": 3082,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Sound",
+    "link": "https://ciechanow.ski/sound/",
+    "source": "HN (3053pt) via ciechanow.ski",
+    "hn_points": 3053,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Announcing the first SHA-1 collision",
+    "link": "https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html",
+    "source": "HN (3030pt) via security.googleblog.com",
+    "hn_points": 3030,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "\u201cThey introduce kernel bugs on purpose\u201d",
+    "link": "https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/",
+    "source": "HN (3025pt) via lore.kernel.org",
+    "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "AnandTech Farewell",
+    "link": "https://www.anandtech.com/show/21542/end-of-the-road-an-anandtech-farewell",
+    "source": "HN (3025pt) via anandtech.com",
+    "hn_points": 3025,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "I Sell Onions on the Internet",
+    "link": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
+    "source": "HN (3015pt) via deepsouthventures.com",
+    "hn_points": 3015,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Bicycle",
+    "link": "https://ciechanow.ski/bicycle/",
+    "source": "HN (3014pt) via ciechanow.ski",
+    "hn_points": 3014,
+    "hn_preferred": false,
+    "score": 0.8
+  },
+  {
+    "title": "Money, Credit, Trust, and FTX",
+    "link": "https://www.thediff.co/archive/money-credit-trust-ftx/",
+    "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "xAI\u2019s Colossus 2 \u2013 First Gigawatt Datacenter In The World, Unique RL Methodology, Capital Raise",
+    "link": "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
+    "source": "Semi Analysis",
+    "score": 0.5
+  },
+  {
+    "title": "Breaking the NEPA Litigation Doom Loop",
+    "link": "https://ifp.org/breaking-the-nepa-litigation-doom-loop/",
+    "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Property values should be normalized by acre",
+    "link": "https://devon.postach.io/post/property-values-should-be-normalized-by-acre",
+    "source": "Devon Zuegel",
+    "score": 0.5
+  },
+  {
+    "title": "Getting a better sense for when you\u2019re thinking well and when you\u2019re faking it",
+    "link": "https://www.henrikkarlsson.xyz/p/mental-proprioception",
+    "source": "Henrik Karlsson",
+    "score": 0.5
+  },
+  {
+    "title": "#31: From Skin Trader to NFT Expert \u2013 with Anish Agnihotri and Hasu",
+    "link": "https://uncommoncore.co/31-from-skin-trader-to-nft-expert-with-anish-agnihotri-and-hasu/",
+    "source": "Hasu",
+    "score": 0.5
+  },
+  {
+    "title": "Beyond AlphaFold",
+    "link": "https://ifp.org/nlm/",
+    "source": "Institute for Progress",
+    "score": 0.5
+  },
+  {
+    "title": "On the compulsion to make art",
+    "link": "https://www.henrikkarlsson.xyz/p/on-the-compulsion-to-make-art",
+    "source": "Henrik Karlsson",
+    "score": 0.5
+  },
+  {
+    "title": "Outbreak",
+    "link": "https://meltingasphalt.com/outbreak/",
+    "source": "Melting Asphalt",
+    "score": 0.5
+  },
+  {
+    "title": "Ribbonfarm is Retiring",
+    "link": "https://www.ribbonfarm.com/2024/10/10/ribbonfarm-is-retiring/",
+    "source": "Ribbonfarm",
+    "score": 0.5
+  },
+  {
+    "title": "The sights and sounds of Bhutan",
+    "link": "https://waitbutwhy.com/2025/11/bhutan.html",
+    "source": "Wait But Why",
+    "score": 0.5
+  },
+  {
+    "title": "Another Conversation with Val Bercovici Memory Markets",
+    "link": "https://www.fabricatedknowledge.com/p/another-conversation-with-val-bercovici",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "A New Mental Model for Defi Treasuries",
+    "link": "https://uncommoncore.co/a-new-mental-model-for-defi-treasuries/",
+    "source": "Hasu",
+    "score": 0.5
+  },
+  {
+    "title": "Crypto's broken moral compass",
+    "link": "https://paragraph.com/@polynya/crypto-s-broken-moral-compass",
+    "source": "Polynya",
+    "score": 0.5
+  },
+  {
+    "title": "Going Critical",
+    "link": "https://meltingasphalt.com/going-critical/",
+    "source": "Melting Asphalt",
+    "score": 0.5
+  },
+  {
+    "title": "The Death of Software 2.0 (A Better Analogy!)",
+    "link": "https://www.fabricatedknowledge.com/p/the-death-of-software-20-a-better",
+    "source": "Fabricated Knowledge",
+    "score": 0.5
+  },
+  {
+    "title": "Truth-Seeking Modes",
+    "link": "https://www.ribbonfarm.com/2024/08/17/truth-seeking-modes/",
+    "source": "Ribbonfarm",
+    "score": 0.5
+  },
+  {
+    "title": "Dario Amodei \u2014 \"We are near the end of the exponential\"",
+    "link": "https://www.dwarkesh.com/p/dario-amodei-2",
+    "source": "Dwarkesh Patel",
+    "score": 0.5
+  },
+  {
+    "title": "Save the date: Progress Conference 2026",
+    "link": "https://rootsofprogress.org/save-the-date-progress-conference-2026/",
+    "source": "Roots of Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Announcing Progress in Medicine, a high school summer career exploration program",
+    "link": "https://rootsofprogress.org/announcing-progress-in-medicine-a-high-school-summer-career-exploration-program/",
+    "source": "Roots of Progress",
+    "score": 0.5
+  },
+  {
+    "title": "Impact, agency, and taste",
+    "link": "https://www.benkuhn.net/impact/",
+    "source": "Ben Kuhn",
+    "score": 0.5
+  },
+  {
+    "title": "scuttleblurb business update (2025)",
+    "link": "https://www.scuttleblurb.com/update-25/",
+    "source": "Scuttleblurb",
+    "score": 0.5
+  },
+  {
+    "title": "Georgist land taxes balance community benefit &amp; the efficiency of markets",
+    "link": "https://devon.postach.io/post/georgist-land-taxes-balance-community-benefit-the-efficiency-of-markets",
+    "source": "Devon Zuegel",
+    "score": 0.5
+  },
+  {
+    "title": "Hand-Crafted Artisanal Liquidity Provision",
+    "link": "https://www.thediff.co/archive/hand-crafted-artisanal-liquidity/",
+    "source": "The Diff",
+    "score": 0.5
+  },
+  {
+    "title": "Of heavens, nations faltering",
+    "link": "https://autotranslucence.wordpress.com/2024/07/30/of-heavens-nations-faltering/",
+    "source": "Autotranslucence",
+    "score": 0.5
+  },
+  {
+    "title": "2025 letter",
+    "link": "https://danwang.co/2025-letter/",
+    "source": "Dan Wang",
+    "score": 0.5
+  },
+  {
+    "title": "Survey results + programming notes",
+    "link": "https://www.scuttleblurb.com/survey-results/",
+    "source": "Scuttleblurb",
+    "score": 0.5
+  },
+  {
+    "title": "Costless Sacrifice",
+    "link": "https://www.notboring.co/p/costless-sacrifice",
+    "source": "Not Boring",
+    "score": 0.5
+  }
+]
