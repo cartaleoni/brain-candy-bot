@@ -1521,6 +1521,11 @@ def post_from_queue(count: int = 1):
             print(f"Skipping (already posted): {article['title'][:40]}...")
             continue  # Don't add back to queue - it's already posted
 
+        # Re-check blocked domains/keywords (catches stale queue entries)
+        if is_blocked(link, article.get("title", "")):
+            print(f"Skipping (now blocked): {article['title'][:40]}...")
+            continue
+
         # Skip if source is temporarily paused
         if is_source_paused(source, link):
             print(f"Skipping (paused until cooldown expires): {source}")
