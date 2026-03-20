@@ -1,13 +1,5 @@
 [
   {
-    "title": "Show HN: Gemini Pro 3 imagines the HN front page 10 years from now",
-    "link": "https://dosaygo-studio.github.io/hn-front-page-2035/news",
-    "source": "HN (3346pt) via dosaygo-studio.github.io",
-    "hn_points": 3346,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Switch from Chrome to Firefox",
     "link": "https://www.mozilla.org/en-US/firefox/switch/",
     "source": "HN (3287pt) via mozilla.org",
@@ -112,9 +104,117 @@
     "score": 0.8
   },
   {
+    "title": "Charts of the Week: Learning to Weld",
+    "link": "https://www.a16z.news/p/charts-of-the-week-learning-to-weld",
+    "source": "a16z News",
+    "score": 0.6,
+    "queued_at": "2026-03-20T16:30:39.286872",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "Copper One: The World's Only Autonomy-First Mine & Refinery",
+    "link": "https://www.a16z.news/p/copper-one-the-worlds-only-autonomy",
+    "source": "a16z News",
+    "score": 0.6,
+    "queued_at": "2026-03-20T16:30:39.447261",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "Free Radicals Podcast",
+    "link": "https://nintil.com/free-radicals-podcast/",
+    "source": "Nintil",
+    "score": 0.6,
+    "queued_at": "2026-03-20T16:30:41.463105",
+    "category": "Progress",
+    "content_type": "essay"
+  },
+  {
     "title": "Crypto's broken moral compass",
     "link": "https://paragraph.com/@polynya/crypto-s-broken-moral-compass",
     "source": "Polynya",
     "score": 0.5
+  },
+  {
+    "title": "World Models: Computing the Uncomputable",
+    "link": "https://www.notboring.co/p/world-models",
+    "source": "Not Boring",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:34.868647",
+    "category": "Venture",
+    "content_type": "essay"
+  },
+  {
+    "title": "Management In The Age Of AI",
+    "link": "https://staysaasy.com/management/2026/03/12/ai-management.html",
+    "source": "Stay SaaSy",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:35.204641",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Avoiding a Culture of Emergencies",
+    "link": "https://staysaasy.com/management/2026/03/06/avoiding-a-culture-of-emergencies.html",
+    "source": "Stay SaaSy",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:35.472829",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Confusion around the term reward hacking",
+    "link": "https://www.lesswrong.com/posts/ixyokbwQEHgiHJYFW/confusion-around-the-term-reward-hacking",
+    "source": "LessWrong.com",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:36.200282",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "The Distaff Texts",
+    "link": "https://www.lesswrong.com/posts/pKoDqpfdv4ur8HgZ2/the-distaff-texts",
+    "source": "LessWrong.com",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:36.570524",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Terence Tao \u2013 Kepler, Newton, and the true nature of mathematical discovery",
+    "link": "https://www.dwarkesh.com/p/terence-tao",
+    "source": "Dwarkesh Patel",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:36.725576",
+    "category": "AI",
+    "content_type": "essay"
+  },
+  {
+    "title": "Organizational Economics Seminar [joint with IWER]",
+    "link": "https://economics.mit.edu/node/5247",
+    "source": "Economics",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:39.138961",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Stateless infra - where most decentralized compute will be (not blockchains)",
+    "link": "https://paragraph.com/@polynya/stateless-infra-where-most-decentralized-compute-will-be-not-blockchains",
+    "source": "Polynya",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:41.350694",
+    "category": "Crypto",
+    "content_type": "essay"
+  },
+  {
+    "title": "Is Global Payments the next Adyen?",
+    "link": "https://www.scuttleblurb.com/gpn/",
+    "source": "Scuttleblurb",
+    "score": 0.5,
+    "queued_at": "2026-03-20T16:30:41.772862",
+    "category": "Business",
+    "content_type": "essay"
   }
 ]
