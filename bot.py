@@ -897,6 +897,7 @@ EVENT_PATTERNS = [
 PRODUCT_PATTERNS = [
     "introducing:", "we built", "we shipped", "changelog",
     "new feature:", "product update", "beta launch",
+    "show hn:",
 ]
 
 ROUNDUP_PATTERNS = [

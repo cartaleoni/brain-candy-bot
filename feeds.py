@@ -179,7 +179,7 @@ BLOCKED_DOMAINS = [
     "apple.com", "google.com", "microsoft.com", "amazon.com", "meta.com",
     "openai.com", "anthropic.com", "nvidia.com", "intel.com", "amd.com",
     "stripe.com", "shopify.com", "salesforce.com", "oracle.com",
-    "github.com", "gitlab.com", "stackoverflow.com",
+    "github.com", "github.io", "gitlab.com", "stackoverflow.com",
 
     # Reference/academic (not essays)
     "arxiv.org", "wikipedia.org", "archive.org",
