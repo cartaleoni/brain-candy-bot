@@ -1,13 +1,5 @@
 [
   {
-    "title": "Switch from Chrome to Firefox",
-    "link": "https://www.mozilla.org/en-US/firefox/switch/",
-    "source": "HN (3287pt) via mozilla.org",
-    "hn_points": 3287,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Cloudflare Reverse Proxies Are Dumping Uninitialized Memory",
     "link": "https://bugs.chromium.org/p/project-zero/issues/detail?id=1139",
     "source": "HN (3238pt) via bugs.chromium.org",
