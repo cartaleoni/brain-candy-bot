@@ -180,13 +180,34 @@ BLOCKED_DOMAINS = [
     "openai.com", "anthropic.com", "nvidia.com", "intel.com", "amd.com",
     "stripe.com", "shopify.com", "salesforce.com", "oracle.com",
     "github.com", "github.io", "gitlab.com", "stackoverflow.com",
+    "mozilla.org", "chromium.org", "webkit.org", "docker.com",
+    "cloudflare.com", "netlify.com", "vercel.com", "heroku.com",
+    "security.googleblog.com", "bugs.chromium.org", "bugzilla.mozilla.org",
+    "blog.google", "about.google", "developers.google.com",
+    "developer.apple.com", "developer.android.com",
+    "engineering.fb.com", "engineering.atspotify.com",
+    "netflixtechblog.com", "uber.com", "lyft.com",
 
     # Reference/academic (not essays)
     "arxiv.org", "wikipedia.org", "archive.org",
 
-    # Government/legal docs (no one reads these)
+    # Government/institutional
     "supremecourt.gov", "congress.gov", "whitehouse.gov", "senate.gov",
     "house.gov", "uscourts.gov", "govinfo.gov", "gao.gov",
+    "fdic.gov", "fbi.gov", "irs.gov", "sec.gov", "nasa.gov",
+    "fcc.gov", "ftc.gov", "cdc.gov", "nih.gov",
+
+    # Mailing lists, bug trackers, changelogs (not essays)
+    "lore.kernel.org", "kernel.org",
+    "lists.gnu.org", "mail-archive.com",
+
+    # Interactive tools / games (not essays)
+    "neal.fun",
+
+    # News/media (missing from original list)
+    "anandtech.com", "niemanlab.org", "businessweek.com",
+    "theatlantic.com", "newyorker.com", "theguardian.com",
+    "slate.com", "salon.com", "dailybeast.com",
 
     # Paywalled
     "stratechery.com",

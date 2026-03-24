@@ -25,12 +25,31 @@ if _env_path.exists():
 HN_API_URL = "https://hn.algolia.com/api/v1/search"
 HN_MIN_POINTS = 100  # Only fetch stories with 100+ points
 HN_PREFERRED_DOMAINS = [
-    # High-quality essay domains to prioritize from HN
+    # High-quality essay/indie domains — only these pass the HN gate
+    # Classic essay sites
     "paulgraham.com", "danluu.com", "gwern.net", "lesswrong.com",
-    "astralcodexten.substack.com", "slatestarcodex.com", "overcomingbias.com",
-    "stratechery.com", "ben-evans.com", "eugenewei.com", "ribbonfarm.com",
-    "waitbutwhy.com", "nadia.xyz", "vitalik.eth.limo", "patrickcollison.com",
-    "marginalrevolution.com", "elidourado.com", "noahpinion.substack.com",
+    "slatestarcodex.com", "overcomingbias.com", "ben-evans.com",
+    "eugenewei.com", "patrickcollison.com", "marginalrevolution.com",
+    "elidourado.com",
+    # From our FEEDS list (non-substack personal domains)
+    "ribbonfarm.com", "waitbutwhy.com", "nadia.xyz", "vitalik.eth.limo",
+    "meltingasphalt.com", "benkuhn.net", "ciechanow.ski", "danwang.co",
+    "applieddivinitystudies.com", "fantasticanachronism.com", "nintil.com",
+    "rootsofprogress.org", "constructionphysics.substack.com",
+    "bitsaboutmoney.com", "collabfund.com", "epsilontheory.com",
+    "palladiummag.com", "worksinprogress.co", "meaningness.com",
+    "autotranslucence.com", "guzey.com", "cdixon.org", "devonzuegel.com",
+    "antirez.com", "last-conformer.net", "staysaasy.com", "aeon.co",
+    "strangeloopcanon.com", "intrinsicperspective.com", "dwarkeshpatel.com",
+    "semianalysis.com", "every.to", "thediff.co", "notboring.co",
+    "piratewires.com", "ifp.org", "uncommoncore.co", "latent.space",
+    "slowboring.com",
+    # Substack — match any substack personal blog from HN
+    "substack.com",
+    # Other known indie essay domains not in feeds
+    "astralcodexten.substack.com",  # kept for specificity in logs
+    "noahpinion.substack.com",
+    "paragraph.com",
 ]
 
 
@@ -367,6 +386,7 @@ def send_help_message():
         "<b>Submitting:</b>\n"
         "  Send a URL — Queue for next slot\n"
         "  <code>!URL</code> — Post immediately\n"
+        "  <code>/addfeed URL</code> — Add blog to rotation\n"
         "\n"
         "<b>Commands:</b>\n"
         "  <code>/help</code> — This quick reference\n"
@@ -405,6 +425,7 @@ def send_guide_message():
         "<b>Submitting:</b>\n"
         "  Send a URL — Queues article for next posting slot\n"
         "  <code>!URL</code> — Posts immediately to channel\n"
+        "  <code>/addfeed URL</code> — Adds blog/source to feed rotation\n"
         "\n"
         "<b>Commands:</b>\n"
         "  <code>/help</code> — Quick command reference\n"
@@ -556,6 +577,107 @@ def handle_url_submission(url: str, immediate: bool = False) -> bool:
         save_json(QUEUE_FILE, queue)
         send_message(ANDY_CHAT_ID, f"✅ Added to queue — posting next.\n\n<b>{title}</b>\n<i>{domain}</i>")
         return True
+
+
+def discover_feed_url(blog_url: str) -> str | None:
+    """Try to find an RSS/Atom feed URL from a blog URL."""
+    from bs4 import BeautifulSoup
+
+    parsed = urlparse(blog_url)
+    domain = parsed.netloc.replace("www.", "")
+
+    # Substack: always has /feed
+    if "substack.com" in domain or ".substack.com" in blog_url:
+        base = f"{parsed.scheme}://{parsed.netloc}"
+        return f"{base}/feed"
+
+    # Paragraph.xyz
+    if "paragraph.com" in domain or "paragraph.xyz" in domain:
+        # e.g. paragraph.com/@author -> paragraph.com/@author/feed
+        path = parsed.path.rstrip("/")
+        return f"{parsed.scheme}://{parsed.netloc}{path}/feed"
+
+    # Try common feed paths
+    base = f"{parsed.scheme}://{parsed.netloc}"
+    common_paths = ["/feed", "/feed/", "/rss", "/rss.xml", "/feed.xml", "/atom.xml", "/index.xml"]
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+
+    for path in common_paths:
+        try:
+            resp = requests.get(base + path, headers=headers, timeout=5, allow_redirects=True)
+            ct = resp.headers.get("content-type", "").lower()
+            if resp.status_code == 200 and any(t in ct for t in ["xml", "rss", "atom"]):
+                return base + path
+        except Exception:
+            continue
+
+    # Try parsing the page for <link rel="alternate"> feed tags
+    try:
+        resp = requests.get(blog_url, headers=headers, timeout=8)
+        if resp.status_code == 200:
+            soup = BeautifulSoup(resp.text, "html.parser")
+            for link in soup.find_all("link", rel="alternate"):
+                link_type = link.get("type", "")
+                if "rss" in link_type or "atom" in link_type or "xml" in link_type:
+                    href = link.get("href", "")
+                    if href:
+                        if href.startswith("/"):
+                            return base + href
+                        return href
+    except Exception:
+        pass
+
+    return None
+
+
+def handle_addfeed(url: str):
+    """Add a blog/source to the feed rotation via DM command."""
+    parsed = urlparse(url)
+    domain = parsed.netloc.replace("www.", "")
+
+    # Check if already in FEEDS
+    existing_domains = {urlparse(f["url"]).netloc.replace("www.", "") for f in FEEDS}
+    if domain in existing_domains:
+        send_message(ANDY_CHAT_ID, f"Already tracking — <b>{domain}</b>")
+        return
+
+    # Discover RSS feed
+    feed_url = discover_feed_url(url)
+    if not feed_url:
+        send_message(ANDY_CHAT_ID, f"Couldn't find RSS feed for <b>{domain}</b>")
+        return
+
+    # Verify feed actually works
+    feed = feedparser.parse(feed_url)
+    if not feed.entries:
+        send_message(ANDY_CHAT_ID, f"Found feed but it's empty — <b>{feed_url}</b>")
+        return
+
+    # Derive name from feed title or page title
+    name = feed.feed.get("title", "").strip()
+    if not name or len(name) > 40:
+        name = fetch_page_title(url)
+    # Clean common suffixes
+    for suffix in [" | Substack", " - Substack", " on Substack", " RSS Feed", " RSS", " Feed"]:
+        if name.endswith(suffix):
+            name = name[: -len(suffix)]
+    if not name or name == "Untitled":
+        name = domain.split(".")[0].title()
+
+    # Add to feeds.py
+    add_source_to_feeds(name, feed_url, domain)
+
+    # Also add to in-memory FEEDS so current session picks it up
+    FEEDS.append({"name": name, "url": feed_url, "category": "Discovered"})
+
+    entry_count = len(feed.entries)
+    send_message(
+        ANDY_CHAT_ID,
+        f"Added to rotation — <b>{name}</b>\n"
+        f"<i>{feed_url}</i>\n"
+        f"{entry_count} articles in feed",
+    )
+    print(f"Added feed via DM: {name} -> {feed_url}")
 
 
 def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30,
@@ -1419,6 +1541,11 @@ def build_queue():
         if is_source_rejected(source, link):
             continue
 
+        # HN domain gate: only allow articles from preferred/indie domains
+        if article.get("hn_points") and not article.get("hn_preferred", False):
+            print(f"HN gate — non-preferred domain, skipping: {article['title'][:40]}...")
+            continue
+
         # Source diversity limit
         if source_counts.get(source, 0) >= MAX_PER_SOURCE:
             continue
@@ -1435,9 +1562,9 @@ def build_queue():
 
         score = score_article(article, source_scores)
 
-        # For non-essay titles that still score well, check article body
+        # Body check: non-essay titles OR any HN article (HN titles are unreliable)
         content_type_label = classify_title(article.get("title", ""))
-        if content_type_label != "essay" and score >= MIN_SCORE_THRESHOLD:
+        if (content_type_label != "essay" or article.get("hn_points")) and score >= MIN_SCORE_THRESHOLD:
             summary = fetch_article_summary(link)
             if summary and not is_substantive_content(summary):
                 score -= 0.3
@@ -1992,6 +2119,16 @@ def listen_for_dms():
                     else:
                         action = last_actions.pop()
                         _handle_undo(action)
+                    continue
+
+                # Add feed command
+                if text.startswith("/addfeed") or text.startswith("addfeed"):
+                    raw_text = message.get("text", "").strip()
+                    parts = raw_text.split(None, 1)
+                    if len(parts) < 2 or not parts[1].startswith("http"):
+                        send_message(ANDY_CHAT_ID, "Usage: <code>/addfeed https://blog.example.com</code>")
+                    else:
+                        handle_addfeed(parts[1].strip())
                     continue
 
                 # URL submission
