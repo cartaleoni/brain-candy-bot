@@ -1,37 +1,5 @@
 [
   {
-    "title": "Announcing the first SHA-1 collision",
-    "link": "https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html",
-    "source": "HN (3030pt) via security.googleblog.com",
-    "hn_points": 3030,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "\u201cThey introduce kernel bugs on purpose\u201d",
-    "link": "https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/",
-    "source": "HN (3025pt) via lore.kernel.org",
-    "hn_points": 3025,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "AnandTech Farewell",
-    "link": "https://www.anandtech.com/show/21542/end-of-the-road-an-anandtech-farewell",
-    "source": "HN (3025pt) via anandtech.com",
-    "hn_points": 3025,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
-    "title": "I Sell Onions on the Internet",
-    "link": "https://www.deepsouthventures.com/i-sell-onions-on-the-internet/",
-    "source": "HN (3015pt) via deepsouthventures.com",
-    "hn_points": 3015,
-    "hn_preferred": false,
-    "score": 0.8
-  },
-  {
     "title": "Bicycle",
     "link": "https://ciechanow.ski/bicycle/",
     "source": "HN (3014pt) via ciechanow.ski",
