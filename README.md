@@ -6,48 +6,31 @@ Curated essays for critical thinkers. Posts to [@candyforthebrain](https://t.me/
 
 Brain Candy is an intelligent content curation bot that:
 
-- **Posts** curated articles to the channel at 9 AM and 4 PM Chicago time (weekdays)
-- **Listens** for DM commands 24/7 via local listener
+- **Posts** one curated article per day to the channel at 11 AM Chicago time (weekdays)
+- **Processes DMs** every 6 hours via GitHub Actions — no local listener needed
 - **Scores** articles using source reputation, title classification, and body content analysis
-- **Discovers** new sources weekly via Substack recommendations and Hacker News
+- **Discovers** new sources weekly via Hacker News mining
 - **Learns** from your approvals/rejections to improve scoring over time
-
-## Quick Start
-
-### 1. Set up your bot token
-
-Get your token from [@BotFather](https://t.me/BotFather) on Telegram, then add it to `.env`:
-
-```
-TELEGRAM_BOT_TOKEN=your_actual_token_here
-```
-
-### 2. Start the DM listener
-
-```bash
-cd ~/Desktop/cortex-bot-local
-python3 main.py --listen
-```
-
-This runs locally and responds to your DMs instantly. Leave it running in a terminal tab. `Ctrl+C` to stop.
-
-### 3. Channel posting (automatic)
-
-Channel posts are handled by GitHub Actions on a cron schedule. No setup needed — it runs automatically at 9 AM and 4 PM Chicago time on weekdays.
 
 ## Bot DM Commands
 
-Send these to the bot via Telegram DM:
+Send these to the bot via Telegram DM. Commands are processed every 6 hours by GitHub Actions.
 
 | Command | Action |
 |---------|--------|
-| `/help` | Show all available commands |
+| `URL` | Queue for next posting slot |
+| `!URL` | Post immediately to channel |
+| `+URL` | Post immediately + add source to feed rotation |
+| `/addfeed URL` | Add source to feed rotation only |
 | `1` | Approve article |
 | `0` | Skip article (no penalty to source) |
 | `x` | Block source permanently |
 | `1,0,x,1` | Batch rate multiple articles |
-| Send a URL | Add to queue (posts next scheduled slot) |
-| `!URL` | Post immediately to channel |
+| `/undo` | Undo last rating |
+| `/overview` | Pinnable summary of all commands |
+| `/stats` | Weekly stats summary |
+| `/guide` | Full scoring and queue rules |
+| `/help` | Quick command reference |
 
 ## How It Works
 
@@ -57,7 +40,7 @@ Send these to the bot via Telegram DM:
 2. **Score** — Each article is scored based on source trust, title classification, and content analysis
 3. **Filter** — CTAs, events, product announcements, and roundups are penalized or blocked
 4. **Queue** — Top-scoring articles enter the queue with category diversity limits
-5. **Post** — 1 article posted per scheduled window (9 AM and 4 PM Chicago, weekdays)
+5. **Post** — 1 article posted at 11 AM Chicago time, weekdays
 
 ### Content Intelligence
 
@@ -81,28 +64,30 @@ Articles that still score well after title penalties get a body content check �
 
 ### Source Scoring
 
-Sources are scored using Bayesian smoothing to prevent small-sample bias. A source with 1/1 approvals won't outrank one with 9/10.
-
-### Dynamic HN Domains
-
-The bot learns which Hacker News domains you like from your training ratings and prioritizes them in future fetches.
+Sources are scored using Bayesian smoothing (PRIOR=2) to prevent small-sample bias. A source with 1/1 approvals won't outrank one with 9/10.
 
 ## Modes
 
 | Flag | Description |
 |------|-------------|
-| `--listen` | **DM Listener** — Always-on local mode for instant DM responses |
-| `--github-actions` | Used by GitHub Actions for scheduled posting |
+| `--listen` | DM Listener — always-on local mode for instant DM responses |
+| `--process-dms` | Process pending DMs once and exit (used by GHA) |
+| `--github-actions` | Scheduled posting mode (used by GHA) |
 | `--stats` | Send weekly stats summary via DM |
-| `--scheduled` | Local continuous posting mode (legacy) |
-| `--production` | Production mode (legacy) |
-| Default | Training mode — sends articles for rapid review |
+
+## GitHub Actions Workflows
+
+| Workflow | Schedule | What it does |
+|----------|----------|-------------|
+| `post.yml` | 11 AM Chicago, Mon-Fri | Posts article, processes DMs, sends Monday stats |
+| `process-dms.yml` | Every 6 hours, all 7 days | Processes DMs (URLs, ratings, commands) |
+| `discover.yml` | Sunday 10 AM Chicago | Discovers new sources, sends top finds for review |
 
 ## Source Discovery
 
 ### Weekly Discovery (Sundays 10 AM Chicago via GitHub Actions)
 - Mines Hacker News for quality domains (150+ points)
-- Sends weekly stats summary via DM
+- Sends top discovered sources to DM for 1/0/x review
 
 ### Local Discovery
 ```bash
@@ -111,45 +96,28 @@ python3 discover.py --local
 - Runs full discovery including Substack recommendation scraping (blocked on cloud IPs)
 - Sends top discovered sources to your DM for review
 
-### Processing Discovery Reviews
-```bash
-python3 discover.py --process-reviews
-```
-- Processes your 1/0/x responses to discovery DMs
-
-## Blocked Content
-
-The bot automatically filters out:
-- **Corporate sites**: apple.com, openai.com, google.com, microsoft.com, etc.
-- **Social media**: reddit, twitter, youtube, linkedin
-- **News sites**: nytimes, wsj, bbc, cnn, techcrunch, etc.
-- **Government docs**: supremecourt.gov, congress.gov, whitehouse.gov
-- **Paywalled content**: stratechery, AI Supremacy, etc.
-- **CTA/recruitment**: "apply for", "sign up", "now hiring", etc.
-
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `bot.py` | Core logic — fetching, scoring, posting, DM handling, listener |
+| `bot.py` | Core logic — fetching, scoring, posting, DM handling |
 | `main.py` | Entry point with mode selection |
 | `feeds.py` | RSS feed sources, blocked domains/keywords |
 | `canonical.py` | 87 curated evergreen essays |
-| `discover.py` | Source discovery (Substack recs, HN mining) |
+| `discover.py` | Source discovery (HN mining, Substack recs) |
 | `queue.json` | Articles scored and ready to post |
 | `posted.json` | URLs already posted (deduplication) |
 | `training_log.json` | User ratings that inform scoring |
-| `pending_review.json` | Article awaiting your approval |
+| `pending_review.json` | Articles awaiting approval |
 | `rejected_sources.json` | Permanently blocked sources |
-| `daily_sources.json` | Sources posted today (resets at midnight) |
-| `discovered_sources.json` | Sources found by discovery system |
+| `feed_health.json` | Tracks consecutive feed failures |
 | `.env` | Local bot token (gitignored) |
 
 ## Deployment
 
-- **DM handling**: Run `python3 main.py --listen` locally (always on)
-- **Channel posting**: GitHub Actions cron (`0 14,15,21,22 * * 1-5` UTC)
-- **Discovery**: GitHub Actions cron (Sundays) + local `discover.py --local`
+- **DM handling**: GitHub Actions `process-dms.yml` (every 6 hours)
+- **Channel posting**: GitHub Actions `post.yml` (11 AM Chicago, weekdays)
+- **Discovery**: GitHub Actions `discover.yml` (Sundays) + local `discover.py --local`
 
 ### GitHub Secrets
 - `TELEGRAM_BOT_TOKEN` — Bot API token from @BotFather
