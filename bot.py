@@ -583,6 +583,7 @@ def fetch_page_title(url: str) -> str:
                           "AppleWebKit/537.36"
         }
         response = requests.get(url, headers=headers, timeout=8)
+        print(f"Title fetch for {url}: status={response.status_code}")
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
             title_tag = soup.find("title")
@@ -591,7 +592,9 @@ def fetch_page_title(url: str) -> str:
     except Exception as e:
         print(f"Error fetching title for {url}: {e}")
     # Fallback: derive title from URL slug
-    return _title_from_url_slug(url) or "Untitled"
+    fallback = _title_from_url_slug(url)
+    print(f"Using fallback title: {fallback}")
+    return fallback or "Untitled"
 
 
 def handle_url_submission(url: str, immediate: bool = False, add_feed: bool = False) -> bool:
@@ -619,7 +622,8 @@ def handle_url_submission(url: str, immediate: bool = False, add_feed: bool = Fa
         if normalize_url(url) in {normalize_url(u) for u in posted_urls}:
             send_message(ANDY_CHAT_ID, f"📌 Already shared — <b>{title}</b>")
             return False
-        if post_to_channel(article):
+        posted = post_to_channel(article)
+        if posted:
             posted_urls.append(normalize_url(url))
             save_json(POSTED_FILE, posted_urls)
             send_message(ANDY_CHAT_ID, f"Posted: {title}\nfrom {domain}")
@@ -627,7 +631,10 @@ def handle_url_submission(url: str, immediate: bool = False, add_feed: bool = Fa
                 handle_addfeed(url)
             return True
         else:
-            send_message(ANDY_CHAT_ID, f"Failed to post: {title}")
+            send_message(ANDY_CHAT_ID, f"Failed to post: <b>{title}</b>\n<i>{url}</i>")
+            # Still add the feed even if the post failed (e.g. GHA can't reach the page)
+            if add_feed:
+                handle_addfeed(url)
             return False
     else:
         queue = load_json(QUEUE_FILE, [])
