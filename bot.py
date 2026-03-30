@@ -565,6 +565,15 @@ def extract_url_from_message(text: str) -> tuple:
     return None, False, False
 
 
+def _title_from_url_slug(url: str) -> str | None:
+    """Extract a readable title from the URL path slug as a fallback."""
+    path = urlparse(url).path.rstrip("/")
+    slug = path.rsplit("/", 1)[-1] if "/" in path else ""
+    if slug and len(slug) > 3:
+        return slug.replace("-", " ").replace("_", " ").strip().title()
+    return None
+
+
 def fetch_page_title(url: str) -> str:
     """Fetch the <title> tag from a URL."""
     try:
@@ -581,7 +590,8 @@ def fetch_page_title(url: str) -> str:
                 return title_tag.get_text(strip=True)
     except Exception as e:
         print(f"Error fetching title for {url}: {e}")
-    return "Untitled"
+    # Fallback: derive title from URL slug
+    return _title_from_url_slug(url) or "Untitled"
 
 
 def handle_url_submission(url: str, immediate: bool = False, add_feed: bool = False) -> bool:
@@ -707,14 +717,16 @@ def handle_addfeed(url: str):
         send_message(ANDY_CHAT_ID, f"Couldn't find RSS feed for <b>{domain}</b>")
         return
 
-    # Verify feed actually works
+    # Verify feed actually works (skip for Substack — GHA IPs are blocked)
+    is_substack = "substack.com" in domain
     feed = feedparser.parse(feed_url)
-    if not feed.entries:
+
+    if not feed.entries and not is_substack:
         send_message(ANDY_CHAT_ID, f"Found feed but it's empty — <b>{feed_url}</b>")
         return
 
     # Derive name from feed title or page title
-    name = feed.feed.get("title", "").strip()
+    name = feed.feed.get("title", "").strip() if feed.entries else ""
     if not name or len(name) > 40:
         name = fetch_page_title(url)
     # Clean common suffixes
@@ -731,11 +743,12 @@ def handle_addfeed(url: str):
     FEEDS.append({"name": name, "url": feed_url, "category": "Discovered"})
 
     entry_count = len(feed.entries)
+    status = f"{entry_count} articles in feed" if entry_count else "feed verified (Substack)"
     send_message(
         ANDY_CHAT_ID,
         f"Added to rotation — <b>{name}</b>\n"
         f"<i>{feed_url}</i>\n"
-        f"{entry_count} articles in feed",
+        f"{status}",
     )
     print(f"Added feed via DM: {name} -> {feed_url}")
 
@@ -1208,8 +1221,9 @@ def check_paywall(url: str) -> bool:
                 return True
 
         # Suspiciously short content often means gated (< 200 chars of actual content)
-        # But only flag this for sources we know gate content (Substack, etc.)
-        if len(text) < 150 and ("substack" in url.lower() or "every.to" in url.lower()):
+        # But only flag this for every.to — Substack short responses are usually
+        # GHA IP blocks, not actual paywalls
+        if len(text) < 150 and "every.to" in url.lower():
             return True
 
         return False
@@ -1355,8 +1369,8 @@ def post_to_channel(article: dict) -> bool:
     link = article["link"]
     source = article["source"]
 
-    # Last-check: don't post paywalled content
-    if check_paywall(link):
+    # Last-check: don't post paywalled content (skip for user-submitted articles)
+    if not article.get("user_submitted") and check_paywall(link):
         print(f"Paywall detected at post time — skipping: {title[:40]}...")
         return False
 
