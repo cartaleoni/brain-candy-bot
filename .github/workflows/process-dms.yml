@@ -1,0 +1,94 @@
+name: Process DMs
+
+on:
+    schedule:
+      - cron: '0 4,10,16,22 * * *'
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+concurrency:
+    group: brain-candy-post
+    cancel-in-progress: false
+
+jobs:
+    process-dms:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            fetch-depth: 0
+
+        - name: Restore state from bot-state branch
+          run: |
+            if git ls-remote --heads origin bot-state | grep -q bot-state; then
+              echo "Fetching state from bot-state branch..."
+              git fetch origin bot-state
+
+              for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+                git show origin/bot-state:"$f" > "$f" 2>/dev/null && echo "Restored $f" || true
+              done
+            else
+              echo "WARNING: bot-state branch not found — no state to restore"
+            fi
+
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
+
+        - name: Install dependencies
+          run: pip install -r requirements.txt
+
+        - name: Process DMs
+          env:
+            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+            TELEGRAM_CHANNEL_ID: "@candyforthebrain"
+          run: python main.py --process-dms
+
+        - name: Save state to bot-state branch
+          run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            mkdir -p /tmp/bot-state
+            for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+              [ -f "$f" ] && cp "$f" /tmp/bot-state/
+            done
+
+            if git ls-remote --heads origin bot-state | grep -q bot-state; then
+              git fetch origin bot-state
+              git checkout -f origin/bot-state -B bot-state
+            else
+              git checkout --orphan bot-state
+              git rm -rf . 2>/dev/null || true
+            fi
+
+            for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+              [ -f "/tmp/bot-state/$f" ] && cp "/tmp/bot-state/$f" "$f"
+            done
+
+            git add *.json 2>/dev/null || true
+
+            if git diff --staged --quiet; then
+              echo "No state changes to commit"
+              exit 0
+            fi
+
+            git commit -m "Update bot state [skip ci]"
+
+            for i in 1 2 3; do
+              if git push origin bot-state; then
+                echo "State saved to bot-state branch"
+                exit 0
+              fi
+              echo "Push attempt $i failed, pulling and retrying..."
+              git pull --rebase origin bot-state
+            done
+
+            echo "ERROR: Failed to save state after 3 attempts"
+            exit 1

@@ -386,6 +386,7 @@ def send_help_message():
         "<b>Submitting:</b>\n"
         "  Send a URL — Queue for next slot\n"
         "  <code>!URL</code> — Post immediately\n"
+        "  <code>+URL</code> — Post + add source to feeds\n"
         "  <code>/addfeed URL</code> — Add blog to rotation\n"
         "\n"
         "<b>Commands:</b>\n"
@@ -425,7 +426,8 @@ def send_guide_message():
         "<b>Submitting:</b>\n"
         "  Send a URL — Queues article for next posting slot\n"
         "  <code>!URL</code> — Posts immediately to channel\n"
-        "  <code>/addfeed URL</code> — Adds blog/source to feed rotation\n"
+        "  <code>+URL</code> — Posts + adds source to feed rotation\n"
+        "  <code>/addfeed URL</code> — Adds blog/source to feed rotation only\n"
         "\n"
         "<b>Commands:</b>\n"
         "  <code>/help</code> — Quick command reference\n"
@@ -491,21 +493,76 @@ def send_guide_message():
     print("Sent full guide to Andy")
 
 
+def send_overview_message():
+    """Send a pinnable overview of the bot's features and commands."""
+    queue = load_json(QUEUE_FILE, [])
+    posted = load_json(POSTED_FILE, [])
+
+    overview = (
+        "🧠 <b>Brain Candy — Overview</b>\n"
+        "\n"
+        "Curated essays posted daily to @candyforthebrain.\n"
+        "One post per day, Mon-Fri at 11 AM Chicago time.\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>SUBMIT ARTICLES</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  <code>URL</code> — Queue for next slot\n"
+        "  <code>!URL</code> — Post immediately\n"
+        "  <code>+URL</code> — Post + add source to feeds\n"
+        "  <code>/addfeed URL</code> — Add source to feeds only\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>RATE ARTICLES</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  <code>1</code> — Approve\n"
+        "  <code>0</code> — Skip\n"
+        "  <code>x</code> — Block source\n"
+        "  <code>1,0,x,1</code> — Batch rate\n"
+        "  <code>/undo</code> — Undo last rating\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>INFO</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  <code>/stats</code> — Weekly stats\n"
+        "  <code>/guide</code> — Full scoring + queue rules\n"
+        "  <code>/help</code> — Quick command list\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>HOW IT WORKS</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"  {len(FEEDS)} sources in rotation\n"
+        f"  {len(queue)} articles in queue\n"
+        f"  {len(posted)} articles posted\n"
+        "\n"
+        "Sources are scored by your ratings. "
+        "Approve = boost, skip = neutral, block = permanent remove. "
+        "The bot discovers new sources weekly and sends them for your review.\n"
+    )
+    send_message(ANDY_CHAT_ID, overview)
+    print("Sent overview message to Andy")
+
+
 def extract_url_from_message(text: str) -> tuple:
-    """Check if message is a URL submission. Returns (url, immediate) or (None, False).
-    Prefix with ! for immediate posting."""
+    """Check if message is a URL submission. Returns (url, immediate, add_feed) or (None, False, False).
+    Prefix with ! for immediate posting, + for post + add source to feeds."""
     text = text.strip()
 
     immediate = False
-    if text.startswith("!"):
+    add_feed = False
+    if text.startswith("+"):
+        add_feed = True
+        immediate = True
+        text = text[1:].strip()
+    elif text.startswith("!"):
         immediate = True
         text = text[1:].strip()
 
     if text.startswith("http://") or text.startswith("https://"):
         url = text.split()[0]
-        return url, immediate
+        return url, immediate, add_feed
 
-    return None, False
+    return None, False, False
 
 
 def fetch_page_title(url: str) -> str:
@@ -527,8 +584,9 @@ def fetch_page_title(url: str) -> str:
     return "Untitled"
 
 
-def handle_url_submission(url: str, immediate: bool = False) -> bool:
-    """Queue or immediately post a user-submitted URL."""
+def handle_url_submission(url: str, immediate: bool = False, add_feed: bool = False) -> bool:
+    """Queue or immediately post a user-submitted URL.
+    If add_feed=True, also adds the source's RSS feed to rotation."""
     if is_blocked(url):
         send_message(ANDY_CHAT_ID, f"⚠️ URL is from a blocked domain — skipping.")
         return False
@@ -555,6 +613,8 @@ def handle_url_submission(url: str, immediate: bool = False) -> bool:
             posted_urls.append(normalize_url(url))
             save_json(POSTED_FILE, posted_urls)
             send_message(ANDY_CHAT_ID, f"Posted: {title}\nfrom {domain}")
+            if add_feed:
+                handle_addfeed(url)
             return True
         else:
             send_message(ANDY_CHAT_ID, f"Failed to post: {title}")
@@ -875,9 +935,9 @@ def process_responses():
 
         # Check if message is a URL submission
         raw_text = message.get("text", "").strip()
-        url, immediate = extract_url_from_message(raw_text)
+        url, immediate, add_feed = extract_url_from_message(raw_text)
         if url:
-            handle_url_submission(url, immediate)
+            handle_url_submission(url, immediate, add_feed)
             continue
 
         # Skip ratings if nothing is pending
@@ -1738,16 +1798,35 @@ def process_review_responses():
         if chat_id != ANDY_CHAT_ID:
             continue
 
-        # Check for help command
+        # Check for commands
         if text in ("/help", "help", "/start"):
             send_help_message()
+            continue
+        if text in ("/overview", "overview"):
+            send_overview_message()
+            continue
+        if text in ("/guide", "guide"):
+            send_guide_message()
+            continue
+        if text in ("/stats", "stats"):
+            send_weekly_stats()
+            continue
+
+        # Add feed command
+        if text.startswith("/addfeed") or text.startswith("addfeed"):
+            raw_text = message.get("text", "").strip()
+            parts = raw_text.split(None, 1)
+            if len(parts) < 2 or not parts[1].startswith("http"):
+                send_message(ANDY_CHAT_ID, "Usage: <code>/addfeed https://blog.example.com</code>")
+            else:
+                handle_addfeed(parts[1].strip())
             continue
 
         # Check if message is a URL submission
         raw_text = message.get("text", "").strip()
-        url, immediate = extract_url_from_message(raw_text)
+        url, immediate, add_feed = extract_url_from_message(raw_text)
         if url:
-            handle_url_submission(url, immediate)
+            handle_url_submission(url, immediate, add_feed)
             continue
 
         # Parse ratings: 1=approve, 0=skip, x=block source
@@ -2107,6 +2186,11 @@ def listen_for_dms():
                     send_guide_message()
                     continue
 
+                # Overview command (pinnable summary)
+                if text in ("/overview", "overview"):
+                    send_overview_message()
+                    continue
+
                 # Stats command
                 if text in ("/stats", "stats"):
                     send_weekly_stats()
@@ -2133,9 +2217,9 @@ def listen_for_dms():
 
                 # URL submission
                 raw_text = message.get("text", "").strip()
-                url, immediate = extract_url_from_message(raw_text)
+                url, immediate, add_feed = extract_url_from_message(raw_text)
                 if url:
-                    handle_url_submission(url, immediate)
+                    handle_url_submission(url, immediate, add_feed)
                     continue
 
                 # Process ratings for pending articles

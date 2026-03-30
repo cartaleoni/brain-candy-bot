@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats, listen_for_dms
+from bot import run_training, run_production, build_queue, post_from_queue, run_review_mode, send_weekly_stats, listen_for_dms, process_review_responses
 
 CHICAGO_TZ = ZoneInfo("America/Chicago")
 POSTING_HOURS = [11]  # 11 AM Chicago time (one post per day)
@@ -24,10 +24,15 @@ SCHEDULED_MODE = "--scheduled" in sys.argv
 PRODUCTION_MODE = "--production" in sys.argv
 GITHUB_ACTIONS_MODE = "--github-actions" in sys.argv
 STATS_MODE = "--stats" in sys.argv
+PROCESS_DMS_MODE = "--process-dms" in sys.argv
 
 if LISTEN_MODE:
     print("Brain Candy - DM LISTENER")
     listen_for_dms()
+elif PROCESS_DMS_MODE:
+    print("Brain Candy - PROCESS DMs")
+    process_review_responses()
+    print("Done!")
 elif STATS_MODE:
     print("Brain Candy - WEEKLY STATS")
     send_weekly_stats()
