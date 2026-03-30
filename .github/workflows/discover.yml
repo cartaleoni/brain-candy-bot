@@ -26,7 +26,7 @@ jobs:
             echo "Fetching state from bot-state branch..."
             git fetch origin bot-state
 
-            for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+            for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json source_tiers.json; do
               git show origin/bot-state:"$f" > "$f" 2>/dev/null && echo "Restored $f" || true
             done
           else
@@ -65,7 +65,7 @@ jobs:
 
           # Save state files to bot-state branch
           mkdir -p /tmp/bot-state
-          for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+          for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json source_tiers.json; do
             [ -f "$f" ] && cp "$f" /tmp/bot-state/
           done
 
@@ -77,7 +77,7 @@ jobs:
             git rm -rf . 2>/dev/null || true
           fi
 
-          for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json; do
+          for f in posted.json queue.json daily_sources.json pending_review.json approved.json rejected_sources.json training_log.json discovered_sources.json pending_discovery_review.json feed_health.json source_tiers.json; do
             [ -f "/tmp/bot-state/$f" ] && cp "/tmp/bot-state/$f" "$f"
           done
 

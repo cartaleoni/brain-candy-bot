@@ -113,6 +113,11 @@ DAILY_SOURCES_FILE = DATA_DIR / "daily_sources.json"  # Track sources posted tod
 APPROVED_FILE = DATA_DIR / "approved.json"  # Articles approved by Andy, ready to post
 REJECTED_SOURCES_FILE = DATA_DIR / "rejected_sources.json"  # Sources Andy has rejected
 FEED_HEALTH_FILE = DATA_DIR / "feed_health.json"  # Track consecutive feed failures
+SOURCE_TIERS_FILE = DATA_DIR / "source_tiers.json"  # Manual source tier assignments
+
+# Tier-based cooldowns (days between posts from same source)
+TIER_COOLDOWNS = {"starred": 3, "good": 5, "normal": 7}
+TIER_SCORE_BOOST = {"starred": 0.1, "good": 0.0, "normal": -0.1}
 
 # Previously hardcoded ALREADY_SEEN_URLS have been merged into posted.json
 
@@ -282,29 +287,29 @@ def get_today_date() -> str:
 
 
 def load_daily_sources() -> set:
-    """Load sources that have already been posted today. Resets at midnight Chicago time."""
-    data = load_json(DAILY_SOURCES_FILE, {"date": None, "sources": []})
+    """Load sources on cooldown. Returns set of source names that shouldn't post yet."""
+    data = load_json(DAILY_SOURCES_FILE, {})
     today = get_today_date()
+    on_cooldown = set()
 
-    # If it's a new day, reset the tracking
-    if data.get("date") != today:
-        return set()
+    for source, last_posted in data.items():
+        try:
+            last_date = datetime.strptime(last_posted, "%Y-%m-%d").date()
+            today_date = datetime.strptime(today, "%Y-%m-%d").date()
+            days_since = (today_date - last_date).days
+            cooldown = get_source_cooldown_days(source)
+            if days_since < cooldown:
+                on_cooldown.add(source)
+        except (ValueError, TypeError):
+            continue
 
-    return set(data.get("sources", []))
+    return on_cooldown
 
 
 def save_daily_source(source: str):
-    """Add a source to today's posted sources."""
-    data = load_json(DAILY_SOURCES_FILE, {"date": None, "sources": []})
-    today = get_today_date()
-
-    # Reset if new day
-    if data.get("date") != today:
-        data = {"date": today, "sources": []}
-
-    if source not in data["sources"]:
-        data["sources"].append(source)
-
+    """Record when a source was last posted."""
+    data = load_json(DAILY_SOURCES_FILE, {})
+    data[source] = get_today_date()
     save_json(DAILY_SOURCES_FILE, data)
 
 
@@ -389,6 +394,11 @@ def send_help_message():
         "  <code>+URL</code> — Post + add source to feeds\n"
         "  <code>/addfeed URL</code> — Add blog to rotation\n"
         "\n"
+        "<b>Source Tiers:</b>\n"
+        "  <code>/star Name</code> — Starred (3-day cooldown)\n"
+        "  <code>/demote Name</code> — Demoted (7-day cooldown)\n"
+        "  <code>/tiers</code> — Show tier assignments\n"
+        "\n"
         "<b>Commands:</b>\n"
         "  <code>/help</code> — This quick reference\n"
         "  <code>/guide</code> — Full bot guide (scoring, schedule, etc.)\n"
@@ -442,7 +452,7 @@ def send_guide_message():
         "  • Starts at 0.5 (neutral)\n"
         "  • Each <code>1</code> rating pushes toward 1.0\n"
         "  • Each <code>0</code> rating pushes toward 0.0\n"
-        "  • PRIOR=2 means ~4 ratings to move significantly\n"
+        "  • PRIOR=1 means ~2-3 ratings to move significantly\n"
         "  • Score = (approvals + 2×0.5) / (total + 2)\n"
         "\n"
         "<b>Article scoring:</b>\n"
@@ -520,6 +530,14 @@ def send_overview_message():
         "  <code>x</code> — Block source\n"
         "  <code>1,0,x,1</code> — Batch rate\n"
         "  <code>/undo</code> — Undo last rating\n"
+        "\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "<b>SOURCE TIERS</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        "  <code>/star Name</code> — Starred (3-day cooldown, +0.1)\n"
+        "  <code>/demote Name</code> — Demoted (7-day cooldown, -0.1)\n"
+        "  <code>/tiers</code> — Show assignments\n"
+        "  Default: good (5-day cooldown)\n"
         "\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         "<b>INFO</b>\n"
@@ -758,6 +776,59 @@ def handle_addfeed(url: str):
         f"{status}",
     )
     print(f"Added feed via DM: {name} -> {feed_url}")
+
+
+def handle_star(source_name: str):
+    """Promote a source to starred tier."""
+    tiers = load_source_tiers()
+    # Remove from normal if present
+    if source_name in tiers.get("normal", []):
+        tiers["normal"].remove(source_name)
+    # Add to starred if not already
+    if source_name not in tiers.get("starred", []):
+        tiers.setdefault("starred", []).append(source_name)
+    save_source_tiers(tiers)
+    send_message(ANDY_CHAT_ID, f"Starred — <b>{source_name}</b>\n3-day cooldown, +0.1 score boost")
+
+
+def handle_demote(source_name: str):
+    """Demote a source to normal tier."""
+    tiers = load_source_tiers()
+    # Remove from starred if present
+    if source_name in tiers.get("starred", []):
+        tiers["starred"].remove(source_name)
+    # Add to normal if not already
+    if source_name not in tiers.get("normal", []):
+        tiers.setdefault("normal", []).append(source_name)
+    save_source_tiers(tiers)
+    send_message(ANDY_CHAT_ID, f"Demoted — <b>{source_name}</b>\n7-day cooldown, -0.1 score penalty")
+
+
+def handle_tiers():
+    """Show current tier assignments."""
+    tiers = load_source_tiers()
+    starred = tiers.get("starred", [])
+    normal = tiers.get("normal", [])
+
+    msg = "📊 <b>Source Tiers</b>\n\n"
+    if starred:
+        msg += "<b>Starred</b> (3-day cooldown, +0.1)\n"
+        for s in sorted(starred):
+            msg += f"  {s}\n"
+        msg += "\n"
+    else:
+        msg += "<b>Starred:</b> none\n\n"
+
+    if normal:
+        msg += "<b>Demoted</b> (7-day cooldown, -0.1)\n"
+        for s in sorted(normal):
+            msg += f"  {s}\n"
+        msg += "\n"
+    else:
+        msg += "<b>Demoted:</b> none\n\n"
+
+    msg += "<i>All other sources are 'good' (5-day cooldown, no boost)</i>"
+    send_message(ANDY_CHAT_ID, msg)
 
 
 def fetch_hacker_news(min_points: int = HN_MIN_POINTS, max_articles: int = 30,
@@ -1277,7 +1348,7 @@ def get_source_scores() -> dict:
     # Calculate scores with Bayesian smoothing
     # Uses (good + prior) / (total + 2*prior) to pull small samples toward 0.5
     # This prevents a source with 1/1 good from outranking one with 9/10 good
-    PRIOR = 2  # Equivalent to adding 2 fake "good" and 2 fake "bad" ratings
+    PRIOR = 1  # Lower prior = wider score spread, faster convergence
     scores = {}
     for source, stats in source_stats.items():
         total = stats["good"] + stats["bad"]
@@ -1287,6 +1358,30 @@ def get_source_scores() -> dict:
             scores[source] = 0.5  # Neutral for unknown
 
     return scores
+
+
+def load_source_tiers() -> dict:
+    """Load source tier assignments. Returns {"starred": [...], "normal": [...]}."""
+    return load_json(SOURCE_TIERS_FILE, {"starred": [], "normal": []})
+
+
+def save_source_tiers(tiers: dict):
+    save_json(SOURCE_TIERS_FILE, tiers)
+
+
+def get_source_tier(source: str) -> str:
+    """Get the tier for a source. Default is 'good' (middle tier)."""
+    tiers = load_source_tiers()
+    if source in tiers.get("starred", []):
+        return "starred"
+    if source in tiers.get("normal", []):
+        return "normal"
+    return "good"
+
+
+def get_source_cooldown_days(source: str) -> int:
+    """Get cooldown days for a source based on its tier."""
+    return TIER_COOLDOWNS[get_source_tier(source)]
 
 
 def get_hn_liked_domains() -> set:
@@ -1365,6 +1460,10 @@ def score_article(article: dict, source_scores: dict) -> float:
         score -= 0.2
     elif content_type == "news":
         score -= 0.1
+
+    # Tier boost/penalty
+    tier = get_source_tier(source)
+    score += TIER_SCORE_BOOST.get(tier, 0.0)
 
     # Clamp to 0-1
     return max(0.0, min(1.0, score))
@@ -1711,7 +1810,7 @@ def post_from_queue(count: int = 1):
 
     # Load sources already posted TODAY (resets at midnight Chicago time)
     daily_sources = load_daily_sources()
-    print(f"Sources already posted today: {len(daily_sources)}")
+    print(f"Sources on cooldown: {len(daily_sources)}")
 
     remaining_queue = []
 
@@ -1742,7 +1841,7 @@ def post_from_queue(count: int = 1):
 
         # Skip if this source already posted today
         if source in daily_sources:
-            print(f"Skipping (already posted today): {source}")
+            print(f"Skipping (on cooldown): {source}")
             remaining_queue.append(article)
             continue
 
@@ -1831,6 +1930,23 @@ def process_review_responses():
             continue
         if text in ("/stats", "stats"):
             send_weekly_stats()
+            continue
+
+        # Tier commands
+        if text.startswith("/star ") or text.startswith("star "):
+            raw_text = message.get("text", "").strip()
+            source_name = raw_text.split(None, 1)[1] if len(raw_text.split(None, 1)) > 1 else ""
+            if source_name:
+                handle_star(source_name)
+            continue
+        if text.startswith("/demote ") or text.startswith("demote "):
+            raw_text = message.get("text", "").strip()
+            source_name = raw_text.split(None, 1)[1] if len(raw_text.split(None, 1)) > 1 else ""
+            if source_name:
+                handle_demote(source_name)
+            continue
+        if text in ("/tiers", "tiers"):
+            handle_tiers()
             continue
 
         # Add feed command
@@ -1985,7 +2101,7 @@ def post_approved_to_channel(count: int = 1):
 
         # Check daily source limit
         if source in daily_sources:
-            print(f"Skipping (already posted today): {source}")
+            print(f"Skipping (on cooldown): {source}")
             remaining.append(article)
             continue
 
@@ -2224,6 +2340,29 @@ def listen_for_dms():
                     else:
                         action = last_actions.pop()
                         _handle_undo(action)
+                    continue
+
+                # Tier commands
+                if text.startswith("/star ") or text.startswith("star "):
+                    raw_text = message.get("text", "").strip()
+                    source_name = raw_text.split(None, 1)[1] if len(raw_text.split(None, 1)) > 1 else ""
+                    if source_name:
+                        handle_star(source_name)
+                    else:
+                        send_message(ANDY_CHAT_ID, "Usage: <code>/star Source Name</code>")
+                    continue
+
+                if text.startswith("/demote ") or text.startswith("demote "):
+                    raw_text = message.get("text", "").strip()
+                    source_name = raw_text.split(None, 1)[1] if len(raw_text.split(None, 1)) > 1 else ""
+                    if source_name:
+                        handle_demote(source_name)
+                    else:
+                        send_message(ANDY_CHAT_ID, "Usage: <code>/demote Source Name</code>")
+                    continue
+
+                if text in ("/tiers", "tiers"):
+                    handle_tiers()
                     continue
 
                 # Add feed command
