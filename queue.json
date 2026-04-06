@@ -1,14 +1,5 @@
 [
   {
-    "title": "America\u2019s Energy Problem Isn\u2019t Supply. It\u2019s Delivery.",
-    "link": "https://www.a16z.news/p/americas-energy-problem-isnt-supply",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-04-01T16:43:35.127518",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
     "title": "The Energy Situation, Explained for Tech People",
     "link": "https://www.a16z.news/p/the-energy-situation-explained-for",
     "source": "a16z News",
@@ -132,6 +123,15 @@
     "score": 0.5,
     "queued_at": "2026-04-02T16:44:02.072490",
     "category": "Crypto",
+    "content_type": "essay"
+  },
+  {
+    "title": "Bad Analogies",
+    "link": "https://www.notboring.co/p/bad-analogies",
+    "source": "Not Boring",
+    "score": 0.5,
+    "queued_at": "2026-04-06T16:34:42.156786",
+    "category": "Venture",
     "content_type": "essay"
   }
 ]
