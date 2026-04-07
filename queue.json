@@ -1,5 +1,14 @@
 [
   {
+    "title": "Antarctica, and the Extreme Logistics of Human Exploration",
+    "link": "https://www.a16z.news/p/antarctica-and-the-extreme-logistics",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-04-07T16:45:15.480786",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
     "title": "The Energy Situation, Explained for Tech People",
     "link": "https://www.a16z.news/p/the-energy-situation-explained-for",
     "source": "a16z News",
@@ -7,15 +16,6 @@
     "queued_at": "2026-03-30T16:46:52.188188",
     "category": "Tech",
     "content_type": "news"
-  },
-  {
-    "title": "Management In The Age Of AI",
-    "link": "https://staysaasy.com/management/2026/03/12/ai-management.html",
-    "source": "Stay SaaSy",
-    "score": 0.5,
-    "queued_at": "2026-03-20T16:30:35.204641",
-    "category": "Discovered",
-    "content_type": "essay"
   },
   {
     "title": "Avoiding a Culture of Emergencies",
@@ -132,6 +132,15 @@
     "score": 0.5,
     "queued_at": "2026-04-06T16:34:42.156786",
     "category": "Venture",
+    "content_type": "essay"
+  },
+  {
+    "title": "Michael Nielsen \u2013 How science actually progresses",
+    "link": "https://www.dwarkesh.com/p/michael-nielsen",
+    "source": "Dwarkesh Patel",
+    "score": 0.5,
+    "queued_at": "2026-04-07T16:45:14.945340",
+    "category": "AI",
     "content_type": "essay"
   }
 ]
