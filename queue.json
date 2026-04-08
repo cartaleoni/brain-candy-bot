@@ -9,11 +9,11 @@
     "content_type": "news"
   },
   {
-    "title": "The Energy Situation, Explained for Tech People",
-    "link": "https://www.a16z.news/p/the-energy-situation-explained-for",
+    "title": "Investing in GitButler",
+    "link": "https://www.a16z.news/p/investing-in-gitbutler",
     "source": "a16z News",
-    "score": 0.6,
-    "queued_at": "2026-03-30T16:46:52.188188",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-04-08T16:50:50.066626",
     "category": "Tech",
     "content_type": "news"
   },
@@ -23,15 +23,6 @@
     "source": "Stay SaaSy",
     "score": 0.5,
     "queued_at": "2026-03-20T16:30:35.472829",
-    "category": "Discovered",
-    "content_type": "essay"
-  },
-  {
-    "title": "Confusion around the term reward hacking",
-    "link": "https://www.lesswrong.com/posts/ixyokbwQEHgiHJYFW/confusion-around-the-term-reward-hacking",
-    "source": "LessWrong.com",
-    "score": 0.5,
-    "queued_at": "2026-03-20T16:30:36.200282",
     "category": "Discovered",
     "content_type": "essay"
   },
@@ -141,6 +132,15 @@
     "score": 0.5,
     "queued_at": "2026-04-07T16:45:14.945340",
     "category": "AI",
+    "content_type": "essay"
+  },
+  {
+    "title": "TBA",
+    "link": "https://economics.mit.edu/node/5258",
+    "source": "Economics",
+    "score": 0.5,
+    "queued_at": "2026-04-08T16:50:49.742769",
+    "category": "Discovered",
     "content_type": "essay"
   }
 ]
