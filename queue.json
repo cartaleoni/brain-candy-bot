@@ -36,15 +36,6 @@
     "content_type": "essay"
   },
   {
-    "title": "Terence Tao \u2013 Kepler, Newton, and the true nature of mathematical discovery",
-    "link": "https://www.dwarkesh.com/p/terence-tao",
-    "source": "Dwarkesh Patel",
-    "score": 0.5,
-    "queued_at": "2026-03-20T16:30:36.725576",
-    "category": "AI",
-    "content_type": "essay"
-  },
-  {
     "title": "Organizational Economics Seminar [joint with IWER]",
     "link": "https://economics.mit.edu/node/5247",
     "source": "Economics",
@@ -140,6 +131,15 @@
     "source": "Economics",
     "score": 0.5,
     "queued_at": "2026-04-08T16:50:49.742769",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Writing With Robots",
+    "link": "https://www.lesswrong.com/posts/jwfntc66wAE3t3xmq/writing-with-robots",
+    "source": "LessWrong.com",
+    "score": 0.5,
+    "queued_at": "2026-04-09T16:56:51.555520",
     "category": "Discovered",
     "content_type": "essay"
   }
