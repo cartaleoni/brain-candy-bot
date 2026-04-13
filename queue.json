@@ -1,14 +1,5 @@
 [
   {
-    "title": "Antarctica, and the Extreme Logistics of Human Exploration",
-    "link": "https://www.a16z.news/p/antarctica-and-the-extreme-logistics",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-04-07T16:45:15.480786",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
     "title": "Investing in GitButler",
     "link": "https://www.a16z.news/p/investing-in-gitbutler",
     "source": "a16z News",
@@ -131,6 +122,15 @@
     "source": "LessWrong.com",
     "score": 0.5,
     "queued_at": "2026-04-09T16:56:51.555520",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Organizational Economics Seminar [joint with IWER]",
+    "link": "https://economics.mit.edu/node/5245",
+    "source": "Economics",
+    "score": 0.5,
+    "queued_at": "2026-04-13T16:53:03.780628",
     "category": "Discovered",
     "content_type": "essay"
   }
