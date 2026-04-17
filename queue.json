@@ -1,14 +1,5 @@
 [
   {
-    "title": "Investing in GitButler",
-    "link": "https://www.a16z.news/p/investing-in-gitbutler",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-04-08T16:50:50.066626",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
     "title": "The Evidence Gap: Why Courts Can't Balance State AI Regulation",
     "link": "https://www.a16z.news/p/the-evidence-gap-why-courts-cant",
     "source": "a16z News",
@@ -18,13 +9,13 @@
     "content_type": "news"
   },
   {
-    "title": "Stateless infra - where most decentralized compute will be (not blockchains)",
-    "link": "https://paragraph.com/@polynya/stateless-infra-where-most-decentralized-compute-will-be-not-blockchains",
-    "source": "Polynya",
-    "score": 0.5,
-    "queued_at": "2026-03-20T16:30:41.350694",
-    "category": "Crypto",
-    "content_type": "essay"
+    "title": "It takes too long to do things in the government",
+    "link": "https://www.a16z.news/p/it-takes-too-long-to-do-things-in",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-04-17T16:41:32.717790",
+    "category": "Tech",
+    "content_type": "news"
   },
   {
     "title": "Is Global Payments the next Adyen?",
@@ -150,6 +141,24 @@
     "score": 0.5,
     "queued_at": "2026-04-15T16:52:15.982057",
     "category": "AI",
+    "content_type": "essay"
+  },
+  {
+    "title": "The problem with probabililities without models",
+    "link": "https://last-conformer.net/2015/08/31/the-problem-with-probabililities-without-models/",
+    "source": "The Last Conformer",
+    "score": 0.5,
+    "queued_at": "2026-04-17T16:41:32.629262",
+    "category": "Discovered",
+    "content_type": "essay"
+  },
+  {
+    "title": "Engels' Pause and the Permanent Underclass",
+    "link": "https://www.fabricatedknowledge.com/p/mythos-and-engels-pause",
+    "source": "Fabricated Knowledge",
+    "score": 0.5,
+    "queued_at": "2026-04-17T16:41:32.818632",
+    "category": "Tech",
     "content_type": "essay"
   }
 ]
