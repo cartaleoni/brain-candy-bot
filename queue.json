@@ -1,14 +1,5 @@
 [
   {
-    "title": "The Evidence Gap: Why Courts Can't Balance State AI Regulation",
-    "link": "https://www.a16z.news/p/the-evidence-gap-why-courts-cant",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-04-14T16:54:36.061213",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
     "title": "It takes too long to do things in the government",
     "link": "https://www.a16z.news/p/it-takes-too-long-to-do-things-in",
     "source": "a16z News",
@@ -159,6 +150,15 @@
     "score": 0.5,
     "queued_at": "2026-04-17T16:41:32.818632",
     "category": "Tech",
+    "content_type": "essay"
+  },
+  {
+    "title": "Does Vitalik's \"decentralized stack\" need strict global consensus?",
+    "link": "https://paragraph.com/@polynya/does-vitalik-s-decentralized-stack-need-strict-global-consensus",
+    "source": "Polynya",
+    "score": 0.5,
+    "queued_at": "2026-04-20T16:52:56.743021",
+    "category": "Crypto",
     "content_type": "essay"
   }
 ]
