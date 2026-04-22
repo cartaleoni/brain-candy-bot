@@ -1,105 +1,105 @@
 {
   "https://thealgorithmicbridge.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:01.996145"
+    "last_failure": "2026-04-22T16:51:11.042389"
   },
   "https://www.citrini.xyz/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:29.874719"
+    "last_failure": "2026-04-22T16:51:11.451157"
   },
   "https://experimentalhistory.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:26.595607"
+    "last_failure": "2026-04-22T16:51:26.973638"
   },
   "https://sashachapin.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:53.819642"
+    "last_failure": "2026-04-22T16:50:53.910448"
   },
   "https://0xsmac.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:17.133867"
+    "last_failure": "2026-04-22T16:51:22.031753"
   },
   "https://ciechanow.ski/atom.xml": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://telah.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:25.806152"
+    "last_failure": "2026-04-22T16:50:37.742978"
   },
   "https://inchpin.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:05.582361"
+    "last_failure": "2026-04-22T16:51:21.287847"
   },
   "https://mattclifford.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:27.381027"
+    "last_failure": "2026-04-22T16:50:23.446829"
   },
   "https://dragonflyagony.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:44.849023"
+    "last_failure": "2026-04-22T16:50:51.052695"
   },
   "https://vitalik.eth.limo/feed.xml": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://pmillerd.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:33.937843"
+    "last_failure": "2026-04-22T16:51:25.210939"
   },
   "https://joncharbonneau.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:17.192935"
+    "last_failure": "2026-04-22T16:50:56.326025"
   },
   "https://www.fabricatedknowledge.com/feed": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://kylascanlon.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:24.615627"
+    "last_failure": "2026-04-22T16:51:02.214020"
   },
   "https://neuralhorizons.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:07.926473"
+    "last_failure": "2026-04-22T16:51:19.548300"
   },
   "https://applieddivinitystudies.com/feed/": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:38.059611"
+    "last_failure": "2026-04-22T16:50:55.630244"
   },
   "https://meaningness.com/rss": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:18.988852"
+    "last_failure": "2026-04-22T16:50:51.557513"
   },
   "https://beff.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:23.285280"
+    "last_failure": "2026-04-22T16:51:09.988597"
   },
   "https://mojo3324106.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:30.263979"
+    "last_failure": "2026-04-22T16:50:55.979896"
   },
   "https://oldcoinnewcoin.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:21.485593"
+    "last_failure": "2026-04-22T16:51:16.968499"
   },
   "https://www.notboring.co/feed": {
     "consecutive_failures": 0,
@@ -110,33 +110,33 @@
     "warned": false
   },
   "https://guzey.com/feed/": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:42.250128"
+    "last_failure": "2026-04-22T16:51:16.623059"
   },
   "https://members.delphidigital.io/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:31.051809"
+    "last_failure": "2026-04-22T16:50:34.837314"
   },
   "https://staysaasy.com/feed.xml": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://every.to/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:56.764679"
+    "last_failure": "2026-04-22T16:51:12.673951"
   },
   "https://mhdempsey.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:04.788442"
+    "last_failure": "2026-04-22T16:50:37.046934"
   },
   "https://jasminesun.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:29.506527"
+    "last_failure": "2026-04-22T16:51:10.680756"
   },
   "https://latent.space/feed": {
     "consecutive_failures": 0,
@@ -151,87 +151,87 @@
     "warned": false
   },
   "https://ademluzrienspects.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:03.165135"
+    "last_failure": "2026-04-22T16:50:36.704113"
   },
   "https://astralcodexten.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:02.781835"
+    "last_failure": "2026-04-22T16:50:29.787028"
   },
   "https://dwarkeshpatel.com/feed/": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://0xkyle.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:43.043260"
+    "last_failure": "2026-04-22T16:50:46.120257"
   },
   "https://simonsarris.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:29.116163"
+    "last_failure": "2026-04-22T16:50:43.752779"
   },
   "https://thegradientpub.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:32.804847"
+    "last_failure": "2026-04-22T16:51:08.036886"
   },
   "https://visakanv.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:16.784299"
+    "last_failure": "2026-04-22T16:51:09.298242"
   },
   "https://reducibleerrors.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:38.441927"
+    "last_failure": "2026-04-22T16:51:13.018417"
   },
   "https://terminallydrifting.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:26.199644"
+    "last_failure": "2026-04-22T16:51:17.314778"
   },
   "https://strangeloopcanon.com/feed": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://generalist.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:15.120103"
+    "last_failure": "2026-04-22T16:51:21.629814"
   },
   "https://atomsvsbits.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:08.807925"
+    "last_failure": "2026-04-22T16:51:14.271499"
   },
   "https://gwern.net/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:26.510262"
+    "last_failure": "2026-04-22T16:50:44.916561"
   },
   "https://collabfund.com/blog/feed/": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:09.423600"
+    "last_failure": "2026-04-22T16:50:39.719235"
   },
   "https://robkhenderson.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:25.400596"
+    "last_failure": "2026-04-22T16:51:06.268634"
   },
   "https://thezvi.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:16.394981"
+    "last_failure": "2026-04-22T16:51:25.557582"
   },
   "https://bitsaboutmoney.com/feed/": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:12.820669"
+    "last_failure": "2026-04-22T16:50:40.656421"
   },
   "https://semianalysis.com/feed/": {
     "consecutive_failures": 0,
@@ -239,67 +239,67 @@
     "last_failure": "2026-03-26T16:52:20.740323"
   },
   "https://cobie.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:14.719944"
+    "last_failure": "2026-04-22T16:50:23.792303"
   },
   "https://devonzuegel.com/feed": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://scimitarcapital.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:02.387450"
+    "last_failure": "2026-04-22T16:50:25.928275"
   },
   "https://dirtroads.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:21.102309"
+    "last_failure": "2026-04-22T16:51:07.692416"
   },
   "https://dampedspring.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:20.716924"
+    "last_failure": "2026-04-22T16:51:25.905020"
   },
   "https://www.henrikkarlsson.xyz/feed": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://sidbharth.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:44.449105"
+    "last_failure": "2026-04-22T16:50:29.060845"
   },
   "https://noahpinion.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:29.998570"
+    "last_failure": "2026-04-22T16:50:39.207882"
   },
   "https://constructionphysics.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:06.869618"
+    "last_failure": "2026-04-22T16:50:41.350162"
   },
   "https://oneusefulthing.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:43.442346"
+    "last_failure": "2026-04-22T16:50:43.056153"
   },
   "https://treeofwoe.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:06.419553"
+    "last_failure": "2026-04-22T16:50:22.177195"
   },
   "https://a16zcrypto.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:28.702306"
+    "last_failure": "2026-04-22T16:51:27.665921"
   },
   "https://welf.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:31.257198"
+    "last_failure": "2026-04-22T16:50:26.615310"
   },
   "https://economics.mit.edu/rss.xml": {
     "consecutive_failures": 0,
@@ -310,87 +310,87 @@
     "warned": false
   },
   "https://fantasticanachronism.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:53.430720"
+    "last_failure": "2026-04-22T16:50:50.359607"
   },
   "https://0xsammy.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:33.058150"
+    "last_failure": "2026-04-22T16:50:50.704659"
   },
   "https://rootsofprogress.org/feed.xml": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://themacrocompass.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:05.963016"
+    "last_failure": "2026-04-22T16:50:41.003972"
   },
   "https://gmi.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:42.638637"
+    "last_failure": "2026-04-22T16:51:23.174778"
   },
   "https://simulacra.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:45.949806"
+    "last_failure": "2026-04-22T16:51:09.641730"
   },
   "https://obviously.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:33.517536"
+    "last_failure": "2026-04-22T16:51:16.001989"
   },
   "https://ribbonfarm.com/feed/": {
-    "consecutive_failures": 2,
+    "consecutive_failures": 3,
     "warned": false,
-    "last_failure": "2026-04-21T16:47:10.611278"
+    "last_failure": "2026-04-22T16:51:15.304535"
   },
   "https://secretorum.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:13.864406"
+    "last_failure": "2026-04-22T16:51:23.516152"
   },
   "https://minutes.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:24.222758"
+    "last_failure": "2026-04-22T16:51:07.346068"
   },
   "https://antirez.com/rss": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://netinterest.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:05.194238"
+    "last_failure": "2026-04-22T16:50:26.271499"
   },
   "https://epsilontheory.com/feed/": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:32.420033"
+    "last_failure": "2026-04-22T16:50:45.773995"
   },
   "https://research.paradigm.xyz/feed.xml": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:23.017594"
+    "last_failure": "2026-04-22T16:51:24.870111"
   },
   "https://nathanlebenz.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:37.179573"
+    "last_failure": "2026-04-22T16:51:08.382405"
   },
   "https://medicimusings.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:08.322709"
+    "last_failure": "2026-04-22T16:50:22.523580"
   },
   "https://theconvivialsociety.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:34.608053"
+    "last_failure": "2026-04-22T16:50:38.089983"
   },
   "https://thediff.co/feed": {
     "consecutive_failures": 0,
@@ -405,52 +405,52 @@
     "warned": false
   },
   "https://intrinsicperspective.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:41.598534"
+    "last_failure": "2026-04-22T16:50:46.555606"
   },
   "https://aeon.co/feed": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://lt3000.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:29.596456"
+    "last_failure": "2026-04-22T16:51:15.650005"
   },
   "https://visserlabs.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:17.583672"
+    "last_failure": "2026-04-22T16:50:30.135505"
   },
   "https://danwang.co/feed/": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://interconnects.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:46.914612"
+    "last_failure": "2026-04-22T16:51:20.945125"
   },
   "https://fidenza.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:16.750408"
+    "last_failure": "2026-04-22T16:51:11.799211"
   },
   "https://catherineshannon.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:24.998767"
+    "last_failure": "2026-04-22T16:51:13.384193"
   },
   "https://thedefiedge.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:18.249727"
+    "last_failure": "2026-04-22T16:50:37.394309"
   },
   "https://theknower.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:23.668020"
+    "last_failure": "2026-04-22T16:50:21.225216"
   },
   "https://paragraph.com/@polynya/feed": {
     "consecutive_failures": 0,
@@ -461,14 +461,14 @@
     "warned": false
   },
   "https://maltliquidity.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:34.320998"
+    "last_failure": "2026-04-22T16:50:24.589823"
   },
   "https://cryptohayes.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:31.431228"
+    "last_failure": "2026-04-22T16:51:27.317375"
   },
   "https://www.slowboring.com/feed": {
     "consecutive_failures": 0,
@@ -491,42 +491,42 @@
     "warned": false
   },
   "https://mapiswater.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:20.306121"
+    "last_failure": "2026-04-22T16:50:44.098915"
   },
   "https://piratewires.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:30.858804"
+    "last_failure": "2026-04-22T16:50:38.867013"
   },
   "https://uncommoncore.co/feed/": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://importai.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:28.312525"
+    "last_failure": "2026-04-22T16:50:43.398852"
   },
   "https://cdixon.org/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:46:14.333410"
+    "last_failure": "2026-04-22T16:51:08.952334"
   },
   "https://nadia.xyz/feed.xml": {
     "consecutive_failures": 0,
     "warned": false
   },
   "https://apewoodx.substack.com/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:26.984866"
+    "last_failure": "2026-04-22T16:51:10.332994"
   },
   "https://worksinprogress.co/feed": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "warned": true,
-    "last_failure": "2026-04-21T16:47:07.371049"
+    "last_failure": "2026-04-22T16:50:36.353679"
   },
   "https://autotranslucence.com/feed/": {
     "consecutive_failures": 0,
