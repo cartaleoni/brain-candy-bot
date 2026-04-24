@@ -18,15 +18,6 @@
     "content_type": "news"
   },
   {
-    "title": "Differently free",
-    "link": "https://www.henrikkarlsson.xyz/p/differently-free",
-    "source": "Henrik Karlsson",
-    "score": 0.5,
-    "queued_at": "2026-03-24T16:50:08.167751",
-    "category": "Ideas",
-    "content_type": "essay"
-  },
-  {
     "title": "A Prescription for Fixing the Prevailing Wage System",
     "link": "https://ifp.org/prevailing-wage-benchmarking/",
     "source": "Institute for Progress",
@@ -150,6 +141,15 @@
     "score": 0.5,
     "queued_at": "2026-04-20T16:52:56.743021",
     "category": "Crypto",
+    "content_type": "essay"
+  },
+  {
+    "title": "The Great Blue Frontier",
+    "link": "https://www.notboring.co/p/the-great-blue-frontier",
+    "source": "Not Boring",
+    "score": 0.5,
+    "queued_at": "2026-04-24T16:44:01.083391",
+    "category": "Venture",
     "content_type": "essay"
   }
 ]
