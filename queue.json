@@ -1,10 +1,19 @@
 [
   {
-    "title": "Introducing the a16z Design Engineer Fellowship",
-    "link": "https://www.a16z.news/p/introducing-the-a16z-design-engineer",
+    "title": "There was only mom",
+    "link": "https://nintil.com/mom/",
+    "source": "Nintil",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-05-08T17:00:49.016881",
+    "category": "Progress",
+    "content_type": "essay"
+  },
+  {
+    "title": "Charts of the Week: It Was a Good Quarter for \"Other Income\"",
+    "link": "https://www.a16z.news/p/charts-of-the-week-it-was-a-good",
     "source": "a16z News",
     "score": 0.6666666666666666,
-    "queued_at": "2026-05-01T16:42:52.583354",
+    "queued_at": "2026-05-08T17:00:49.146694",
     "category": "Tech",
     "content_type": "news"
   },
@@ -150,6 +159,15 @@
     "score": 0.5,
     "queued_at": "2026-05-01T16:42:52.242433",
     "category": "Tech",
+    "content_type": "essay"
+  },
+  {
+    "title": "The world reveals itself to those who travel by foot",
+    "link": "https://www.henrikkarlsson.xyz/p/travel-by-foot",
+    "source": "Henrik Karlsson",
+    "score": 0.5,
+    "queued_at": "2026-05-08T17:00:48.805388",
+    "category": "Ideas",
     "content_type": "essay"
   }
 ]
