@@ -1,5 +1,14 @@
 [
   {
+    "title": "A shallow dive into formal verification",
+    "link": "https://vitalik.eth.limo/general/2026/05/18/fv.html",
+    "source": "Vitalik Buterin",
+    "score": 0.8571428571428571,
+    "queued_at": "2026-07-14T16:59:42.842637",
+    "category": "Crypto",
+    "content_type": "essay"
+  },
+  {
     "title": "There was only mom",
     "link": "https://nintil.com/mom/",
     "source": "Nintil",
@@ -9,11 +18,29 @@
     "content_type": "essay"
   },
   {
-    "title": "Charts of the Week: It Was a Good Quarter for \"Other Income\"",
-    "link": "https://www.a16z.news/p/charts-of-the-week-it-was-a-good",
+    "title": "Loving boundaries: Conditional love applied to parenting and therapy",
+    "link": "https://nintil.com/conditional-love-applied-to-parenting-and-therapy/",
+    "source": "Nintil",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-07-14T16:59:41.812923",
+    "category": "Progress",
+    "content_type": "essay"
+  },
+  {
+    "title": "You Just Hired a Million Bad Employees",
+    "link": "https://www.a16z.news/p/the-next-ai-goldrush-tokens-loops",
     "source": "a16z News",
     "score": 0.6666666666666666,
-    "queued_at": "2026-05-08T17:00:49.146694",
+    "queued_at": "2026-07-14T16:59:42.936510",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "The Most Human Technology Ever Made",
+    "link": "https://www.a16z.news/p/the-most-human-technology-ever-made",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-07-14T16:59:43.140962",
     "category": "Tech",
     "content_type": "news"
   },
@@ -168,6 +195,24 @@
     "score": 0.5,
     "queued_at": "2026-05-08T17:00:48.805388",
     "category": "Ideas",
+    "content_type": "essay"
+  },
+  {
+    "title": "IN-DEPTH: What Unitree's Evolution Means For Robotics",
+    "link": "https://www.fabricatedknowledge.com/p/in-depth-what-unitrees-evolution",
+    "source": "Fabricated Knowledge",
+    "score": 0.5,
+    "queued_at": "2026-07-14T16:59:41.710271",
+    "category": "Tech",
+    "content_type": "essay"
+  },
+  {
+    "title": "Progress in Medicine, the Roots of Progress Institute\u2019s new summer career exploration program, has started",
+    "link": "https://rootsofprogress.org/progress-in-medicine-the-roots-of-progress-institutes-new-summer-career-exploration-program-has-started/",
+    "source": "Roots of Progress",
+    "score": 0.5,
+    "queued_at": "2026-07-14T16:59:42.064006",
+    "category": "Progress",
     "content_type": "essay"
   }
 ]
