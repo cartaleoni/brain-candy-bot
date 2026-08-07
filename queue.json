@@ -1,10 +1,10 @@
 [
   {
-    "title": "A shallow dive into formal verification",
-    "link": "https://vitalik.eth.limo/general/2026/05/18/fv.html",
+    "title": "Obfuscation (Part II): Diamond iO",
+    "link": "https://vitalik.eth.limo/general/2026/07/28/obfuscation_part_ii_diamond_io.html",
     "source": "Vitalik Buterin",
     "score": 0.8571428571428571,
-    "queued_at": "2026-07-14T16:59:42.842637",
+    "queued_at": "2026-08-07T16:39:26.661116",
     "category": "Crypto",
     "content_type": "essay"
   },
@@ -18,11 +18,20 @@
     "content_type": "essay"
   },
   {
-    "title": "The Most Human Technology Ever Made",
-    "link": "https://www.a16z.news/p/the-most-human-technology-ever-made",
+    "title": "Charts of the Week: Bookslop",
+    "link": "https://www.a16z.news/p/charts-of-the-week-bookslop",
     "source": "a16z News",
     "score": 0.6666666666666666,
-    "queued_at": "2026-07-14T16:59:43.140962",
+    "queued_at": "2026-08-07T16:39:26.302379",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "Knowing When to Stop: The Art of Making a Loop Converge",
+    "link": "https://www.a16z.news/p/knowing-when-to-stop-the-art-of-making",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-08-07T16:39:26.387512",
     "category": "Tech",
     "content_type": "news"
   },
