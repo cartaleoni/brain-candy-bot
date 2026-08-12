@@ -1,19 +1,19 @@
 [
   {
-    "title": "Obfuscation (Part II): Diamond iO",
-    "link": "https://vitalik.eth.limo/general/2026/07/28/obfuscation_part_ii_diamond_io.html",
-    "source": "Vitalik Buterin",
-    "score": 0.8571428571428571,
-    "queued_at": "2026-08-07T16:39:26.661116",
-    "category": "Crypto",
-    "content_type": "essay"
-  },
-  {
     "title": "Knowing When to Stop: The Art of Making a Loop Converge",
     "link": "https://www.a16z.news/p/knowing-when-to-stop-the-art-of-making",
     "source": "a16z News",
     "score": 0.6666666666666666,
     "queued_at": "2026-08-07T16:39:26.387512",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "What It Takes to Get Paid",
+    "link": "https://www.a16z.news/p/what-it-takes-to-get-paid",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-08-12T16:44:30.593467",
     "category": "Tech",
     "content_type": "news"
   },
