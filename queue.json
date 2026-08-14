@@ -27,15 +27,6 @@
     "content_type": "essay"
   },
   {
-    "title": "Objectivity & subjectivity",
-    "link": "https://paragraph.com/@polynya/objectivity-subjectivity",
-    "source": "Polynya",
-    "score": 0.5,
-    "queued_at": "2026-04-02T16:44:02.072490",
-    "category": "Crypto",
-    "content_type": "essay"
-  },
-  {
     "title": "Bad Analogies",
     "link": "https://www.notboring.co/p/bad-analogies",
     "source": "Not Boring",
@@ -176,6 +167,15 @@
     "source": "Roots of Progress",
     "score": 0.5,
     "queued_at": "2026-07-14T16:59:42.064006",
+    "category": "Progress",
+    "content_type": "essay"
+  },
+  {
+    "title": "Ambitious American Science Requires Reliable and Effective Federal Funding",
+    "link": "https://ifp.org/ambitious-american-science-requires-reliable-and-effective-federal-funding/",
+    "source": "Institute for Progress",
+    "score": 0.5,
+    "queued_at": "2026-08-14T16:38:31.924921",
     "category": "Progress",
     "content_type": "essay"
   }
