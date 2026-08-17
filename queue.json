@@ -1,19 +1,10 @@
 [
   {
-    "title": "Knowing When to Stop: The Art of Making a Loop Converge",
-    "link": "https://www.a16z.news/p/knowing-when-to-stop-the-art-of-making",
+    "title": "Charts of the Week: Head In The Neoclouds",
+    "link": "https://www.a16z.news/p/charts-of-the-week-head-in-the-neoclouds",
     "source": "a16z News",
     "score": 0.6666666666666666,
-    "queued_at": "2026-08-07T16:39:26.387512",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
-    "title": "What It Takes to Get Paid",
-    "link": "https://www.a16z.news/p/what-it-takes-to-get-paid",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-08-12T16:44:30.593467",
+    "queued_at": "2026-08-17T16:13:28.264651",
     "category": "Tech",
     "content_type": "news"
   },
@@ -177,6 +168,15 @@
     "score": 0.5,
     "queued_at": "2026-08-14T16:38:31.924921",
     "category": "Progress",
+    "content_type": "essay"
+  },
+  {
+    "title": "Transaction quality trilemma - blockchain killers",
+    "link": "https://paragraph.com/@polynya/transaction-quality-trilemma-blockchain-killers",
+    "source": "Polynya",
+    "score": 0.5,
+    "queued_at": "2026-08-17T16:13:27.860550",
+    "category": "Crypto",
     "content_type": "essay"
   }
 ]
