@@ -18,15 +18,6 @@
     "content_type": "news"
   },
   {
-    "title": "Michael Nielsen \u2013 How science actually progresses",
-    "link": "https://www.dwarkesh.com/p/michael-nielsen",
-    "source": "Dwarkesh Patel",
-    "score": 0.5,
-    "queued_at": "2026-04-07T16:45:14.945340",
-    "category": "AI",
-    "content_type": "essay"
-  },
-  {
     "title": "TBA",
     "link": "https://economics.mit.edu/node/5258",
     "source": "Economics",
@@ -177,6 +168,15 @@
     "score": 0.5,
     "queued_at": "2026-08-19T16:17:31.195178",
     "category": "Progress",
+    "content_type": "essay"
+  },
+  {
+    "title": "Base Power Company: Chapter 3",
+    "link": "https://www.notboring.co/p/base-power-company-chapter-3",
+    "source": "Not Boring",
+    "score": 0.5,
+    "queued_at": "2026-08-20T16:19:58.315841",
+    "category": "Venture",
     "content_type": "essay"
   }
 ]
