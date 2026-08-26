@@ -1,19 +1,19 @@
 [
   {
-    "title": "Your Favorite Creator Isn\u2019t Real\u2014Does it Matter?",
-    "link": "https://www.a16z.news/p/your-favorite-creator-isnt-realdoes",
-    "source": "a16z News",
-    "score": 0.6666666666666666,
-    "queued_at": "2026-08-18T16:17:24.334173",
-    "category": "Tech",
-    "content_type": "news"
-  },
-  {
     "title": "Intelligence is the Primitive. Applications are the Diffusion Layer.",
     "link": "https://www.a16z.news/p/intelligence-is-the-primitive-applications",
     "source": "a16z News",
     "score": 0.6666666666666666,
     "queued_at": "2026-08-25T16:22:32.599223",
+    "category": "Tech",
+    "content_type": "news"
+  },
+  {
+    "title": "Faking a brand is easy. Making it stop is hard.",
+    "link": "https://www.a16z.news/p/faking-a-brand-is-easy",
+    "source": "a16z News",
+    "score": 0.6666666666666666,
+    "queued_at": "2026-08-26T16:41:14.433451",
     "category": "Tech",
     "content_type": "news"
   },
@@ -33,15 +33,6 @@
     "score": 0.5,
     "queued_at": "2026-04-13T16:53:03.780628",
     "category": "Discovered",
-    "content_type": "essay"
-  },
-  {
-    "title": "How to walk through walls",
-    "link": "https://www.henrikkarlsson.xyz/p/hacker-mindset",
-    "source": "Henrik Karlsson",
-    "score": 0.5,
-    "queued_at": "2026-04-14T16:54:36.199865",
-    "category": "Ideas",
     "content_type": "essay"
   },
   {
@@ -177,6 +168,15 @@
     "score": 0.5,
     "queued_at": "2026-08-21T16:18:18.627447",
     "category": "AI",
+    "content_type": "essay"
+  },
+  {
+    "title": "The fog of hunger",
+    "link": "https://aeon.co/essays/a-hungry-woman-is-easier-to-dismiss-than-a-well-fed-woman",
+    "source": "Aeon",
+    "score": 0.5,
+    "queued_at": "2026-08-26T16:41:14.063792",
+    "category": "Discovered",
     "content_type": "essay"
   }
 ]
